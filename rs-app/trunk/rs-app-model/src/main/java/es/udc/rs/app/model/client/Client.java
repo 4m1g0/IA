@@ -6,7 +6,7 @@ import java.util.Calendar;
 import es.udc.rs.app.model.call.Call;
 
 public class Client {
-	
+
 	private long clientId;
 	private String name;
 	private short DNI;
@@ -15,9 +15,8 @@ public class Client {
 	private Calendar creationDate;
 	private ArrayList<Call> callList;
 	private static long countClient = 0;
-	
-	
-	public Client(String name, short DNI, String address, short phone){
+
+	public Client(String name, short DNI, String address, short phone) {
 		this.name = name;
 		this.DNI = DNI;
 		this.address = address;
@@ -28,69 +27,56 @@ public class Client {
 		countClient++;
 	}
 
-
 	public ArrayList<Call> getCallList() {
 		return callList;
 	}
-
 
 	public void setCallList(ArrayList<Call> callList) {
 		this.callList = callList;
 	}
 
-
 	public String getName() {
 		return name;
 	}
-
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
-
 	public short getDNI() {
 		return DNI;
 	}
-
 
 	public void setDNI(short dNI) {
 		DNI = dNI;
 	}
 
-
 	public String getAddress() {
 		return address;
 	}
-
 
 	public void setAddress(String address) {
 		this.address = address;
 	}
 
-
 	public Calendar getCreationDate() {
 		return creationDate;
 	}
 
-
 	public void setCreationDate(Calendar creationDate) {
 		this.creationDate = creationDate;
 		if (creationDate != null) {
-            this.creationDate.set(Calendar.MILLISECOND, 0);
-        }
+			this.creationDate.set(Calendar.MILLISECOND, 0);
+		}
 	}
-
 
 	public long getClientId() {
 		return clientId;
 	}
 
-
 	public short getPhone() {
 		return phone;
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -107,7 +93,6 @@ public class Client {
 		result = prime * result + phone;
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -146,13 +131,5 @@ public class Client {
 			return false;
 		return true;
 	}
-
-
-	
-	
-	
-	
-	
-	
 
 }
