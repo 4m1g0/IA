@@ -6,25 +6,29 @@ import es.udc.rs.app.model.util.ModelConstants;
 
 public class Call {
 	
-	private long callId;
-	private long clientId;
+	private Long callId;
+	private Long clientId;
 	private Calendar dateCall;
 	private short duration;
-	private short phone;
+	private short destPhone;
 	private ModelConstants.enumType type;
 	private ModelConstants.enumState state;
-	private static long countId = 0;
+	private static long countCall = 0;
 	
 	public Call(Long clientId, Calendar dateCall, short duration, 
-			ModelConstants.enumType type, short phone) {
+			ModelConstants.enumType type, short destPhone) {
 		this.clientId = clientId;
 		this.dateCall = dateCall;
 		this.duration = duration;
 		this.type = type;
-		this.phone = phone;
+		this.destPhone = destPhone;
 		this.state = ModelConstants.enumState.PENDING;
-		this.callId = countId++;
+		this.callId = countCall;
 		
+	}
+	
+	public synchronized void increment(){
+		countCall++;	
 	}
 
 
@@ -88,13 +92,13 @@ public class Call {
 	}
 
 
-	public short getPhone() {
-		return phone;
+	public short getDestPhone() {
+		return destPhone;
 	}
 
 
-	public void setPhone(short phone) {
-		this.phone = phone;
+	public void setDestPhone(short destPhone) {
+		this.destPhone = destPhone;
 	}
 	
 	

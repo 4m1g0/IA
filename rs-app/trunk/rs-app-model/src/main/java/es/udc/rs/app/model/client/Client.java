@@ -2,18 +2,19 @@ package es.udc.rs.app.model.client;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import es.udc.rs.app.model.call.Call;
 
 public class Client {
 
-	private long clientId;
+	private Long clientId;
 	private String name;
 	private short DNI;
 	private String address;
 	private short phone;
 	private Calendar creationDate;
-	private ArrayList<Call> callList;
+	private List<Call> callList;
 	private static long countClient = 0;
 
 	public Client(String name, short DNI, String address, short phone) {
@@ -24,15 +25,23 @@ public class Client {
 		this.creationDate.set(Calendar.MILLISECOND, 0);
 		this.clientId = countClient;
 		this.callList = new ArrayList<Call>();
-		countClient++;
+		this.increment();
+	}
+	
+	public synchronized void increment(){
+		countClient++;	
 	}
 
-	public ArrayList<Call> getCallList() {
+	public List<Call> getCallList() {
 		return callList;
 	}
 
 	public void setCallList(ArrayList<Call> callList) {
 		this.callList = callList;
+	}
+	
+	public void addCall(Call call){
+		this.callList.add(call);
 	}
 
 	public String getName() {
