@@ -27,7 +27,7 @@ public interface ClientService {
     
     public List<Client> findClients(String keywords, int index, int numRows);
     
-    public void makeCall(Long clientId, Calendar dateCall, short duration, ModelConstants.enumType type, short destPhone) 
+    public void makeCall(Long clientId, short duration, ModelConstants.enumType type, short destPhone) 
     		throws InstanceNotFoundException, InputValidationException;
     
     public void changeCallState(Long clientId, Calendar month ,ModelConstants.enumState state) throws CallStateException;
@@ -35,8 +35,7 @@ public interface ClientService {
     public List<Call> findCalls(Long clientId, Calendar month) 
     		throws CallStateException, InstanceNotFoundException;
 
-    public List<Call> findCalls(Long clientId, Calendar initDate, Calendar endDate) 
-    		throws CallStateException, InstanceNotFoundException;
+    public List<Call> findCalls(Long clientId, Calendar initDate, Calendar endDate) throws InstanceNotFoundException;
 
     public List<Call> findCalls(Long clientId, Calendar initDate, Calendar endDate, ModelConstants.enumType type)
     		throws CallStateException, InstanceNotFoundException;
