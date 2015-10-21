@@ -10,14 +10,14 @@ public class Client {
 
 	private Long clientId;
 	private String name;
-	private short DNI;
+	private String DNI;
 	private String address;
 	private short phone;
 	private Calendar creationDate;
 	private List<Call> callList;
 	private static long countClient = 0;
 
-	public Client(String name, short DNI, String address, short phone) {
+	public Client(String name, String DNI, String address, short phone) {
 		this.name = name;
 		this.DNI = DNI;
 		this.address = address;
@@ -52,12 +52,12 @@ public class Client {
 		this.name = name;
 	}
 
-	public short getDNI() {
+	public String getDNI() {
 		return DNI;
 	}
 
-	public void setDNI(short dNI) {
-		DNI = dNI;
+	public void setDNI(String DNI) {
+		DNI = DNI;
 	}
 
 	public String getAddress() {
@@ -87,15 +87,18 @@ public class Client {
 		return phone;
 	}
 
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + DNI;
+		result = prime * result + ((DNI == null) ? 0 : DNI.hashCode());
 		result = prime * result + ((address == null) ? 0 : address.hashCode());
 		result = prime * result
 				+ ((callList == null) ? 0 : callList.hashCode());
-		result = prime * result + (int) (clientId ^ (clientId >>> 32));
+		result = prime * result
+				+ ((clientId == null) ? 0 : clientId.hashCode());
 		result = prime * result
 				+ ((creationDate == null) ? 0 : creationDate.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
@@ -112,7 +115,10 @@ public class Client {
 		if (getClass() != obj.getClass())
 			return false;
 		Client other = (Client) obj;
-		if (DNI != other.DNI)
+		if (DNI == null) {
+			if (other.DNI != null)
+				return false;
+		} else if (!DNI.equals(other.DNI))
 			return false;
 		if (address == null) {
 			if (other.address != null)
@@ -124,7 +130,10 @@ public class Client {
 				return false;
 		} else if (!callList.equals(other.callList))
 			return false;
-		if (clientId != other.clientId)
+		if (clientId == null) {
+			if (other.clientId != null)
+				return false;
+		} else if (!clientId.equals(other.clientId))
 			return false;
 		if (creationDate == null) {
 			if (other.creationDate != null)

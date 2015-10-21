@@ -2,7 +2,6 @@ package es.udc.rs.app.model.clientservice;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -22,8 +21,18 @@ public class ClientServiceImpl implements ClientService {
 	
 	
 	public ClientServiceImpl() {
-		
-		
+		Client client1 = new Client("Paco", "45777777C", "Calle pepito 22", (short)678956745);
+		Client client2 = new Client("Pepe", "77775437A", "Calle pepito 23", (short)678922222);
+		Client client3 = new Client("Ramon", "77273477R", "Calle pepito 25", (short)678953453);
+		try {
+			addClient(client1);
+			addClient(client2);
+			addClient(client3);
+			makeCall(client1.getClientId(), Calendar.getInstance(), (short)234, enumType.LOCAL,(short)65943902);
+			makeCall(client1.getClientId(), Calendar.getInstance(), (short)234, enumType.LOCAL,(short)63443933);
+		} catch (Exception e) {
+			
+		}	
 		
 	}
 
@@ -55,10 +64,10 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public Client findClient(short DNI) throws InstanceNotFoundException {
+	public Client findClient(String DNI) throws InstanceNotFoundException {
 		// TODO Auto-generated method stub
 		for (Entry<Long, Client> client : clients.entrySet()) {
-			if(client.getValue().getDNI() == DNI)
+			if(client.getValue().getDNI().contentEquals(DNI))
 				return client.getValue();
 		}
 		return null;

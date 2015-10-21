@@ -21,7 +21,7 @@ public interface ClientService {
 
     public Client findClient(Long clientId) throws InstanceNotFoundException;
     
-    public Client findClient(short DNI) throws InstanceNotFoundException;
+    public Client findClient(String DNI) throws InstanceNotFoundException;
     
     public List<Client> findClients(String keywords);
     
