@@ -51,9 +51,13 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public void updateClient(Client client) throws InputValidationException {
+	public void updateClient(Client client) throws InputValidationException, InstanceNotFoundException{
 		// TODO Auto-generated method stub
-		clients.replace(client.getClientId(), client);
+		if (clients.replace(client.getClientId(), client) == null){
+			throw new InstanceNotFoundException(client, client.toString());
+			
+		}
+		
 		
 	}
 

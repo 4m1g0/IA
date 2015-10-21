@@ -17,7 +17,7 @@ public interface ClientService {
 
     public void removeClient(Long clientId) throws InstanceNotFoundException;
 
-    public void updateClient(Client client) throws InputValidationException;
+    public void updateClient(Client client) throws InputValidationException, InstanceNotFoundException;
 
     public Client findClient(Long clientId) throws InstanceNotFoundException;
     
