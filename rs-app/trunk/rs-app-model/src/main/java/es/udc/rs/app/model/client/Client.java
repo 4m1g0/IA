@@ -12,12 +12,12 @@ public class Client {
 	private String name;
 	private String DNI;
 	private String address;
-	private short phone;
+	private Integer phone;
 	private Calendar creationDate;
 	private List<Call> callList;
 	private static long countClient = 0;
 
-	public Client(String name, String DNI, String address, short phone) {
+	public Client(String name, String DNI, String address, Integer phone) {
 		this.name = name;
 		this.DNI = DNI;
 		this.address = address;
@@ -83,7 +83,7 @@ public class Client {
 		return clientId;
 	}
 
-	public short getPhone() {
+	public Integer getPhone() {
 		return phone;
 	}
 

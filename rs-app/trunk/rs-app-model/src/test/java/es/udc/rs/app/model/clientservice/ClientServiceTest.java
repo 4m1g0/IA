@@ -2,8 +2,8 @@ package es.udc.rs.app.model.clientservice;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Calendar;
-
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -22,22 +22,25 @@ public class ClientServiceTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		
-		Client client1 = new Client("Paco", "45777777C", "Calle pepito 22", (short)678956745);
-		Client client2 = new Client("Pepe", "77775437A", "Calle pepito 23", (short)678922222);
-		Client client3 = new Client("Ramon", "77273477R", "Calle pepito 25", (short)678953453);
-		try {
-			clientService.addClient(client1);
-			clientService.addClient(client2);
-			clientService.addClient(client3);
-			clientService.makeCall(client1.getClientId(), Calendar.getInstance(), (short)234, enumType.LOCAL,(short)65943902);
-			clientService.makeCall(client1.getClientId(), Calendar.getInstance(), (short)234, enumType.LOCAL,(short)63443933);
-		} catch (Exception e) {
-			
-		}	
+
 	}
 
 	@Before
 	public void setUp() throws Exception {
+		
+		Client client1 = new Client("Paco", "45777777C", "Calle pepito 22", 678956745);
+		Client client2 = new Client("Pepe", "77775437A", "Calle pepito 23", 678922222);
+		Client client3 = new Client("Ramon", "77273477R", "Calle pepito 25",678953453);
+		
+		try {
+			clientService.addClient(client1);
+			clientService.addClient(client2);
+			clientService.addClient(client3);
+			clientService.makeCall(client1.getClientId(), 234, enumType.LOCAL,65943902);
+			clientService.makeCall(client1.getClientId(), 234, enumType.LOCAL,63443933);
+		} catch (Exception e) {
+			
+		}	
 	}
 
 	@Test
@@ -61,23 +64,30 @@ public class ClientServiceTest {
 	}
 
 	@Test
-	public void testUpdateClient(Client client) {
+	public void testUpdateClient() throws InputValidationException,
+	InstanceNotFoundException{
+		
+		Client client = new Client("alberto", "12345678", "asdfff", 6543212);
 		try {
+			clientService.addClient(client);
+			client.setDNI("87654321");
+			client.setAddress("fffff");
 			clientService.updateClient(client);
-		} catch (InputValidationException e) {
-			// TODO: handle exception
-		} catch (InstanceNotFoundException e){
+			Client result = clientService.findClient(client.getClientId());
+			assertEquals(result, client);
+		} finally{
+			clientService.removeClient(client.getClientId());
 			
 		}
 	}
 
 	@Test
-	public void testFindClientLong() {
-		fail("Not yet implemented");
+	public void testFindClientId() {
+		ArrayList<Client> clients = new ArrayList<Client>();
 	}
 
 	@Test
-	public void testFindClientString() {
+	public void testFindClientDNI() {
 		fail("Not yet implemented");
 	}
 
@@ -87,7 +97,7 @@ public class ClientServiceTest {
 	}
 
 	@Test
-	public void testFindClientsStringIntInt() {
+	public void testFindClientsStringInt() {
 		fail("Not yet implemented");
 	}
 

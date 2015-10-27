@@ -9,14 +9,14 @@ public class Call {
 	private Long callId;
 	private Long clientId;
 	private Calendar dateCall;
-	private short duration;
-	private short destPhone;
+	private Integer duration;
+	private Integer destPhone;
 	private ModelConstants.enumType type;
 	private ModelConstants.enumState state;
 	private static long countCall = 0;
 	
-	public Call(Long clientId, Calendar dateCall, short duration, 
-			ModelConstants.enumType type, short destPhone) {
+	public Call(Long clientId, Calendar dateCall, Integer duration, 
+			ModelConstants.enumType type, Integer destPhone) {
 		this.clientId = clientId;
 		this.dateCall = dateCall;
 		this.duration = duration;
@@ -82,22 +82,22 @@ public class Call {
 	}
 
 
-	public short getDuration() {
+	public Integer getDuration() {
 		return duration;
 	}
 
 
-	public void setDuration(short duration) {
+	public void setDuration(Integer duration) {
 		this.duration = duration;
 	}
 
 
-	public short getDestPhone() {
+	public Integer getDestPhone() {
 		return destPhone;
 	}
 
 
-	public void setDestPhone(short destPhone) {
+	public void setDestPhone(Integer destPhone) {
 		this.destPhone = destPhone;
 	}
 	

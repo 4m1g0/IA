@@ -23,9 +23,17 @@ public class ClientServiceImpl implements ClientService {
 	public ClientServiceImpl() {
 		
 	}
+	private void validateClient(Client client) throws InputValidationException {
+		if(client.getDNI().length() != 9 && (client.getPhone().toString().length() != 9)){
+			throw new InputValidationException(client.getDNI());
+		}
+
+		
+	}
 
 	@Override
 	public Client addClient(Client client) throws InputValidationException {
+		validateClient(client);
 		this.clients.put(client.getClientId(), client);
 		return client;
 	}
@@ -74,9 +82,13 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public void makeCall(Long clientId, short duration, enumType type, short destPhone) 
+	public void makeCall(Long clientId, Integer duration, enumType type, Integer destPhone) 
 			throws InstanceNotFoundException, InputValidationException {
-		clients.get(clientId).addCall(new Call(clientId, Calendar.getInstance(), duration, type, destPhone));
+		Client c = clients.get(clientId);
+		if(c == null){
+			throw new InstanceNotFoundException(clientId, clientId.toString());
+		}
+		c.addCall(new Call(clientId, Calendar.getInstance(), duration, type, destPhone));
 		
 	}
 
