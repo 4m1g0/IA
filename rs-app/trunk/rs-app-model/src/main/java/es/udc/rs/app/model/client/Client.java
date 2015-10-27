@@ -57,7 +57,7 @@ public class Client {
 	}
 
 	public void setDNI(String DNI) {
-		DNI = DNI;
+		this.DNI = DNI;
 	}
 
 	public String getAddress() {

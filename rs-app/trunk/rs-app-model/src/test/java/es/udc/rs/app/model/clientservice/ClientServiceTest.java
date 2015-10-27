@@ -55,22 +55,23 @@ public class ClientServiceTest {
 	}
 
 	@Test
-	public Client testAddClient() {
-		Client addedClient = null;
+	public void testAddClient() {
+		Client client = new Client("rosa", "72734577R", "Calle pepito 25",678953453);
+		Client addedClient;
 		try {
-			addedClient = clientService.addClient(getValidClient());
+			addedClient = clientService.addClient(client);
+			assertEquals(addedClient, client);
 		} catch (InputValidationException e) {
 			throw new RuntimeException(e);
 		}
-		return addedClient;
 	}
-	
-	
 
 	@Test
-	public void testRemoveClient() {
+	public void testRemoveClient() throws InputValidationException{
+		Client client = new Client("alberto", "12345678", "asdfff", 6543212);
 		try {
-			clientService.removeClient(99999L);
+			clientService.addClient(client);
+			clientService.removeClient(client.getClientId());
 		} catch (InstanceNotFoundException e) {
 			throw new RuntimeException(e);
 		}
@@ -79,10 +80,11 @@ public class ClientServiceTest {
 	@Test
 	public void testUpdateClient() throws InputValidationException,
 	InstanceNotFoundException{
-		Client client = getValidClient("Alberto");
+		
+		Client client = new Client("alberto", "12345678W", "asdfff", 654321265);
 		try {
 			clientService.addClient(client);
-			client.setDNI("87654321");
+			client.setDNI("87654321A");
 			client.setAddress("fffff");
 			clientService.updateClient(client);
 			Client result = clientService.findClient(client.getClientId());
@@ -94,9 +96,18 @@ public class ClientServiceTest {
 	}
 
 	@Test
-	public void testFindClientId() {
-		ArrayList<Client> clients = new ArrayList<Client>();
+	public void testFindClientId() throws InputValidationException, InstanceNotFoundException{
+		Client client = new Client("proba1", "67654312E", "calle 21", 654321234);
+		try{
+			clientService.addClient(client);
+			Client c = clientService.findClient(client.getClientId());
+			assertEquals(c, client);
+		} finally{
+			clientService.removeClient(client.getClientId());
+		}
 	}
+
+
 
 	@Test
 	public void testFindClientDNI() {
