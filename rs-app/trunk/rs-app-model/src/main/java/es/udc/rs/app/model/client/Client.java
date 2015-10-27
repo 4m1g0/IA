@@ -22,7 +22,7 @@ public class Client {
 		this.DNI = DNI;
 		this.address = address;
 		this.phone = phone;
-		this.creationDate.set(Calendar.MILLISECOND, 0);
+		this.creationDate= Calendar.getInstance();
 		this.clientId = countClient;
 		this.callList = new ArrayList<Call>();
 		this.increment();

@@ -2,8 +2,6 @@ package es.udc.rs.app.model.clientservice;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -21,13 +19,7 @@ public class ClientServiceTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		
-
-	}
-
-	@Before
-	public void setUp() throws Exception {
-		
+		clientService = ClientServiceFactory.getService();
 		Client client1 = new Client("Paco", "45777777C", "Calle pepito 22", 678956745);
 		Client client2 = new Client("Pepe", "77775437A", "Calle pepito 23", 678922222);
 		Client client3 = new Client("Ramon", "77273477R", "Calle pepito 25",678953453);
@@ -40,7 +32,14 @@ public class ClientServiceTest {
 			clientService.makeCall(client1.getClientId(), 234, enumType.LOCAL,63443933);
 		} catch (Exception e) {
 			
-		}	
+		}
+
+	}
+
+	@Before
+	public void setUp() throws Exception {
+		
+	
 	}
 
 	
@@ -68,7 +67,7 @@ public class ClientServiceTest {
 
 	@Test
 	public void testRemoveClient() throws InputValidationException{
-		Client client = new Client("alberto", "12345678", "asdfff", 6543212);
+		Client client = new Client("alberto", "12345678B", "asdfff", 654321233);
 		try {
 			clientService.addClient(client);
 			clientService.removeClient(client.getClientId());
@@ -90,7 +89,7 @@ public class ClientServiceTest {
 			Client result = clientService.findClient(client.getClientId());
 			assertEquals(result, client);
 		} finally{
-			clientService.removeClient(client.getClientId());
+			//clientService.removeClient(client.getClientId());
 			
 		}
 	}
@@ -110,8 +109,9 @@ public class ClientServiceTest {
 
 
 	@Test
-	public void testFindClientDNI() {
-		fail("Not yet implemented");
+	public void testFindClientDNI() throws InstanceNotFoundException {
+		Client client = clientService.findClient("45777777C");
+		assertEquals(client, clientService.findClient(Long.getLong("1")));
 	}
 
 	@Test

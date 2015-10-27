@@ -2,6 +2,7 @@ package es.udc.rs.app.model.clientservice;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -17,7 +18,7 @@ import es.udc.ws.util.exceptions.InstanceNotFoundException;
 
 public class ClientServiceImpl implements ClientService {
 	
-	Map<Long, Client> clients = new TreeMap<Long, Client>();
+	private static Map<Long, Client> clients = new HashMap<Long, Client>();
 	
 	
 	public ClientServiceImpl() {
@@ -34,8 +35,9 @@ public class ClientServiceImpl implements ClientService {
 	@Override
 	public Client addClient(Client client) throws InputValidationException {
 		validateClient(client);
-		this.clients.put(client.getClientId(), client);
-		return client;
+		if(this.clients.put(client.getClientId(), client) == null)
+			return client;
+		return null;
 	}
 
 	@Override
