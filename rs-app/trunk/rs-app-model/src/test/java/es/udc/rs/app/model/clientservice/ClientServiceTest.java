@@ -43,21 +43,34 @@ public class ClientServiceTest {
 		}	
 	}
 
+	
+	private Client getValidClient(String name)
+	{
+		return new Client(name, "45777777C", "Calle pepito 22", 678956745);
+	}
+	
+	private Client getValidClient()
+	{
+		return getValidClient("Paco");
+	}
+
 	@Test
-	public Client testAddClient(Client client) {
+	public Client testAddClient() {
 		Client addedClient = null;
 		try {
-			addedClient = clientService.addClient(client);
+			addedClient = clientService.addClient(getValidClient());
 		} catch (InputValidationException e) {
 			throw new RuntimeException(e);
 		}
 		return addedClient;
 	}
+	
+	
 
 	@Test
-	public void testRemoveClient(Long clientId) {
+	public void testRemoveClient() {
 		try {
-			clientService.removeClient(clientId);
+			clientService.removeClient(99999L);
 		} catch (InstanceNotFoundException e) {
 			throw new RuntimeException(e);
 		}
@@ -66,8 +79,7 @@ public class ClientServiceTest {
 	@Test
 	public void testUpdateClient() throws InputValidationException,
 	InstanceNotFoundException{
-		
-		Client client = new Client("alberto", "12345678", "asdfff", 6543212);
+		Client client = getValidClient("Alberto");
 		try {
 			clientService.addClient(client);
 			client.setDNI("87654321");
