@@ -41,8 +41,11 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public void removeClient(Long clientId) throws InstanceNotFoundException {
-		clients.remove(clientId);
+	public void removeClient(Long clientId) throws InstanceNotFoundException, CallStateException {
+		if (clients.get(clientId).getCallList().isEmpty())
+			clients.remove(clientId);
+		else
+			throw new CallStateException(clientId, clients.get(clientId).getCallList().get(0).getCallId());
 	}
 
 	@Override

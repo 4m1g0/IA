@@ -89,7 +89,7 @@ public class ClientServiceTest {
 	}
 
 	@Test
-	public void testRemoveClient() throws InputValidationException{
+	public void testRemoveClient() throws InputValidationException, CallStateException{
 		Client client = new Client("alberto", "12345678B", "asdfff", 654321233);
 		try {
 			clientService.addClient(client);
@@ -118,7 +118,7 @@ public class ClientServiceTest {
 	}
 
 	@Test
-	public void testFindClientId() throws InputValidationException, InstanceNotFoundException{
+	public void testFindClientId() throws InputValidationException, InstanceNotFoundException, CallStateException{
 		Client client = new Client("proba1", "67654312E", "calle 21", 654321234);
 		try{
 			clientService.addClient(client);
@@ -138,7 +138,7 @@ public class ClientServiceTest {
 	}
 
 	@Test
-	public void testFindClientsString() throws InputValidationException, InstanceNotFoundException {
+	public void testFindClientsString() throws InputValidationException, InstanceNotFoundException, CallStateException {
 		Client c1 = new Client("carlos", "12121212E", "calle x", 565434567);
 		Client c2 = new Client("carla", "12121212E", "calle x", 565434567);
 		try {
@@ -154,7 +154,7 @@ public class ClientServiceTest {
 	}
 
 	@Test
-	public void testFindClientsStringRange() throws InputValidationException, InstanceNotFoundException {
+	public void testFindClientsStringRange() throws InputValidationException, InstanceNotFoundException, CallStateException {
 		Client c1 = new Client("carlos", "12121212E", "calle x", 565434567);
 		Client c2 = new Client("carla", "12121212E", "calle x", 565434567);
 		try {
@@ -163,6 +163,7 @@ public class ClientServiceTest {
 			clientService.addClient(c2);
 			assertEquals(clientService.findClients("car", 1, 4).size(), 1);
 			assertEquals(clientService.findClients("car", 0, 1).size(), 1);	
+			assertEquals(clientService.findClients("car", 0, 3).size(), 2);	
 		} finally{
 			clientService.removeClient(c1.getClientId());
 			clientService.removeClient(c2.getClientId());
@@ -263,5 +264,10 @@ public class ClientServiceTest {
 		List<Call> calls = clientService.findCalls(c1.getClientId(), cal1, cal2, enumType.LOCAL, 1, 2);
 		assertEquals(2, calls.size());
 	}
-
+	
+	@Test(expected = CallStateException.class)
+	public void testRemoveClientWithCalls() throws InstanceNotFoundException, CallStateException{
+		Client c1 = clientService.findClient("45777777C");
+		clientService.removeClient(c1.getClientId());
+	}
 }
