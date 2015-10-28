@@ -24,6 +24,7 @@ public class Call {
 		this.destPhone = destPhone;
 		this.state = ModelConstants.enumState.PENDING;
 		this.callId = countCall;
+		this.increment();
 		
 	}
 	

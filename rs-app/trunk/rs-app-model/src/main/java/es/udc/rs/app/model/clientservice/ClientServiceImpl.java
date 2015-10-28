@@ -63,7 +63,7 @@ public class ClientServiceImpl implements ClientService {
 			if(client.getValue().getDNI().contentEquals(DNI))
 				return client.getValue();
 		}
-		return null;
+		throw new InstanceNotFoundException(null,DNI);
 	}
 
 
@@ -112,9 +112,7 @@ public class ClientServiceImpl implements ClientService {
 	public List<Call> findCalls(Long clientId, Calendar month) throws InstanceNotFoundException {
 		List<Call> findCalls = new ArrayList<Call>();
 		for (Call call : clients.get(clientId).getCallList()) {
-			if(call.getDateCall().get(Calendar.MONTH) == month.get(Calendar.MONTH) 
-					&& month.get(Calendar.MONTH) < Calendar.getInstance().get(Calendar.MONTH) ||
-					call.getDateCall().get(Calendar.YEAR) < Calendar.getInstance().get(Calendar.YEAR)){
+			if(call.getDateCall().get(Calendar.MONTH) == month.get(Calendar.MONTH)){
 				findCalls.add(call);
 			}
 		}
@@ -127,8 +125,10 @@ public class ClientServiceImpl implements ClientService {
 			Calendar endDate) throws InstanceNotFoundException {
 		List<Call> findCalls = new ArrayList<Call>();
 		for (Call call : clients.get(clientId).getCallList()) {
-			if(call.getDateCall().compareTo(initDate) >= 0 && call.getDateCall().compareTo(initDate) <= 0){
-				findCalls.add(call);
+			if(call.getDateCall().get(Calendar.MONTH) > initDate.get(Calendar.MONTH)){
+				if(call.getDateCall().get(Calendar.MONTH) < endDate.get(Calendar.MONTH)){
+					findCalls.add(call);	
+				}
 			}
 		}
 		return findCalls;
@@ -140,9 +140,11 @@ public class ClientServiceImpl implements ClientService {
 			InstanceNotFoundException {
 		List<Call> findCalls = new ArrayList<Call>();
 		for (Call call : clients.get(clientId).getCallList()) {
-			if(call.getDateCall().compareTo(initDate) >= 0 && call.getDateCall().compareTo(initDate) <= 0
-					&& call.getType().compareTo(type) == 0){
-				findCalls.add(call);
+			if(call.getDateCall().get(Calendar.MONTH) > initDate.get(Calendar.MONTH)){
+				if(call.getDateCall().get(Calendar.MONTH) < endDate.get(Calendar.MONTH)){
+					if(type == call.getType())
+						findCalls.add(call);	
+				}
 			}
 		}
 		return findCalls;
@@ -151,14 +153,22 @@ public class ClientServiceImpl implements ClientService {
 	@Override
 	public List<Call> findCalls(Long clientId, Calendar initDate,
 			Calendar endDate, int index, int numRows)
-			throws CallStateException, InstanceNotFoundException {
-		return findCalls(clientId, initDate, endDate).subList(index, numRows);
+			throws InstanceNotFoundException {
+		List<Call> retorno = findCalls(clientId, initDate, endDate);
+		if(index+numRows > retorno.size()){
+			return retorno.subList(index, retorno.size());
+		}
+		return retorno.subList(index, index + numRows);
 	}
 
 	@Override
-	public List<Call> findCalls(Long clientId, Calendar initDate, Calendar endDate, enumType type, int index, int numRows)
-			throws CallStateException, InstanceNotFoundException {
-		return findCalls(clientId, initDate, endDate, type).subList(index, numRows);
+	public List<Call> findCalls(Long clientId, Calendar initDate, Calendar endDate, enumType type, 
+			int index, int numRows) throws CallStateException, InstanceNotFoundException {
+		List<Call> retorno = findCalls(clientId, initDate, endDate, type);
+		if(index+numRows > retorno.size()){
+			return retorno.subList(index, retorno.size());
+		}
+		return retorno.subList(index, index + numRows);
 	}
 
 

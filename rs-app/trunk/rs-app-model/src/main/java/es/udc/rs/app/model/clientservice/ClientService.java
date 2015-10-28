@@ -41,7 +41,7 @@ public interface ClientService {
     		throws CallStateException, InstanceNotFoundException;
     
     public List<Call> findCalls(Long clientId, Calendar initDate, Calendar endDate, int index, int numRows) 
-    		throws CallStateException, InstanceNotFoundException;
+    		throws  InstanceNotFoundException;
 
     public List<Call> findCalls(Long clientId, Calendar initDate, Calendar endDate, ModelConstants.enumType type,
     		int index, int numRows) throws CallStateException, InstanceNotFoundException;

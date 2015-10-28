@@ -36,7 +36,7 @@ public class Client {
 		return callList;
 	}
 
-	public void setCallList(ArrayList<Call> callList) {
+	public void setCallList(List<Call> callList) {
 		this.callList = callList;
 	}
 	

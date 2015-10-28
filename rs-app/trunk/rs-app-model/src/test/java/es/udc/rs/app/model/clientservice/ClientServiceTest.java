@@ -2,6 +2,7 @@ package es.udc.rs.app.model.clientservice;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Calendar;
 
@@ -33,9 +34,18 @@ public class ClientServiceTest {
 			clientService.addClient(client1);
 			clientService.addClient(client2);
 			clientService.addClient(client3);
-			clientService.makeCall(client1.getClientId(), 234, enumType.LOCAL,65943902);
-			clientService.makeCall(client1.getClientId(), 234, enumType.LOCAL,63443933);
+			Calendar cal = Calendar.getInstance();
+			Calendar cal2 = Calendar.getInstance();
+			cal.set(Calendar.MONTH, 4);
+			List<Call> callist = new ArrayList<Call>();
+			callist.add(new Call(client1.getClientId(), cal, 234, enumType.LOCAL,65943902));
+			callist.add(new Call(client1.getClientId(), cal, 244, enumType.LOCAL,65954912));
+			callist.add(new Call(client1.getClientId(), cal, 244, enumType.LOCAL,65954912));
+			cal2.set(Calendar.MONTH, 6);
+			callist.add(new Call(client1.getClientId(), cal2, 244, enumType.LOCAL,65954912));
+			client1.setCallList(callist);
 		} catch (Exception e) {
+			throw new InputValidationException("error");
 			
 		}
 
@@ -116,7 +126,7 @@ public class ClientServiceTest {
 	@Test
 	public void testFindClientDNI() throws InstanceNotFoundException {
 		Client client = clientService.findClient("45777777C");
-		assertEquals(client, clientService.findClient(Long.getLong("1")));
+		assertEquals(client.getDNI(), "45777777C");
 	}
 
 	@Test
@@ -155,8 +165,9 @@ public class ClientServiceTest {
 	public void testMakeCall() throws InstanceNotFoundException, InputValidationException {
 		
 		try {
-			Client c1 = clientService.findClient("45777777C");
+			Client c1 = clientService.findClient("77775437A");
 			clientService.makeCall(c1.getClientId(), 234, enumType.LOCAL,65943902);
+			assertEquals(c1.getCallList().get(0).getDestPhone(), (Integer)65943902);
 			
 		} finally {
 			
@@ -173,31 +184,59 @@ public class ClientServiceTest {
 	public void testFindCalls() throws InstanceNotFoundException, CallStateException {
 		Client c1 = clientService.findClient("45777777C");
 		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.MONTH, 4);
 		List<Call> calls = clientService.findCalls(c1.getClientId(),cal);
-		assertEquals(calls.size(), 3);
+		assertEquals(3, calls.size());
+		cal.set(Calendar.MONTH, 6);
+		calls = clientService.findCalls(c1.getClientId(),cal);
+		assertEquals(1, calls.size());
 		
 	}
 
 	@Test
-	public void testFindCallsRangeTime() {
-		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.MONTH, -4);
-		assertEquals(Calendar.getInstance().get(Calendar.MONTH), cal.get(Calendar.MONTH));
+	public void testFindCallsRangeTime() throws InstanceNotFoundException{
+		Client c1 = clientService.findClient("45777777C");
+		Calendar cal1 = Calendar.getInstance();
+		Calendar cal2 = Calendar.getInstance();
+		cal1.set(Calendar.MONTH, 3);
+		cal2.set(Calendar.MONTH, 11);
+		List<Call> calls = clientService.findCalls(c1.getClientId(), cal1, cal2);
+		assertEquals(4, calls.size());
+		
+		
 	}
 
 	@Test
-	public void testFindCallsRangeTimeType() {
-		fail("Not yet implemented");
+	public void testFindCallsRangeTimeType() throws InstanceNotFoundException, CallStateException{
+		Client c1 = clientService.findClient("45777777C");
+		Calendar cal1 = Calendar.getInstance();
+		Calendar cal2 = Calendar.getInstance();
+		cal1.set(Calendar.MONTH, 3);
+		cal2.set(Calendar.MONTH, 11);
+		List<Call> calls = clientService.findCalls(c1.getClientId(), cal1, cal2, enumType.LOCAL);
+		assertEquals(4, calls.size());
 	}
 
 	@Test
-	public void testFindCallsIndex() {
-		fail("Not yet implemented");
+	public void testFindCallsIndex() throws InstanceNotFoundException{
+		Client c1 = clientService.findClient("45777777C");
+		Calendar cal1 = Calendar.getInstance();
+		Calendar cal2 = Calendar.getInstance();
+		cal1.set(Calendar.MONTH, 3);
+		cal2.set(Calendar.MONTH, 11);
+		List<Call> calls = clientService.findCalls(c1.getClientId(), cal1, cal2, 1, 2);
+		assertEquals(2, calls.size());
 	}
 
 	@Test
-	public void testFindCallsIndexType() {
-		fail("Not yet implemented");
+	public void testFindCallsIndexType() throws InstanceNotFoundException, CallStateException{
+		Client c1 = clientService.findClient("45777777C");
+		Calendar cal1 = Calendar.getInstance();
+		Calendar cal2 = Calendar.getInstance();
+		cal1.set(Calendar.MONTH, 3);
+		cal2.set(Calendar.MONTH, 11);
+		List<Call> calls = clientService.findCalls(c1.getClientId(), cal1, cal2, enumType.LOCAL, 1, 2);
+		assertEquals(2, calls.size());
 	}
 
 }
