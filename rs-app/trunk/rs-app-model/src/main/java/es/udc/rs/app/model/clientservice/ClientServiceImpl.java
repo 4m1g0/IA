@@ -1,8 +1,11 @@
 package es.udc.rs.app.model.clientservice;
 
 import java.util.ArrayList;
+
+// TODO: excepciones permanentes: inputvalidation y error de cliente ya tiene llamadas al borrarlo!
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -19,6 +22,9 @@ import es.udc.ws.util.exceptions.InstanceNotFoundException;
 public class ClientServiceImpl implements ClientService {
 	
 	private static Map<Long, Client> clients = new HashMap<Long, Client>();
+	// FIXME: juan.raposo@udc.es 3.11
+	private static LinkedHashMap<Long, Client> clients = new LinkedHashMap<Long, Client>();
+	// TODO: guardar las llamas tambien aqui como si fuese una tabla de base de datos distinta
 	
 	
 	public ClientServiceImpl() {
@@ -34,6 +40,7 @@ public class ClientServiceImpl implements ClientService {
 
 	@Override
 	public Client addClient(Client client) throws InputValidationException {
+		// TODO: Increment desde aqui, guardar los contadores en esta implementación.
 		validateClient(client);
 		if(this.clients.put(client.getClientId(), client) == null)
 			return client;
@@ -102,7 +109,7 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public void changeCallState(Long clientId, Calendar month, enumState state) throws CallStateException {
+	public void changeCallState(Long clientId, Calendar month, enumState state) throws CallStateException { // TODO: añadir año, añadir instance not found exception
 		for (Call call : clients.get(clientId).getCallList()) {
 			if(call.getState().ordinal() == state.ordinal() -1){
 				call.setState(state);
@@ -112,7 +119,7 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public List<Call> findCalls(Long clientId, Calendar month) throws InstanceNotFoundException {
+	public List<Call> findCalls(Long clientId, Calendar month) throws InstanceNotFoundException { // TODO: añadir año también y comprobar que estan en estado pendiente, si no llamar excepcion
 		List<Call> findCalls = new ArrayList<Call>();
 		for (Call call : clients.get(clientId).getCallList()) {
 			if(call.getDateCall().get(Calendar.MONTH) == month.get(Calendar.MONTH)){
@@ -166,7 +173,7 @@ public class ClientServiceImpl implements ClientService {
 
 	@Override
 	public List<Call> findCalls(Long clientId, Calendar initDate, Calendar endDate, enumType type, 
-			int index, int numRows) throws CallStateException, InstanceNotFoundException {
+			int index, int numRows) throws CallStateException, InstanceNotFoundException { //TODO: no hace falta callStateexception
 		List<Call> retorno = findCalls(clientId, initDate, endDate, type);
 		if(index+numRows > retorno.size()){
 			return retorno.subList(index, retorno.size());

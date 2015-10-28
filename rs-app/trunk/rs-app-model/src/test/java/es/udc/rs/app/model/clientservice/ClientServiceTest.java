@@ -45,6 +45,7 @@ public class ClientServiceTest {
 			callist.add(new Call(client1.getClientId(), cal, 244, enumType.LOCAL,65954912));
 			cal2.set(Calendar.MONTH, 6);
 			callist.add(new Call(client1.getClientId(), cal2, 244, enumType.LOCAL,65954912));
+			// TODO: hacer que el makecall reciba la fecha de llamada
 			client1.setCallList(callist);
 		} catch (Exception e) {
 			throw new InputValidationException("error");
