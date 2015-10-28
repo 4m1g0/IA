@@ -29,11 +29,13 @@ public class ClientServiceTest {
 		Client client1 = new Client("Paco", "45777777C", "Calle pepito 22", 678956745);
 		Client client2 = new Client("Pepe", "77775437A", "Calle pepito 23", 678922222);
 		Client client3 = new Client("Ramon", "77273477R", "Calle pepito 25",678953453);
+		Client client4 = new Client("Tito", "66673477R", "Calle pepito 29",666953453);
 		
 		try {
 			clientService.addClient(client1);
 			clientService.addClient(client2);
 			clientService.addClient(client3);
+			clientService.addClient(client4);
 			Calendar cal = Calendar.getInstance();
 			Calendar cal2 = Calendar.getInstance();
 			cal.set(Calendar.MONTH, 4);
@@ -78,6 +80,12 @@ public class ClientServiceTest {
 		} catch (InputValidationException e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	@Test(expected = InputValidationException.class)
+	public void testAddClientException() throws InputValidationException {
+		Client client = new Client("rosa", "", "Calle pepito 25",953453);
+		clientService.addClient(client);
 	}
 
 	@Test
@@ -176,8 +184,25 @@ public class ClientServiceTest {
 	}
 
 	@Test
-	public void testChangeCallState() {
-		
+	public void testChangeCallState() throws InstanceNotFoundException, CallStateException {
+		Client c = clientService.findClient("66673477R");
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.MONTH, 7);
+		List<Call> callist = new ArrayList<Call>();
+		callist.add(new Call(c.getClientId(), cal, 234, enumType.LOCAL,65943902));
+		callist.add(new Call(c.getClientId(), cal, 244, enumType.LOCAL,65954912));
+		c.setCallList(callist);
+		clientService.changeCallState(c.getClientId(), cal, enumState.BILLED);
+		List<Call> calls = clientService.findCalls(c.getClientId(), cal);
+		assertEquals(enumState.BILLED, calls.get(0).getState());
+	}
+	
+	@Test(expected = CallStateException.class)
+	public void testNotChangeState() throws CallStateException, InstanceNotFoundException {
+		Client c = clientService.findClient("66673477R");
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.MONTH, 7);
+		clientService.changeCallState(c.getClientId(), cal, enumState.PENDING);
 	}
 
 	@Test
