@@ -80,7 +80,11 @@ public class ClientServiceImpl implements ClientService {
 	
 	@Override
 	public List<Client> findClients(String keywords, int index, int numRows) {
-		return findClients(keywords).subList(index, numRows);
+		List<Client> retorno = findClients(keywords);
+		if(index+numRows > retorno.size()){
+			return retorno.subList(index, retorno.size());
+		}
+		return retorno.subList(index, index + numRows);
 	}
 
 	@Override
@@ -108,7 +112,9 @@ public class ClientServiceImpl implements ClientService {
 	public List<Call> findCalls(Long clientId, Calendar month) throws InstanceNotFoundException {
 		List<Call> findCalls = new ArrayList<Call>();
 		for (Call call : clients.get(clientId).getCallList()) {
-			if(call.getDateCall().MONTH == month.MONTH && call.getDateCall().MONTH < Calendar.MONTH){
+			if(call.getDateCall().get(Calendar.MONTH) == month.get(Calendar.MONTH) 
+					&& month.get(Calendar.MONTH) < Calendar.getInstance().get(Calendar.MONTH) ||
+					call.getDateCall().get(Calendar.YEAR) < Calendar.getInstance().get(Calendar.YEAR)){
 				findCalls.add(call);
 			}
 		}

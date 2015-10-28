@@ -2,12 +2,17 @@ package es.udc.rs.app.model.clientservice;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+import java.util.Calendar;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import es.udc.rs.app.exceptions.CallStateException;
+import es.udc.rs.app.model.call.Call;
 import es.udc.rs.app.model.client.Client;
+import es.udc.rs.app.model.util.ModelConstants.enumState;
 import es.udc.rs.app.model.util.ModelConstants.enumType;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
@@ -115,47 +120,83 @@ public class ClientServiceTest {
 	}
 
 	@Test
-	public void testFindClientsString() {
-		fail("Not yet implemented");
+	public void testFindClientsString() throws InputValidationException, InstanceNotFoundException {
+		Client c1 = new Client("carlos", "12121212E", "calle x", 565434567);
+		Client c2 = new Client("carla", "12121212E", "calle x", 565434567);
+		try {
+			
+			clientService.addClient(c1);
+			clientService.addClient(c2);
+			assertEquals(clientService.findClients("car").size(), 2);	
+		} finally{
+			clientService.removeClient(c1.getClientId());
+			clientService.removeClient(c2.getClientId());
+		}
+		
 	}
 
 	@Test
-	public void testFindClientsStringInt() {
-		fail("Not yet implemented");
+	public void testFindClientsStringRange() throws InputValidationException, InstanceNotFoundException {
+		Client c1 = new Client("carlos", "12121212E", "calle x", 565434567);
+		Client c2 = new Client("carla", "12121212E", "calle x", 565434567);
+		try {
+			
+			clientService.addClient(c1);
+			clientService.addClient(c2);
+			assertEquals(clientService.findClients("car", 1, 4).size(), 1);
+			assertEquals(clientService.findClients("car", 0, 1).size(), 1);	
+		} finally{
+			clientService.removeClient(c1.getClientId());
+			clientService.removeClient(c2.getClientId());
+		}
 	}
 
 	@Test
-	public void testMakeCall() {
-		fail("Not yet implemented");
+	public void testMakeCall() throws InstanceNotFoundException, InputValidationException {
+		
+		try {
+			Client c1 = clientService.findClient("45777777C");
+			clientService.makeCall(c1.getClientId(), 234, enumType.LOCAL,65943902);
+			
+		} finally {
+			
+		}
+		
 	}
 
 	@Test
 	public void testChangeCallState() {
+		
+	}
+
+	@Test
+	public void testFindCalls() throws InstanceNotFoundException, CallStateException {
+		Client c1 = clientService.findClient("45777777C");
+		Calendar cal = Calendar.getInstance();
+		List<Call> calls = clientService.findCalls(c1.getClientId(),cal);
+		assertEquals(calls.size(), 3);
+		
+	}
+
+	@Test
+	public void testFindCallsRangeTime() {
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MONTH, -4);
+		assertEquals(Calendar.getInstance().get(Calendar.MONTH), cal.get(Calendar.MONTH));
+	}
+
+	@Test
+	public void testFindCallsRangeTimeType() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	public void testFindCallsLongCalendar() {
+	public void testFindCallsIndex() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	public void testFindCallsLongCalendarCalendar() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testFindCallsLongCalendarCalendarEnumType() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testFindCallsLongCalendarCalendarIntInt() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testFindCallsLongCalendarCalendarEnumTypeIntInt() {
+	public void testFindCallsIndexType() {
 		fail("Not yet implemented");
 	}
 
