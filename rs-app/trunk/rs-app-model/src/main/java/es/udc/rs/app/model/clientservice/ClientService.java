@@ -32,7 +32,7 @@ public interface ClientService {
     public void makeCall(Long clientId, Calendar date, Integer duration, ModelConstants.enumType type, Integer destPhone) 
     		throws InstanceNotFoundException, InputValidationException;
     
-    public void changeCallState(Long clientId, Calendar month ,ModelConstants.enumState state) throws CallStateException;
+    public void changeCallState(Long clientId, Calendar date ,ModelConstants.enumState state) throws CallStateException, InstanceNotFoundException;
     
     public List<Call> findCalls(Long clientId, Calendar month) 
     		throws CallStateException, InstanceNotFoundException;

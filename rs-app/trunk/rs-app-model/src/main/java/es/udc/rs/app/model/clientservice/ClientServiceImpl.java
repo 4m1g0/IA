@@ -131,7 +131,7 @@ public class ClientServiceImpl implements ClientService {
 
 	@Override
 	public void makeCall(Long clientId, Calendar date, Integer duration, enumType type, Integer destPhone) 
-			throws InstanceNotFoundException, InputValidationException { // FIXME: esto nunca lanza inputvalidation!!
+			throws InstanceNotFoundException, InputValidationException { // FIXME: esto nunca lanza inputvalidation y deberia¿?!!
 		Client c = clients.get(clientId);
 		
 		if(c == null){
@@ -144,17 +144,22 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public void changeCallState(Long clientId, Calendar month, enumState state) throws CallStateException { // TODO: añadir año, añadir instance not found exception
+	public void changeCallState(Long clientId, Calendar date, enumState state) throws CallStateException, InstanceNotFoundException {
+		boolean found = false;
 		for (Call call : calls.values()) {
-			if (!call.getClientId().equals(clientId)) {
+			if (!call.getClientId().equals(clientId) || call.getDateCall().YEAR != date.YEAR || call.getDateCall().MONTH != date.MONTH) {
 				continue;
 			}
 			
+			found = true;
 			if(call.getState().ordinal() == state.ordinal() -1) {
 				call.setState(state);
 			}
 			else throw new CallStateException(clientId, call.getCallId());
 		}
+		
+		if (!found) // TODO: o deberia lanzarlo solo si no existe el cliente??
+			throw new InstanceNotFoundException(clientId, clientId.toString());
 	}
 
 	@Override
