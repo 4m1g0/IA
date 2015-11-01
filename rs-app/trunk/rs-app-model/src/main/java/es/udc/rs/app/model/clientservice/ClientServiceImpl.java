@@ -5,6 +5,7 @@ import java.util.ArrayList;
 // TODO: excepciones permanentes: inputvalidation y error de cliente ya tiene llamadas al borrarlo!
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import es.udc.rs.app.exceptions.CallStateException;
+import es.udc.rs.app.exceptions.RemoveClientException;
 import es.udc.rs.app.model.call.Call;
 import es.udc.rs.app.model.client.Client;
 import es.udc.rs.app.model.util.ModelConstants.enumState;
@@ -21,38 +23,68 @@ import es.udc.ws.util.exceptions.InstanceNotFoundException;
 
 public class ClientServiceImpl implements ClientService {
 	
-	private static Map<Long, Client> clients = new HashMap<Long, Client>();
-	// FIXME: juan.raposo@udc.es 3.11
-	private static LinkedHashMap<Long, Client> clients = new LinkedHashMap<Long, Client>();
-	// TODO: guardar las llamas tambien aqui como si fuese una tabla de base de datos distinta
+	private long countClient = 0;
+	private long countCall = 0;
+	
+	private LinkedHashMap<Long, Client> clients = new LinkedHashMap<Long, Client>();
+	private LinkedHashMap<Long, Call> calls = new LinkedHashMap<Long, Call>();
 	
 	
 	public ClientServiceImpl() {
 		
 	}
+	
+	public synchronized long incrementClient(){
+		return countClient++;	
+	}
+	
+	public synchronized long incrementCall(){
+		return countCall++;	
+	}
+	
 	private void validateClient(Client client) throws InputValidationException {
 		if(client.getDNI().length() != 9 && (client.getPhone().toString().length() != 9)){
 			throw new InputValidationException(client.getDNI());
 		}
-
-		
 	}
 
 	@Override
 	public Client addClient(Client client) throws InputValidationException {
-		// TODO: Increment desde aqui, guardar los contadores en esta implementación.
 		validateClient(client);
-		if(this.clients.put(client.getClientId(), client) == null)
+		client.setClientId(incrementClient());
+		
+		if(clients.put(client.getClientId(), client) == null)
 			return client;
+		
 		return null;
+	}
+	
+	// only for tests
+	public void removeCallsFromClient(Long clientId) {
+		Iterator<Map.Entry<Long, Call>> it = calls.entrySet().iterator();
+		while (it.hasNext()){
+			Map.Entry<Long, Call> entry = it.next();
+			if (entry.getKey().equals(clientId)){
+				// Use iterator to remove instead of map, in order not to alter the loop sequence
+				it.remove();
+			}
+		}
+	}
+	
+	// only for tests
+	public void removeCall(Long callId){
+		calls.remove(callId);
 	}
 
 	@Override
-	public void removeClient(Long clientId) throws InstanceNotFoundException, CallStateException {
-		if (clients.get(clientId).getCallList().isEmpty())
-			clients.remove(clientId);
-		else
-			throw new CallStateException(clientId, clients.get(clientId).getCallList().get(0).getCallId());
+	public void removeClient(Long clientId) throws InstanceNotFoundException, RemoveClientException {
+		for (Call call : calls.values()){
+			if (call.getClientId().equals(clientId)){
+				throw new RemoveClientException(clientId);
+			}
+		}
+		
+		clients.remove(clientId);
 	}
 
 	@Override
@@ -98,20 +130,27 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public void makeCall(Long clientId, Integer duration, enumType type, Integer destPhone) 
-			throws InstanceNotFoundException, InputValidationException {
+	public void makeCall(Long clientId, Calendar date, Integer duration, enumType type, Integer destPhone) 
+			throws InstanceNotFoundException, InputValidationException { // FIXME: esto nunca lanza inputvalidation!!
 		Client c = clients.get(clientId);
+		
 		if(c == null){
 			throw new InstanceNotFoundException(clientId, clientId.toString());
 		}
-		c.addCall(new Call(clientId, Calendar.getInstance(), duration, type, destPhone));
 		
+		Call call = new Call(clientId, date, duration, type, destPhone);
+		call.setCallId(incrementCall());
+		calls.put(call.getCallId(), call);
 	}
 
 	@Override
 	public void changeCallState(Long clientId, Calendar month, enumState state) throws CallStateException { // TODO: añadir año, añadir instance not found exception
-		for (Call call : clients.get(clientId).getCallList()) {
-			if(call.getState().ordinal() == state.ordinal() -1){
+		for (Call call : calls.values()) {
+			if (!call.getClientId().equals(clientId)) {
+				continue;
+			}
+			
+			if(call.getState().ordinal() == state.ordinal() -1) {
 				call.setState(state);
 			}
 			else throw new CallStateException(clientId, call.getCallId());
@@ -121,7 +160,11 @@ public class ClientServiceImpl implements ClientService {
 	@Override
 	public List<Call> findCalls(Long clientId, Calendar month) throws InstanceNotFoundException { // TODO: añadir año también y comprobar que estan en estado pendiente, si no llamar excepcion
 		List<Call> findCalls = new ArrayList<Call>();
-		for (Call call : clients.get(clientId).getCallList()) {
+		for (Call call : calls.values()) {
+			if (!call.getClientId().equals(clientId)) {
+				continue;
+			}
+			
 			if(call.getDateCall().get(Calendar.MONTH) == month.get(Calendar.MONTH)){
 				findCalls.add(call);
 			}
@@ -134,7 +177,11 @@ public class ClientServiceImpl implements ClientService {
 	public List<Call> findCalls(Long clientId, Calendar initDate,
 			Calendar endDate) throws InstanceNotFoundException {
 		List<Call> findCalls = new ArrayList<Call>();
-		for (Call call : clients.get(clientId).getCallList()) {
+		for (Call call : calls.values()) {
+			if (!call.getClientId().equals(clientId)) {
+				continue;
+			}
+			
 			if(call.getDateCall().get(Calendar.MONTH) > initDate.get(Calendar.MONTH)){
 				if(call.getDateCall().get(Calendar.MONTH) < endDate.get(Calendar.MONTH)){
 					findCalls.add(call);	
@@ -149,7 +196,11 @@ public class ClientServiceImpl implements ClientService {
 			Calendar endDate, enumType type) throws CallStateException,
 			InstanceNotFoundException {
 		List<Call> findCalls = new ArrayList<Call>();
-		for (Call call : clients.get(clientId).getCallList()) {
+		for (Call call : calls.values()) {
+			if (!call.getClientId().equals(clientId)) {
+				continue;
+			}
+			
 			if(call.getDateCall().get(Calendar.MONTH) > initDate.get(Calendar.MONTH)){
 				if(call.getDateCall().get(Calendar.MONTH) < endDate.get(Calendar.MONTH)){
 					if(type == call.getType())
@@ -180,7 +231,4 @@ public class ClientServiceImpl implements ClientService {
 		}
 		return retorno.subList(index, index + numRows);
 	}
-
-
-
 }

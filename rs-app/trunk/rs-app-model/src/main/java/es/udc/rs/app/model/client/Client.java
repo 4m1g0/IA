@@ -1,10 +1,6 @@
 package es.udc.rs.app.model.client;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
-
-import es.udc.rs.app.model.call.Call;
 
 public class Client {
 
@@ -14,8 +10,6 @@ public class Client {
 	private String address;
 	private Integer phone;
 	private Calendar creationDate;
-	private List<Call> callList;
-	private static long countClient = 0;
 
 	public Client(String name, String DNI, String address, Integer phone) {
 		this.name = name;
@@ -23,25 +17,6 @@ public class Client {
 		this.address = address;
 		this.phone = phone;
 		this.creationDate= Calendar.getInstance();
-		this.clientId = countClient;
-		this.callList = new ArrayList<Call>();
-		this.increment();
-	}
-	
-	public synchronized void increment(){
-		countClient++;	
-	}
-
-	public List<Call> getCallList() {
-		return callList;
-	}
-
-	public void setCallList(List<Call> callList) {
-		this.callList = callList;
-	}
-	
-	public void addCall(Call call){
-		this.callList.add(call);
 	}
 
 	public String getName() {
@@ -82,12 +57,14 @@ public class Client {
 	public long getClientId() {
 		return clientId;
 	}
+	
+	public void setClientId(Long clientId) {
+		this.clientId = clientId;
+	}
 
 	public Integer getPhone() {
 		return phone;
 	}
-
-
 
 	@Override
 	public int hashCode() {
@@ -96,13 +73,11 @@ public class Client {
 		result = prime * result + ((DNI == null) ? 0 : DNI.hashCode());
 		result = prime * result + ((address == null) ? 0 : address.hashCode());
 		result = prime * result
-				+ ((callList == null) ? 0 : callList.hashCode());
-		result = prime * result
 				+ ((clientId == null) ? 0 : clientId.hashCode());
 		result = prime * result
 				+ ((creationDate == null) ? 0 : creationDate.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + phone;
+		result = prime * result + ((phone == null) ? 0 : phone.hashCode());
 		return result;
 	}
 
@@ -125,11 +100,6 @@ public class Client {
 				return false;
 		} else if (!address.equals(other.address))
 			return false;
-		if (callList == null) {
-			if (other.callList != null)
-				return false;
-		} else if (!callList.equals(other.callList))
-			return false;
 		if (clientId == null) {
 			if (other.clientId != null)
 				return false;
@@ -145,9 +115,11 @@ public class Client {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
-		if (phone != other.phone)
+		if (phone == null) {
+			if (other.phone != null)
+				return false;
+		} else if (!phone.equals(other.phone))
 			return false;
 		return true;
 	}
-
 }

@@ -5,9 +5,11 @@ import java.util.Calendar;
 import java.util.List;
 
 import es.udc.rs.app.exceptions.CallStateException;
+import es.udc.rs.app.exceptions.RemoveClientException;
 import es.udc.rs.app.model.call.Call;
 import es.udc.rs.app.model.client.Client;
 import es.udc.rs.app.model.util.ModelConstants;
+import es.udc.rs.app.model.util.ModelConstants.enumType;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 
@@ -15,7 +17,7 @@ public interface ClientService {
 
     public Client addClient(Client client) throws InputValidationException;
 
-    public void removeClient(Long clientId) throws InstanceNotFoundException, CallStateException;
+    public void removeClient(Long clientId) throws InstanceNotFoundException, RemoveClientException;
 
     public void updateClient(Client client) throws InputValidationException, InstanceNotFoundException;
 
@@ -27,7 +29,7 @@ public interface ClientService {
     
     public List<Client> findClients(String keywords, int index, int numRows);
     
-    public void makeCall(Long clientId, Integer duration, ModelConstants.enumType type, Integer destPhone) 
+    public void makeCall(Long clientId, Calendar date, Integer duration, ModelConstants.enumType type, Integer destPhone) 
     		throws InstanceNotFoundException, InputValidationException;
     
     public void changeCallState(Long clientId, Calendar month ,ModelConstants.enumState state) throws CallStateException;
