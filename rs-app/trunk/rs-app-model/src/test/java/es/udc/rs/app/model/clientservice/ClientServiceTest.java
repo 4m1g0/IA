@@ -11,6 +11,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import es.udc.rs.app.exceptions.CallStateException;
+import es.udc.rs.app.exceptions.RemoveClientException;
 import es.udc.rs.app.model.call.Call;
 import es.udc.rs.app.model.client.Client;
 import es.udc.rs.app.model.util.ModelConstants.enumState;
@@ -40,13 +41,11 @@ public class ClientServiceTest {
 			Calendar cal2 = Calendar.getInstance();
 			cal.set(Calendar.MONTH, 4);
 			List<Call> callist = new ArrayList<Call>();
-			callist.add(new Call(client1.getClientId(), cal, 234, enumType.LOCAL,65943902));
-			callist.add(new Call(client1.getClientId(), cal, 244, enumType.LOCAL,65954912));
-			callist.add(new Call(client1.getClientId(), cal, 244, enumType.LOCAL,65954912));
+			clientService.makeCall(client1.getClientId(), cal, 234, enumType.LOCAL,65943902);
+			clientService.makeCall(client1.getClientId(), cal, 244, enumType.LOCAL,65954912);
+			clientService.makeCall(client1.getClientId(), cal, 244, enumType.LOCAL,65954912);
 			cal2.set(Calendar.MONTH, 6);
-			callist.add(new Call(client1.getClientId(), cal2, 244, enumType.LOCAL,65954912));
-			// TODO: hacer que el makecall reciba la fecha de llamada
-			client1.setCallList(callist);
+			clientService.makeCall(client1.getClientId(), cal2, 244, enumType.LOCAL,65954912);
 		} catch (Exception e) {
 			throw new InputValidationException("error");
 			
@@ -90,7 +89,7 @@ public class ClientServiceTest {
 	}
 
 	@Test
-	public void testRemoveClient() throws InputValidationException, CallStateException{
+	public void testRemoveClient() throws InputValidationException, RemoveClientException{
 		Client client = new Client("alberto", "12345678B", "asdfff", 654321233);
 		try {
 			clientService.addClient(client);
@@ -119,7 +118,7 @@ public class ClientServiceTest {
 	}
 
 	@Test
-	public void testFindClientId() throws InputValidationException, InstanceNotFoundException, CallStateException{
+	public void testFindClientId() throws InputValidationException, InstanceNotFoundException, RemoveClientException{
 		Client client = new Client("proba1", "67654312E", "calle 21", 654321234);
 		try{
 			clientService.addClient(client);
@@ -139,7 +138,7 @@ public class ClientServiceTest {
 	}
 
 	@Test
-	public void testFindClientsString() throws InputValidationException, InstanceNotFoundException, CallStateException {
+	public void testFindClientsString() throws InputValidationException, InstanceNotFoundException, RemoveClientException {
 		Client c1 = new Client("carlos", "12121212E", "calle x", 565434567);
 		Client c2 = new Client("carla", "12121212E", "calle x", 565434567);
 		try {
@@ -155,7 +154,7 @@ public class ClientServiceTest {
 	}
 
 	@Test
-	public void testFindClientsStringRange() throws InputValidationException, InstanceNotFoundException, CallStateException {
+	public void testFindClientsStringRange() throws InputValidationException, InstanceNotFoundException, RemoveClientException {
 		Client c1 = new Client("carlos", "12121212E", "calle x", 565434567);
 		Client c2 = new Client("carla", "12121212E", "calle x", 565434567);
 		try {
@@ -172,12 +171,14 @@ public class ClientServiceTest {
 	}
 
 	@Test
-	public void testMakeCall() throws InstanceNotFoundException, InputValidationException {
+	public void testMakeCall() throws InstanceNotFoundException, InputValidationException, CallStateException {
 		
 		try {
 			Client c1 = clientService.findClient("77775437A");
-			clientService.makeCall(c1.getClientId(), 234, enumType.LOCAL,65943902);
-			assertEquals(c1.getCallList().get(0).getDestPhone(), (Integer)65943902);
+			Calendar date = Calendar.getInstance();
+			clientService.makeCall(c1.getClientId(), date, 234, enumType.LOCAL,65943902);
+			
+			assertEquals(clientService.findCalls(c1.getClientId(), date).get(0).getDestPhone(), (Integer)65943902);
 			
 		} finally {
 			
@@ -186,14 +187,13 @@ public class ClientServiceTest {
 	}
 
 	@Test
-	public void testChangeCallState() throws InstanceNotFoundException, CallStateException {
+	public void testChangeCallState() throws InstanceNotFoundException, CallStateException, InputValidationException {
 		Client c = clientService.findClient("66673477R");
 		Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.MONTH, 7);
 		List<Call> callist = new ArrayList<Call>();
-		callist.add(new Call(c.getClientId(), cal, 234, enumType.LOCAL,65943902));
-		callist.add(new Call(c.getClientId(), cal, 244, enumType.LOCAL,65954912));
-		c.setCallList(callist);
+		clientService.makeCall(c.getClientId(), cal, 234, enumType.LOCAL,65943902);
+		clientService.makeCall(c.getClientId(), cal, 244, enumType.LOCAL,65954912);
 		clientService.changeCallState(c.getClientId(), cal, enumState.BILLED);
 		List<Call> calls = clientService.findCalls(c.getClientId(), cal);
 		assertEquals(enumState.BILLED, calls.get(0).getState());
@@ -266,8 +266,8 @@ public class ClientServiceTest {
 		assertEquals(2, calls.size());
 	}
 	
-	@Test(expected = CallStateException.class)
-	public void testRemoveClientWithCalls() throws InstanceNotFoundException, CallStateException{
+	@Test(expected = RemoveClientException.class)
+	public void testRemoveClientWithCalls() throws InstanceNotFoundException, RemoveClientException{
 		Client c1 = clientService.findClient("45777777C");
 		clientService.removeClient(c1.getClientId());
 	}
