@@ -42,10 +42,12 @@ public class ClientServiceImpl implements ClientService {
 		return countCall++;	
 	}
 	
-	private void validateClient(Client client) throws InputValidationException {
+	private Client validateClient(Client client) throws InputValidationException {
 		if(client.getDNI().length() != 9 && (client.getPhone().toString().length() != 9)){
 			throw new InputValidationException(client.getDNI());
 		}
+		
+		return client;
 	}
 
 	@Override
@@ -89,7 +91,7 @@ public class ClientServiceImpl implements ClientService {
 
 	@Override
 	public void updateClient(Client client) throws InputValidationException, InstanceNotFoundException{
-		if (clients.replace(client.getClientId(), client) == null){
+		if (clients.replace(client.getClientId(), validateClient(client)) == null){
 			throw new InstanceNotFoundException(client, client.toString());
 		}
 	}
