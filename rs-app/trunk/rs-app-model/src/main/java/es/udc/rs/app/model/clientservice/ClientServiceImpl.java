@@ -110,31 +110,24 @@ public class ClientServiceImpl implements ClientService {
 		
 		throw new InstanceNotFoundException(null,DNI);
 	}
-
-
+	
 	@Override
-	public List<Client> findClients(String keywords) {
+	public List<Client> findClients(String keywords, int index, int numRows) {
 		List<Client> findClients = new ArrayList<Client>();
+		int i = 0;
 		for (Client client : clients.values()) {
-			if(client.getName().contains(keywords)){
+			if(client.getName().contains(keywords) && i++ >= index){
 				findClients.add(client);
+				if (findClients.size() >= numRows)
+					break;
 			}
 		}
 		return findClients;
 	}
-	
-	@Override
-	public List<Client> findClients(String keywords, int index, int numRows) {
-		List<Client> retorno = findClients(keywords);
-		if(index+numRows > retorno.size()){
-			return retorno.subList(index, retorno.size());
-		}
-		return retorno.subList(index, index + numRows);
-	}
 
 	@Override
 	public void makeCall(Long clientId, Calendar date, Integer duration, enumType type, Integer destPhone) 
-			throws InstanceNotFoundException, InputValidationException { // FIXME: esto nunca lanza inputvalidation y deberia¿?!!
+			throws InstanceNotFoundException, InputValidationException { // FIXME: esto nunca lanza inputvalidation y deberia¿?!! SI, comprobar las fechas por ejemplo
 		Client c = clients.get(clientId);
 		
 		if(c == null){
@@ -148,33 +141,42 @@ public class ClientServiceImpl implements ClientService {
 
 	@Override
 	public void changeCallState(Long clientId, Calendar date, enumState state) throws CallStateException, InstanceNotFoundException {
-		boolean found = false;
+		findClient(clientId); // throws exception if client doesn't exist
+		Calendar today = Calendar.getInstance();
+		today.set(Calendar.DAY_OF_MONTH, 0);
+		if (date.after(today)) {
+			throw new // QUe excepción lanzamos aqui?? UNA EXCEPCION NUEVA! 
+		}
 		for (Call call : calls.values()) {
 			if (!call.getClientId().equals(clientId) || call.getDateCall().YEAR != date.YEAR || call.getDateCall().MONTH != date.MONTH) {
 				continue;
 			}
 			
-			found = true;
 			if(call.getState().ordinal() == state.ordinal() -1) {
 				call.setState(state);
 			}
-			else throw new CallStateException(clientId, call.getCallId());
+			else 
+				throw new CallStateException(clientId, call.getCallId());
 		}
-		
-		if (!found) // TODO: o deberia lanzarlo solo si no existe el cliente??
-			throw new InstanceNotFoundException(clientId, clientId.toString());
 	}
 
 	@Override
-	public List<Call> findCalls(Long clientId, Calendar month) throws InstanceNotFoundException { // TODO: añadir año también y comprobar que estan en estado pendiente, si no llamar excepcion
+	public List<Call> findCalls(Long clientId, Calendar date, int index, int numRows) throws InstanceNotFoundException, CallStateException {
+		findClient(clientId); // throws exception if client doesn't exist
 		List<Call> findCalls = new ArrayList<Call>();
+		
+		int i = 0;
 		for (Call call : calls.values()) {
 			if (!call.getClientId().equals(clientId)) {
 				continue;
 			}
 			
-			if(call.getDateCall().get(Calendar.MONTH) == month.get(Calendar.MONTH)){
+			if(call.getDateCall().MONTH == date.MONTH && call.getDateCall().YEAR == date.YEAR && i++ >= index){
+				if (call.getState() != enumState.PENDING)
+					throw new CallStateException(clientId, call.getCallId());
 				findCalls.add(call);
+				if (findCalls.size() >= numRows)
+					break;
 			}
 		}
 		
@@ -182,61 +184,23 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public List<Call> findCalls(Long clientId, Calendar initDate,
-			Calendar endDate) throws InstanceNotFoundException {
+	public List<Call> findCalls(Long clientId, Calendar initDate, Calendar endDate, int index, int numRows) throws InstanceNotFoundException {
+		return findCalls(clientId, initDate, endDate, index, numRows, null);
+	}
+
+	@Override
+	public List<Call> findCalls(Long clientId, Calendar initDate, Calendar endDate, int index, int numRows, enumType type) throws InstanceNotFoundException { //TODO: no hace falta callStateexception
 		List<Call> findCalls = new ArrayList<Call>();
+		
+		int i = 0;
 		for (Call call : calls.values()) {
-			if (!call.getClientId().equals(clientId)) {
-				continue;
-			}
-			
-			if(call.getDateCall().get(Calendar.MONTH) > initDate.get(Calendar.MONTH)){
-				if(call.getDateCall().get(Calendar.MONTH) < endDate.get(Calendar.MONTH)){
-					findCalls.add(call);	
-				}
+			if (call.getDateCall().after(initDate) && call.getDateCall().before(endDate) && i++ >= index && (type == null || call.getType() == type)) {
+				findCalls.add(call);
+				if (findCalls.size() >= numRows)
+					break;
 			}
 		}
+		
 		return findCalls;
-	}
-
-	@Override
-	public List<Call> findCalls(Long clientId, Calendar initDate,
-			Calendar endDate, enumType type) throws CallStateException,
-			InstanceNotFoundException {
-		List<Call> findCalls = new ArrayList<Call>();
-		for (Call call : calls.values()) {
-			if (!call.getClientId().equals(clientId)) {
-				continue;
-			}
-			
-			if(call.getDateCall().get(Calendar.MONTH) > initDate.get(Calendar.MONTH)){
-				if(call.getDateCall().get(Calendar.MONTH) < endDate.get(Calendar.MONTH)){
-					if(type == call.getType())
-						findCalls.add(call);	
-				}
-			}
-		}
-		return findCalls;
-	}
-
-	@Override
-	public List<Call> findCalls(Long clientId, Calendar initDate,
-			Calendar endDate, int index, int numRows)
-			throws InstanceNotFoundException {
-		List<Call> retorno = findCalls(clientId, initDate, endDate);
-		if(index+numRows > retorno.size()){
-			return retorno.subList(index, retorno.size());
-		}
-		return retorno.subList(index, index + numRows);
-	}
-
-	@Override
-	public List<Call> findCalls(Long clientId, Calendar initDate, Calendar endDate, enumType type, 
-			int index, int numRows) throws CallStateException, InstanceNotFoundException { //TODO: no hace falta callStateexception
-		List<Call> retorno = findCalls(clientId, initDate, endDate, type);
-		if(index+numRows > retorno.size()){
-			return retorno.subList(index, retorno.size());
-		}
-		return retorno.subList(index, index + numRows);
 	}
 }
