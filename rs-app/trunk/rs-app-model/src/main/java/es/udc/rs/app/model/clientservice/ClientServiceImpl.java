@@ -103,10 +103,11 @@ public class ClientServiceImpl implements ClientService {
 
 	@Override
 	public Client findClient(String DNI) throws InstanceNotFoundException {
-		for (Entry<Long, Client> client : clients.entrySet()) {
-			if(client.getValue().getDNI().contentEquals(DNI))
-				return client.getValue();
+		for (Client client : clients.values()) {
+			if(client.getDNI().contentEquals(DNI))
+				return client;
 		}
+		
 		throw new InstanceNotFoundException(null,DNI);
 	}
 
@@ -114,9 +115,9 @@ public class ClientServiceImpl implements ClientService {
 	@Override
 	public List<Client> findClients(String keywords) {
 		List<Client> findClients = new ArrayList<Client>();
-		for (Entry<Long, Client> client : clients.entrySet()) {
-			if(client.getValue().getName().contains(keywords)){
-				findClients.add(client.getValue());
+		for (Client client : clients.values()) {
+			if(client.getName().contains(keywords)){
+				findClients.add(client);
 			}
 		}
 		return findClients;
