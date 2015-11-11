@@ -32,10 +32,4 @@ public class CallStateException extends Exception{
 	public void setCallId(Long callId) {
 		this.callId = callId;
 	}
-	
-	
-	
-	
-	
-
 }

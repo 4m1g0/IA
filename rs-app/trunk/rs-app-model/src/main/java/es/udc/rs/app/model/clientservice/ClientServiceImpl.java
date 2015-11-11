@@ -13,6 +13,7 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import es.udc.rs.app.exceptions.CallStateException;
+import es.udc.rs.app.exceptions.MonthExpirationException;
 import es.udc.rs.app.exceptions.RemoveClientException;
 import es.udc.rs.app.model.call.Call;
 import es.udc.rs.app.model.client.Client;
@@ -140,12 +141,12 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public void changeCallState(Long clientId, Calendar date, enumState state) throws CallStateException, InstanceNotFoundException {
+	public void changeCallState(Long clientId, Calendar date, enumState state) throws CallStateException, InstanceNotFoundException, MonthExpirationException {
 		findClient(clientId); // throws exception if client doesn't exist
 		Calendar today = Calendar.getInstance();
 		today.set(Calendar.DAY_OF_MONTH, 0);
 		if (date.after(today)) {
-			throw new // QUe excepción lanzamos aqui?? UNA EXCEPCION NUEVA! 
+			throw new MonthExpirationException(date);
 		}
 		for (Call call : calls.values()) {
 			if (!call.getClientId().equals(clientId) || call.getDateCall().YEAR != date.YEAR || call.getDateCall().MONTH != date.MONTH) {
