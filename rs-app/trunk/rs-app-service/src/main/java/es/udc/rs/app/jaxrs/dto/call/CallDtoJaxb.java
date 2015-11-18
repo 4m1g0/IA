@@ -6,7 +6,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import es.udc.rs.app.model.util.ModelConstants;
+import es.udc.rs.app.constants.ModelConstants.enumState;
+import es.udc.rs.app.constants.ModelConstants.enumType;
 
 @XmlRootElement(name="call")
 @XmlType(name="callType", propOrder = {"id", "clientId", "dateCall", 
@@ -25,16 +26,16 @@ public class CallDtoJaxb {
     @XmlElement(required = true)
     private String destPhone;
     @XmlElement(required = true)
-    private ModelConstants.enumState state;
+    private enumState state;
     @XmlElement(required = true)
-    private ModelConstants.enumType type;
+    private enumType type;
     
     public CallDtoJaxb(){
     	
     }
     
 	public CallDtoJaxb(Long id, Long clientId, Calendar dateCall,
-			Integer duration, String destPhone, ModelConstants.enumState state, ModelConstants.enumType type) {
+			Integer duration, String destPhone, enumState state, enumType type) {
 		this.id = id;
 		this.clientId = clientId;
 		this.dateCall = new DateDtoJaxb(dateCall);
@@ -85,19 +86,19 @@ public class CallDtoJaxb {
 		this.destPhone = destPhone;
 	}
 	
-	public ModelConstants.enumState getState() {
+	public enumState getState() {
 		return state;
 	}
 
-	public void setState(ModelConstants.enumState state) {
+	public void setState(enumState state) {
 		this.state = state;
 	}
 
-	public ModelConstants.enumType getType() {
+	public enumType getType() {
 		return type;
 	}
 
-	public void setType(ModelConstants.enumType type) {
+	public void setType(enumType type) {
 		this.type = type;
 	}
 
