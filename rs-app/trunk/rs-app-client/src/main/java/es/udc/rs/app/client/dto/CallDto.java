@@ -5,7 +5,7 @@ import java.util.Calendar;
 import es.udc.rs.app.constants.ModelConstants.enumState;
 import es.udc.rs.app.constants.ModelConstants.enumType;
 
-public class Call {
+public class CallDto {
 	private Long callId;
 	private Long clientId;
 	private Calendar dateCall;

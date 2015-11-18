@@ -2,7 +2,7 @@ package es.udc.rs.app.client.dto;
 
 import java.util.Calendar;
 
-public class Client {
+public class ClientDto {
 	private Long clientId;
 	private String name;
 	private String DNI;
@@ -11,7 +11,7 @@ public class Client {
 	private Calendar creationDate;
 	
 	
-	public Client(Long clientId, String name, String dNI, String address,
+	public ClientDto(Long clientId, String name, String dNI, String address,
 			String phone, Calendar creationDate) {
 		super();
 		this.clientId = clientId;
