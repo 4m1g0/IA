@@ -8,10 +8,10 @@ public class Client {
 	private String name;
 	private String DNI;
 	private String address;
-	private Integer phone;
+	private String phone;
 	private Calendar creationDate;
 
-	public Client(String name, String DNI, String address, Integer phone) {
+	public Client(String name, String DNI, String address, String phone) {
 		this.name = name;
 		this.DNI = DNI;
 		this.address = address;
@@ -62,7 +62,7 @@ public class Client {
 		this.clientId = clientId;
 	}
 
-	public Integer getPhone() {
+	public String getPhone() {
 		return phone;
 	}
 

@@ -28,10 +28,10 @@ public class ClientServiceTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		clientService = ClientServiceFactory.getService();
-		Client client1 = new Client("Paco", "45777777C", "Calle pepito 22", 678956745);
-		Client client2 = new Client("Pepe", "77775437A", "Calle pepito 23", 678922222);
-		Client client3 = new Client("Ramon", "77273477R", "Calle pepito 25",678953453);
-		Client client4 = new Client("Tito", "66673477R", "Calle pepito 29",666953453);
+		Client client1 = new Client("Paco", "45777777C", "Calle pepito 22", "678956745");
+		Client client2 = new Client("Pepe", "77775437A", "Calle pepito 23", "678922222");
+		Client client3 = new Client("Ramon", "77273477R", "Calle pepito 25","678953453");
+		Client client4 = new Client("Tito", "66673477R", "Calle pepito 29", "666953453");
 		
 		try {
 			clientService.addClient(client1);
@@ -42,11 +42,11 @@ public class ClientServiceTest {
 			Calendar cal2 = Calendar.getInstance();
 			cal.set(Calendar.MONTH, 4);
 			List<Call> callist = new ArrayList<Call>();
-			clientService.makeCall(client1.getClientId(), cal, 234, enumType.LOCAL,65943902);
-			clientService.makeCall(client1.getClientId(), cal, 244, enumType.LOCAL,65954912);
-			clientService.makeCall(client1.getClientId(), cal, 244, enumType.LOCAL,65954912);
+			clientService.makeCall(client1.getClientId(), cal, 234, enumType.LOCAL,"65943902");
+			clientService.makeCall(client1.getClientId(), cal, 244, enumType.LOCAL,"65954912");
+			clientService.makeCall(client1.getClientId(), cal, 244, enumType.LOCAL,"65954912");
 			cal2.set(Calendar.MONTH, 6);
-			clientService.makeCall(client1.getClientId(), cal2, 244, enumType.LOCAL,65954912);
+			clientService.makeCall(client1.getClientId(), cal2, 244, enumType.LOCAL,"65954912");
 		} catch (Exception e) {
 			throw new InputValidationException("error");
 			
@@ -63,7 +63,7 @@ public class ClientServiceTest {
 	
 	private Client getValidClient(String name)
 	{
-		return new Client(name, "45777777C", "Calle pepito 22", 678956745);
+		return new Client(name, "45777777C", "Calle pepito 22", "678956745");
 	}
 	
 	private Client getValidClient()
@@ -73,7 +73,7 @@ public class ClientServiceTest {
 
 	@Test
 	public void testAddClient() {
-		Client client = new Client("rosa", "72734577R", "Calle pepito 25",678953453);
+		Client client = new Client("rosa", "72734577R", "Calle pepito 25","678953453");
 		Client addedClient;
 		try {
 			addedClient = clientService.addClient(client);
@@ -85,13 +85,13 @@ public class ClientServiceTest {
 	
 	@Test(expected = InputValidationException.class)
 	public void testAddClientException() throws InputValidationException {
-		Client client = new Client("rosa", "", "Calle pepito 25",953453);
+		Client client = new Client("rosa", "", "Calle pepito 25","953453");
 		clientService.addClient(client);
 	}
 
 	@Test
 	public void testRemoveClient() throws InputValidationException, RemoveClientException{
-		Client client = new Client("alberto", "12345678B", "asdfff", 654321233);
+		Client client = new Client("alberto", "12345678B", "asdfff", "654321233");
 		try {
 			clientService.addClient(client);
 			clientService.removeClient(client.getClientId());
@@ -104,7 +104,7 @@ public class ClientServiceTest {
 	public void testUpdateClient() throws InputValidationException,
 	InstanceNotFoundException{
 		
-		Client client = new Client("alberto", "12345678W", "asdfff", 654321265);
+		Client client = new Client("alberto", "12345678W", "asdfff", "654321265");
 		try {
 			clientService.addClient(client);
 			client.setDNI("87654321A");
@@ -120,7 +120,7 @@ public class ClientServiceTest {
 
 	@Test
 	public void testFindClientId() throws InputValidationException, InstanceNotFoundException, RemoveClientException{
-		Client client = new Client("proba1", "67654312E", "calle 21", 654321234);
+		Client client = new Client("proba1", "67654312E", "calle 21", "654321234");
 		try{
 			clientService.addClient(client);
 			Client c = clientService.findClient(client.getClientId());
@@ -140,8 +140,8 @@ public class ClientServiceTest {
 
 	@Test
 	public void testFindClientsString() throws InputValidationException, InstanceNotFoundException, RemoveClientException {
-		Client c1 = new Client("carlos", "12121212E", "calle x", 565434567);
-		Client c2 = new Client("carla", "12121212E", "calle x", 565434567);
+		Client c1 = new Client("carlos", "12121212E", "calle x", "565434567");
+		Client c2 = new Client("carla", "12121212E", "calle x", "565434567");
 		try {
 			
 			clientService.addClient(c1);
@@ -156,8 +156,8 @@ public class ClientServiceTest {
 
 	@Test
 	public void testFindClientsStringRange() throws InputValidationException, InstanceNotFoundException, RemoveClientException {
-		Client c1 = new Client("carlos", "12121212E", "calle x", 565434567);
-		Client c2 = new Client("carla", "12121212E", "calle x", 565434567);
+		Client c1 = new Client("carlos", "12121212E", "calle x", "565434567");
+		Client c2 = new Client("carla", "12121212E", "calle x", "565434567");
 		try {
 			
 			clientService.addClient(c1);
@@ -177,7 +177,7 @@ public class ClientServiceTest {
 		try {
 			Client c1 = clientService.findClient("77775437A");
 			Calendar date = Calendar.getInstance();
-			clientService.makeCall(c1.getClientId(), date, 234, enumType.LOCAL,65943902);
+			clientService.makeCall(c1.getClientId(), date, 234, enumType.LOCAL,"65943902");
 			
 			assertEquals(clientService.findCalls(c1.getClientId(), date, 0, 99999).get(0).getDestPhone(), (Integer)65943902);
 			
@@ -193,8 +193,8 @@ public class ClientServiceTest {
 		Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.MONTH, 7);
 		List<Call> callist = new ArrayList<Call>();
-		clientService.makeCall(c.getClientId(), cal, 234, enumType.LOCAL,65943902);
-		clientService.makeCall(c.getClientId(), cal, 244, enumType.LOCAL,65954912);
+		clientService.makeCall(c.getClientId(), cal, 234, enumType.LOCAL,"65943902");
+		clientService.makeCall(c.getClientId(), cal, 244, enumType.LOCAL,"65954912");
 		clientService.changeCallState(c.getClientId(), cal, enumState.BILLED);
 		// la busqueda debe lanzar excepcion si el estado se ha cambiado correctamente
 		List<Call> calls = clientService.findCalls(c.getClientId(), cal, 0, 99999);

@@ -28,7 +28,7 @@ public interface ClientService {
     
     public List<Client> findClients(String keywords, int index, int numRows);
     
-    public void makeCall(Long clientId, Calendar date, Integer duration, ModelConstants.enumType type, Integer destPhone) throws InstanceNotFoundException, InputValidationException;
+    public void makeCall(Long clientId, Calendar date, Integer duration, ModelConstants.enumType type, String destPhone) throws InstanceNotFoundException, InputValidationException;
     
     public void changeCallState(Long clientId, Calendar date ,ModelConstants.enumState state) throws CallStateException, InstanceNotFoundException, MonthExpirationException;
     

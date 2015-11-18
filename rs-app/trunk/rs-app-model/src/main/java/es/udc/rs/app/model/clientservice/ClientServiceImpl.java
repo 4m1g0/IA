@@ -44,7 +44,7 @@ public class ClientServiceImpl implements ClientService {
 	}
 	
 	private Client validateClient(Client client) throws InputValidationException {
-		if(client.getDNI().length() != 9 && (client.getPhone().toString().length() != 9)){
+		if(client.getDNI().length() != 9 && (client.getPhone().length() != 9)){
 			throw new InputValidationException(client.getDNI());
 		}
 		
@@ -127,7 +127,7 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public void makeCall(Long clientId, Calendar date, Integer duration, enumType type, Integer destPhone) 
+	public void makeCall(Long clientId, Calendar date, Integer duration, enumType type, String destPhone) 
 			throws InstanceNotFoundException, InputValidationException { // FIXME: esto nunca lanza inputvalidation y deberia¿?!! SI, comprobar las fechas por ejemplo
 		Client c = clients.get(clientId);
 		

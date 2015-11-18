@@ -10,12 +10,12 @@ public class Call {
 	private Long clientId;
 	private Calendar dateCall;
 	private Integer duration;
-	private Integer destPhone;
+	private String destPhone;
 	private ModelConstants.enumType type;
 	private ModelConstants.enumState state;
 	
 	public Call(Long clientId, Calendar dateCall, Integer duration, 
-			ModelConstants.enumType type, Integer destPhone) {
+			ModelConstants.enumType type, String destPhone) {
 		this.clientId = clientId;
 		this.dateCall = dateCall;
 		this.duration = duration;
@@ -73,11 +73,11 @@ public class Call {
 		this.duration = duration;
 	}
 
-	public Integer getDestPhone() {
+	public String getDestPhone() {
 		return destPhone;
 	}
 
-	public void setDestPhone(Integer destPhone) {
+	public void setDestPhone(String destPhone) {
 		this.destPhone = destPhone;
 	}
 }
