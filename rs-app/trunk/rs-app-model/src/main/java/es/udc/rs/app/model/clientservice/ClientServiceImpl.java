@@ -4,21 +4,18 @@ import java.util.ArrayList;
 
 // TODO: excepciones permanentes: inputvalidation y error de cliente ya tiene llamadas al borrarlo!
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.TreeMap;
 
+import es.udc.rs.app.constants.ModelConstants.enumState;
+import es.udc.rs.app.constants.ModelConstants.enumType;
 import es.udc.rs.app.exceptions.CallStateException;
 import es.udc.rs.app.exceptions.MonthExpirationException;
 import es.udc.rs.app.exceptions.RemoveClientException;
 import es.udc.rs.app.model.call.Call;
 import es.udc.rs.app.model.client.Client;
-import es.udc.rs.app.model.util.ModelConstants.enumState;
-import es.udc.rs.app.model.util.ModelConstants.enumType;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 

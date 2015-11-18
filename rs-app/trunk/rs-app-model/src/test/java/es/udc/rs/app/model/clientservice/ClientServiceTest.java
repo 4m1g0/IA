@@ -15,10 +15,10 @@ import es.udc.rs.app.exceptions.MonthExpirationException;
 import es.udc.rs.app.exceptions.RemoveClientException;
 import es.udc.rs.app.model.call.Call;
 import es.udc.rs.app.model.client.Client;
-import es.udc.rs.app.model.util.ModelConstants.enumState;
-import es.udc.rs.app.model.util.ModelConstants.enumType;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
+import es.udc.rs.app.constants.ModelConstants.enumState;
+import es.udc.rs.app.constants.ModelConstants.enumType;;
 
 public class ClientServiceTest {
 	

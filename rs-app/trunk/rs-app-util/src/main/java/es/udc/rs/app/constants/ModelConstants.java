@@ -1,4 +1,5 @@
-package es.udc.rs.app.model.util;
+package es.udc.rs.app.constants;
+
 
 public final class ModelConstants {
 	
