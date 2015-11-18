@@ -12,12 +12,12 @@ public class ClientToClientDtoJaxbConversor {
 		List<ClientDtoJaxb> clientDtos = new ArrayList<>(clients.size());
 		for (int i = 0; i < clients.size(); i++) {
             Client client = clients.get(i);
-            ////////////////////////////7clientDtos.add(toClientDtoJaxb(client));
+            clientDtos.add(toClientDtoJaxb(client));
         }
         return clientDtos;
 	}
 	
-	public static ClientDtoJaxb toMovieDtoJaxb(Client client) {
+	public static ClientDtoJaxb toClientDtoJaxb(Client client) {
         return new ClientDtoJaxb(client.getClientId(), client.getName(),
         		client.getDNI(), client.getAddress(),client.getPhone());
     }
