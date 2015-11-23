@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlRootElement(name = "client")
 @XmlType(name="clientType", propOrder = {"id", "name", "DNI", 
 		"address", "phone", "links"})
-public class ClientDtoJaxb {
+public class ClientDetailsDtoJaxb {
 	@XmlElement(name = "clientId", required = true)
     private Long id;
     @XmlElement(required = true)
@@ -24,20 +24,20 @@ public class ClientDtoJaxb {
     private String phone;
     @XmlElement(name = "link")
     @XmlJavaTypeAdapter(Link.JaxbAdapter.class)
-    private Link self;
+	private List<Link> links;
 
-	public ClientDtoJaxb(){
+	public ClientDetailsDtoJaxb(){
     	
     }
 
-	public ClientDtoJaxb(Long id, String name, String DNI, String address,
-			String phone, Link self) {
+	public ClientDetailsDtoJaxb(Long id, String name, String DNI, String address,
+			String phone, List<Link> links) {
 		this.id = id;
 		this.name = name;
 		this.DNI = DNI;
 		this.address = address;
 		this.phone = phone;
-		this.self = self;
+		this.links = links;
 	}
 
 	public Long getId() {
@@ -79,15 +79,17 @@ public class ClientDtoJaxb {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+
 	
-	public Link getSelf() {
-		return self;
+	public List<Link> getLinks() {
+		return links;
 	}
 
-	public void setSelf(Link self) {
-		this.self = self;
+	public void setLinks(List<Link> links) {
+		this.links = links;
 	}
 
+	
 	@Override
 	public String toString() {
 		return "ClientDtoJaxb [clientId=" + id + ", name=" + name
