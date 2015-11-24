@@ -35,4 +35,6 @@ public interface ClientService {
     public List<CallDto> findCalls(Long clientId, Calendar initDate, Calendar endDate, int index, int numRows) throws  InstanceNotFoundException;
 
     public List<CallDto> findCalls(Long clientId, Calendar initDate, Calendar endDate, int index, int numRows, enumType type) throws CallStateException, InstanceNotFoundException;
+
+    public String getClientUrl(Long saleId) throws InstanceNotFoundException;
 }
