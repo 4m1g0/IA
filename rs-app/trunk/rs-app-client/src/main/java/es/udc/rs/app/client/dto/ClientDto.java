@@ -8,25 +8,31 @@ public class ClientDto {
 	private String DNI;
 	private String address;
 	private String phone;
-	private Calendar creationDate;
 	
 	
 	public ClientDto(Long clientId, String name, String dNI, String address,
-			String phone, Calendar creationDate) {
+			String phone) {
 		super();
 		this.clientId = clientId;
 		this.name = name;
 		DNI = dNI;
 		this.address = address;
 		this.phone = phone;
-		this.creationDate = creationDate;
+	}
+	
+	public ClientDto(String name, String dNI, String address,
+			String phone) {
+		this.name = name;
+		DNI = dNI;
+		this.address = address;
+		this.phone = phone;
 	}
 	
 	@Override
 	public String toString() {
 		return "Client [clientId=" + clientId + ", name=" + name + ", DNI="
 				+ DNI + ", address=" + address + ", phone=" + phone
-				+ ", creationDate=" + creationDate + "]";
+				+ ", creationDate=" + "]";
 	}
 
 	public Long getClientId() {
@@ -59,10 +65,5 @@ public class ClientDto {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	public Calendar getCreationDate() {
-		return creationDate;
-	}
-	public void setCreationDate(Calendar creationDate) {
-		this.creationDate = creationDate;
-	}
+
 }

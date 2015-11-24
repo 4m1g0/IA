@@ -14,6 +14,17 @@ public class CallDto {
 	private enumType type;
 	private enumState state;
 	
+	
+	
+	public CallDto(Long clientId, Calendar dateCall,
+			Integer duration, String destPhone, enumType type) {
+		this.clientId = clientId;
+		this.dateCall = dateCall;
+		this.duration = duration;
+		this.destPhone = destPhone;
+		this.type = type;
+	}
+
 	@Override
 	public String toString() {
 		return "Call [callId=" + callId + ", clientId=" + clientId

@@ -146,7 +146,8 @@ public class ClientServiceImpl implements ClientService {
 			throw new MonthExpirationException(date);
 		}
 		for (Call call : calls.values()) {
-			if (!call.getClientId().equals(clientId) || call.getDateCall().YEAR != date.YEAR || call.getDateCall().MONTH != date.MONTH) {
+			if (!call.getClientId().equals(clientId) || call.getDateCall().get(Calendar.YEAR) != date.get(Calendar.YEAR) 
+					|| call.getDateCall().get(Calendar.MONTH) != date.get(Calendar.MONTH)) {
 				continue;
 			}
 			

@@ -41,21 +41,30 @@ public class ClientResource {
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response findClients(
 	@DefaultValue("") @QueryParam("keywords") String keywords, 
-	@DefaultValue("0") @QueryParam("index") int index, 
-	@DefaultValue("2") @QueryParam("numRows") int numRows,
-	@Context UriInfo uriInfo, @Context HttpHeaders headers){
+	@DefaultValue("0") @QueryParam("index") String index, 
+	@DefaultValue("2") @QueryParam("numRows") String numRows,
+	@Context UriInfo uriInfo, @Context HttpHeaders headers) throws InputValidationException{
 		
+		int startIndex;
+		int size;
+		try {
+			startIndex = Integer.valueOf(index);
+			size = Integer.valueOf(numRows);
+		} catch (Exception e) {
+			throw new InputValidationException("Invalid Request: "
+					+ "unable to parse Frames '" + index + "'" + "'" + numRows + "'");
+		}
 		List<Client> clients = ClientServiceFactory.getService().findClients(
-				keywords, index, numRows);
+				keywords, startIndex, size);
 		
 		String type = ServiceUtil.getTypeAsStringFromHeaders(headers);
 
 		List<ClientDtoJaxb> clientDtos = ClientToClientDtoJaxbConversor
 				.toClientDtoJaxb(clients, uriInfo.getBaseUri(), type);
-		Link selfLink = getSelfLink(uriInfo, keywords, index, numRows, type);
-		Link nextLink = getNextLink(uriInfo, keywords, index, numRows, clients.size(), type);
-		Link previousLink = getPreviousLink(uriInfo, keywords, index,
-				numRows, type);
+		Link selfLink = getSelfLink(uriInfo, keywords, startIndex, size, type);
+		Link nextLink = getNextLink(uriInfo, keywords, startIndex, size, clients.size(), type);
+		Link previousLink = getPreviousLink(uriInfo, keywords, startIndex,
+				size, type);
 		ResponseBuilder response = Response.ok(
 				new ClientDtoJaxbList(clientDtos)).links(selfLink);
 		if (nextLink != null) {
@@ -100,22 +109,29 @@ public class ClientResource {
 	@GET
 	@Path("/{id}")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public ClientDetailsDtoJaxb findById(@PathParam("id") long id,
+	public ClientDtoJaxb findById(@PathParam("id") String id,
 			@Context UriInfo uriInfo, @Context HttpHeaders headers)
-			throws InstanceNotFoundException {
-		return ClientToClientDtoJaxbConversor.toClientDetailsDtoJaxb(ClientServiceFactory
-				.getService().findClient(id), uriInfo.getBaseUri(), 
+			throws InstanceNotFoundException, InputValidationException {
+		
+		Long clientId;
+		try {
+			clientId = Long.valueOf(id);
+		} catch (Exception e) {
+			throw new InputValidationException("Invalid Request: "
+					+ "unable to parse client id '" + id + "'");
+		}
+		return ClientToClientDtoJaxbConversor.toClientDtoJaxb(ClientServiceFactory
+				.getService().findClient(clientId), uriInfo.getBaseUri(), 
 				ServiceUtil.getTypeAsStringFromHeaders(headers));
 
 	}
 	@GET
-	@Path("/{Dni}")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public ClientDetailsDtoJaxb findByDni(@PathParam("Dni") String Dni,
+	public ClientDtoJaxb findByDni(@DefaultValue("") @QueryParam("dni") String dni,
 			@Context UriInfo uriInfo, @Context HttpHeaders headers)
 			throws InstanceNotFoundException {
-		return ClientToClientDtoJaxbConversor.toClientDetailsDtoJaxb(ClientServiceFactory
-				.getService().findClient(Dni), uriInfo.getBaseUri(), 
+		return ClientToClientDtoJaxbConversor.toClientDtoJaxb(ClientServiceFactory
+				.getService().findClient(dni), uriInfo.getBaseUri(), 
 				ServiceUtil.getTypeAsStringFromHeaders(headers));
 
 	}
