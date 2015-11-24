@@ -21,7 +21,7 @@ import es.udc.rs.app.constants.ModelConstants;
 import es.udc.rs.app.constants.ModelConstants.enumState;
 import es.udc.rs.app.exceptions.CallStateException;
 import es.udc.rs.app.exceptions.MonthExpirationException;
-import es.udc.rs.app.jaxrs.dto.call.CallDtoJaxb;
+import es.udc.rs.app.jaxrs.dto.CallDtoJaxb;
 import es.udc.rs.app.jaxrs.util.CallToCallDtoJaxbConversor;
 import es.udc.rs.app.model.call.Call;
 import es.udc.rs.app.model.clientservice.ClientServiceFactory;
@@ -65,16 +65,5 @@ public class CallResource {
 		ClientServiceFactory.getService().changeCallState(clientId, cal, st);
 	}
 	
-	@GET
-	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public Response findCallsToBill(
-			@DefaultValue("") @QueryParam("id") String id,
-			@DefaultValue("0") @QueryParam("index") int index, 
-			@DefaultValue("2") @QueryParam("numRows") int numRows,
-			@Context UriInfo uriInfo, @Context HttpHeaders headers){
-				return null;
-		
-		
-	}
 
 }

@@ -17,7 +17,7 @@
         </servlet-class>
         <init-param>
           <param-name>jersey.config.server.provider.packages</param-name>
-          <param-value>es.udc.rs.app.jaxrs</param-value>
+          <param-value>es.udc.rs.app.jaxrs, es.udc.rs.app.json</param-value>
         </init-param>        
     </servlet>
 

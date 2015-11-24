@@ -1,4 +1,4 @@
-package es.udc.rs.app.jaxrs.dto.client;
+package es.udc.rs.app.jaxrs.dto;
 
 import java.util.ArrayList;
 import java.util.List;

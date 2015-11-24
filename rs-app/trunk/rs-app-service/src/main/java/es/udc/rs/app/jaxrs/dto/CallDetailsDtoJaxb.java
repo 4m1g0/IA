@@ -1,6 +1,7 @@
-package es.udc.rs.app.jaxrs.dto.call;
+package es.udc.rs.app.jaxrs.dto;
 
 import java.util.Calendar;
+import java.util.List;
 
 import javax.ws.rs.core.Link;
 import javax.xml.bind.annotation.XmlElement;
@@ -15,7 +16,7 @@ import es.udc.rs.app.constants.ModelConstants.enumType;
 @XmlType(name="callType", propOrder = {"id", "clientId", "dateCall", 
 		"duration", "destPhone", "type", "clientUrl"})
 
-public class CallDtoJaxb {
+public class CallDetailsDtoJaxb {
 	
 	@XmlElement(name = "callId", required = true)
     private Long id;
@@ -33,15 +34,15 @@ public class CallDtoJaxb {
     private enumType type;
     @XmlElement(name = "link")
     @XmlJavaTypeAdapter(Link.JaxbAdapter.class)
-    private Link self;
+    private List<Link> links;
     
-    public CallDtoJaxb(){
+    public CallDetailsDtoJaxb(){
     	
     }
     
-	public CallDtoJaxb(Long id, Long clientId, Calendar dateCall,
+	public CallDetailsDtoJaxb(Long id, Long clientId, Calendar dateCall,
 			Integer duration, String destPhone, enumState state, 
-			enumType type, Link self) {
+			enumType type, List<Link> links) {
 		this.id = id;
 		this.clientId = clientId;
 		this.dateCall = new DateDtoJaxb(dateCall);
@@ -49,7 +50,7 @@ public class CallDtoJaxb {
 		this.destPhone = destPhone;
 		this.state = state;
 		this.type = type;
-		this.self = self;
+		this.links = links;
 		
 	}
 
@@ -109,12 +110,14 @@ public class CallDtoJaxb {
 		this.type = type;
 	}
 
-	public Link getSelf() {
-		return self;
+	public List<Link> getLinks() {
+		return links;
 	}
 
-	public void setSelf(Link self) {
-		this.self = self;
+	public void setLinks(List<Link> links) {
+		this.links = links;
 	}
+
+	
 	
 }

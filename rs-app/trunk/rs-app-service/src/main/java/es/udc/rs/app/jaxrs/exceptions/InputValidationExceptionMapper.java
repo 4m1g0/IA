@@ -4,7 +4,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import es.udc.rs.app.jaxrs.dto.client.InputValidationExceptionDtoJaxb;
+import es.udc.rs.app.jaxrs.dto.InputValidationExceptionDtoJaxb;
 import es.udc.ws.util.exceptions.InputValidationException;
 
 @Provider

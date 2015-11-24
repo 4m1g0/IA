@@ -4,7 +4,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import es.udc.rs.app.jaxrs.dto.client.InstanceNotFoundExceptionDtoJaxb;
+import es.udc.rs.app.jaxrs.dto.InstanceNotFoundExceptionDtoJaxb;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 
 @Provider

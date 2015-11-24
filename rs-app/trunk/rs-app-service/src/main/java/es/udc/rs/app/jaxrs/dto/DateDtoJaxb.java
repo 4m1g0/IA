@@ -1,4 +1,4 @@
-package es.udc.rs.app.jaxrs.dto.call;
+package es.udc.rs.app.jaxrs.dto;
 
 import java.util.Calendar;
 

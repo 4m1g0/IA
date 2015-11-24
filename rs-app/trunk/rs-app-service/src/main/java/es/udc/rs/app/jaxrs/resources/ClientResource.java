@@ -22,9 +22,9 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
 import es.udc.rs.app.exceptions.RemoveClientException;
-import es.udc.rs.app.jaxrs.dto.client.ClientDetailsDtoJaxb;
-import es.udc.rs.app.jaxrs.dto.client.ClientDtoJaxb;
-import es.udc.rs.app.jaxrs.dto.client.ClientDtoJaxbList;
+import es.udc.rs.app.jaxrs.dto.ClientDetailsDtoJaxb;
+import es.udc.rs.app.jaxrs.dto.ClientDtoJaxb;
+import es.udc.rs.app.jaxrs.dto.ClientDtoJaxbList;
 import es.udc.rs.app.jaxrs.util.ClientToClientDtoJaxbConversor;
 import es.udc.rs.app.jaxrs.util.ServiceUtil;
 import es.udc.rs.app.model.client.Client;

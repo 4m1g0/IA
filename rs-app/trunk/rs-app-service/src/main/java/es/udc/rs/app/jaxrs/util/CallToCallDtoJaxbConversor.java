@@ -7,9 +7,8 @@ import java.util.List;
 
 import javax.ws.rs.core.Link;
 
-import es.udc.rs.app.jaxrs.dto.call.CallDetailsDtoJaxb;
-import es.udc.rs.app.jaxrs.dto.call.CallDtoJaxb;
-import es.udc.rs.app.jaxrs.dto.call.DateDtoJaxb;
+import es.udc.rs.app.jaxrs.dto.CallDetailsDtoJaxb;
+import es.udc.rs.app.jaxrs.dto.CallDtoJaxb;
 import es.udc.rs.app.jaxrs.resources.CallResource;
 import es.udc.rs.app.jaxrs.resources.ClientResource;
 import es.udc.rs.app.model.call.Call;

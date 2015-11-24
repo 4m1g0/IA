@@ -4,7 +4,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
 import es.udc.rs.app.exceptions.RemoveClientException;
-import es.udc.rs.app.jaxrs.dto.client.RemoveClientExceptionDtoJaxb;
+import es.udc.rs.app.jaxrs.dto.RemoveClientExceptionDtoJaxb;
 
 public class RemoveClientExceptionMapper implements ExceptionMapper<RemoveClientException>{
 

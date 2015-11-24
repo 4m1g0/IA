@@ -4,9 +4,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
 import es.udc.rs.app.exceptions.CallStateException;
-import es.udc.rs.app.jaxrs.dto.client.CallStateExceptionDtoJaxb;
-import es.udc.rs.app.jaxrs.dto.client.InstanceNotFoundExceptionDtoJaxb;
-import es.udc.rs.app.jaxrs.dto.client.RemoveClientExceptionDtoJaxb;
+import es.udc.rs.app.jaxrs.dto.CallStateExceptionDtoJaxb;
+import es.udc.rs.app.jaxrs.dto.InstanceNotFoundExceptionDtoJaxb;
+import es.udc.rs.app.jaxrs.dto.RemoveClientExceptionDtoJaxb;
 
 public class CallStateExceptionMapper implements ExceptionMapper<CallStateException> {
 

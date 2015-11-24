@@ -1,4 +1,4 @@
-package es.udc.rs.app.jaxrs.dto.client;
+package es.udc.rs.app.jaxrs.dto;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;

@@ -179,7 +179,7 @@ public class ClientServiceTest {
 			Calendar date = Calendar.getInstance();
 			clientService.makeCall(c1.getClientId(), date, 234, enumType.LOCAL,"65943902");
 			
-			assertEquals(clientService.findCalls(c1.getClientId(), date, 0, 99999).get(0).getDestPhone(), (Integer)65943902);
+			assertEquals(clientService.findCalls(c1.getClientId(), date, 0, 99999).get(0).getDestPhone(), "65943902");
 			
 		} finally {
 			
