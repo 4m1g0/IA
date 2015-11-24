@@ -8,6 +8,8 @@ import javax.xml.bind.JAXBElement;
 import org.eclipse.persistence.jaxb.xmlmodel.ObjectFactory;
 
 import es.udc.rs.app.client.dto.ClientDto;
+import es.udc.rs.app.client.service.rest.dto.ClientDtoJaxb;
+import es.udc.rs.app.client.service.rest.dto.ClientDtoJaxbList;
 
 public class ClientDtoToClientDtoJaxbConversor {
 	public static JAXBElement<ClientDtoJaxb> toJaxbClient(ClientDto clientDto) {

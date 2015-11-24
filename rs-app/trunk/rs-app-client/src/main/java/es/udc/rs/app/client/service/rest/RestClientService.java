@@ -17,6 +17,11 @@ import es.udc.rs.app.client.dto.CallDto;
 import es.udc.rs.app.client.dto.ClientDto;
 import es.udc.rs.app.client.dto.ClientListIntervalDto;
 import es.udc.rs.app.client.service.ClientService;
+import es.udc.rs.app.client.service.rest.dto.CallDtoJaxb;
+import es.udc.rs.app.client.service.rest.dto.ClientDtoJaxb;
+import es.udc.rs.app.client.service.rest.dto.ClientDtoJaxbList;
+import es.udc.rs.app.client.service.rest.dto.InputValidationExceptionDtoJaxb;
+import es.udc.rs.app.client.service.rest.dto.InstanceNotFoundExceptionDtoJaxb;
 import es.udc.rs.app.configuration.ConfigurationParametersManager;
 import es.udc.rs.app.constants.ModelConstants.enumState;
 import es.udc.rs.app.constants.ModelConstants.enumType;
@@ -59,7 +64,7 @@ public abstract class RestClientService implements ClientService {
 				: wt.request().get();
 		try {
 			validateResponse(Response.Status.OK.getStatusCode(), response);
-			ProductDtoJaxbList clients = response
+			ClientDtoJaxbList clients = response
 					.readEntity(ProductDtoJaxbList.class);
 
 			return new ClientListIntervalDto(

@@ -19,8 +19,8 @@ public class CallToCallDtoJaxbConversor {
 			String type){
 		Link selfLink = ServiceUtil.getLinkFromUri(baseUri, ClientResource.class,
 				call.getCallId(), "self", "Self link", type);
-		return new CallDtoJaxb(call.getCallId(), call.getClientId(), call.getDateCall(),
-				call.getDuration(), call.getDestPhone(), call.getState(), call.getType(), selfLink);
+		return new CallDtoJaxb(call.getDateCall(),
+				call.getDuration(), call.getType(), selfLink);
 	}
 	
 	public static List<CallDtoJaxb> toCallDtoJaxb(List<Call> calls, URI baseUri,
@@ -34,7 +34,7 @@ public class CallToCallDtoJaxbConversor {
 		return callsDtos;
 	}
 	
-	public static Call toCall(CallDtoJaxb call){
+	public static Call toCall(CallDetailsDtoJaxb call){
 		Calendar callDate = Calendar.getInstance();
 		callDate.set(call.getDateCall().getYear(), call.getDateCall().getMonth(), 
 				call.getDateCall().getDay());

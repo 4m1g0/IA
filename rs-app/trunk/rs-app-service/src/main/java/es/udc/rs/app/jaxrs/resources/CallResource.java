@@ -21,6 +21,7 @@ import es.udc.rs.app.constants.ModelConstants;
 import es.udc.rs.app.constants.ModelConstants.enumState;
 import es.udc.rs.app.exceptions.CallStateException;
 import es.udc.rs.app.exceptions.MonthExpirationException;
+import es.udc.rs.app.jaxrs.dto.CallDetailsDtoJaxb;
 import es.udc.rs.app.jaxrs.dto.CallDtoJaxb;
 import es.udc.rs.app.jaxrs.util.CallToCallDtoJaxbConversor;
 import es.udc.rs.app.model.call.Call;
@@ -33,7 +34,7 @@ public class CallResource {
 	
 	@POST
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public void makeCall(CallDtoJaxb callDto) throws InputValidationException, InstanceNotFoundException{
+	public void makeCall(CallDetailsDtoJaxb callDto) throws InputValidationException, InstanceNotFoundException{
 		Call call = CallToCallDtoJaxbConversor.toCall(callDto);
 		ClientServiceFactory.getService().makeCall(call.getClientId(), call.getDateCall(), 
 				call.getDuration(), call.getType(), call.getDestPhone());

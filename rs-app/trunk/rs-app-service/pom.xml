@@ -53,6 +53,7 @@
                 </executions>
                 <configuration>
                     <includes>
+
                         <include>**/jaxrs/dto/*.java</include>
                     </includes>
                 </configuration>

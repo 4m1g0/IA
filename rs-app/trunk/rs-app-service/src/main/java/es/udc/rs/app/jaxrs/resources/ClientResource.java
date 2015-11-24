@@ -139,7 +139,7 @@ public class ClientResource {
 	@POST
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public Response addClient(ClientDtoJaxb clientDto, @Context UriInfo ui,
+	public Response addClient(ClientDetailsDtoJaxb clientDto, @Context UriInfo ui,
 			@Context HttpHeaders headers)
 			throws InputValidationException{
 		Client client = ClientToClientDtoJaxbConversor.toClient(clientDto);
@@ -157,7 +157,7 @@ public class ClientResource {
 	@PUT
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Path("/{id}")
-	public void updateclient(ClientDtoJaxb clientDto,@PathParam("id") String id)
+	public void updateclient(ClientDetailsDtoJaxb clientDto,@PathParam("id") String id)
 			throws InputValidationException, InstanceNotFoundException {
 		
 		Long clientId;

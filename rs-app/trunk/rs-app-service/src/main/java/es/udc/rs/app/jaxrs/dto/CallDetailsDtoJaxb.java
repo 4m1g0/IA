@@ -12,13 +12,13 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import es.udc.rs.app.constants.ModelConstants.enumState;
 import es.udc.rs.app.constants.ModelConstants.enumType;
 
-@XmlRootElement(name="call")
-@XmlType(name="callType", propOrder = {"id", "clientId", "dateCall", 
-		"duration", "destPhone", "type", "clientUrl"})
+@XmlRootElement(name="call-details")
+@XmlType(name="callDetailsType", propOrder = {"id", "clientId", "dateCall", 
+		"duration", "destPhone", "state", "type", "links"})
 
 public class CallDetailsDtoJaxb {
 	
-	@XmlElement(name = "callId", required = true)
+	@XmlElement(name = "call-id", required = true)
     private Long id;
     @XmlElement(required = true)
     private Long clientId;

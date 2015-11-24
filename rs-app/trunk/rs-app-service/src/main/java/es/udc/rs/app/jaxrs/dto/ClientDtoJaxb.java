@@ -1,7 +1,5 @@
 package es.udc.rs.app.jaxrs.dto;
 
-import java.util.List;
-
 import javax.ws.rs.core.Link;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -9,19 +7,14 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlRootElement(name = "client")
-@XmlType(name="clientType", propOrder = {"id", "name", "DNI", 
-		"address", "phone", "links"})
+@XmlType(name="clientType", propOrder = {"id", "name","dni", "self"})
 public class ClientDtoJaxb {
-	@XmlElement(name = "clientId", required = true)
+	@XmlElement(name = "client-id", required = true)
     private Long id;
     @XmlElement(required = true)
     private String name;
     @XmlElement(required = true)
-    private String DNI;
-    @XmlElement(required = true)
-    private String address;
-    @XmlElement(required = true)
-    private String phone;
+    private String dni;
     @XmlElement(name = "link")
     @XmlJavaTypeAdapter(Link.JaxbAdapter.class)
     private Link self;
@@ -30,13 +23,10 @@ public class ClientDtoJaxb {
     	
     }
 
-	public ClientDtoJaxb(Long id, String name, String DNI, String address,
-			String phone, Link self) {
+	public ClientDtoJaxb(Long id, String name, String dni, Link self) {
 		this.id = id;
 		this.name = name;
-		this.DNI = DNI;
-		this.address = address;
-		this.phone = phone;
+		this.dni = dni;
 		this.self = self;
 	}
 
@@ -57,27 +47,11 @@ public class ClientDtoJaxb {
 	}
 
 	public String getDNI() {
-		return DNI;
+		return dni;
 	}
 
-	public void setDNI(String DNI) {
-		this.DNI = DNI;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-	
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public void setDNI(String dni) {
+		this.dni = dni;
 	}
 	
 	public Link getSelf() {
@@ -86,17 +60,5 @@ public class ClientDtoJaxb {
 
 	public void setSelf(Link self) {
 		this.self = self;
-	}
-
-	@Override
-	public String toString() {
-		return "ClientDtoJaxb [clientId=" + id + ", name=" + name
-                + ", DNI=" + DNI
-                + ", address=" + address + ", phone=" + phone + "]";
-	}
-	
-	
-    
-    
-
+	}    
 }

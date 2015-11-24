@@ -14,7 +14,9 @@ public class CallDto {
 	private enumType type;
 	private enumState state;
 	
-	
+	public CallDto(){
+		
+	}
 	
 	public CallDto(Long clientId, Calendar dateCall,
 			Integer duration, String destPhone, enumType type) {

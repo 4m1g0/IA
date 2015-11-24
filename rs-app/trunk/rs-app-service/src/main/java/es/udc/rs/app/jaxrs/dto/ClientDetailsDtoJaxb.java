@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-@XmlRootElement(name = "client")
-@XmlType(name="clientType", propOrder = {"id", "name", "DNI", 
+@XmlRootElement(name = "client-details")
+@XmlType(name="clientDetailsType", propOrder = {"id", "name", "DNI", 
 		"address", "phone", "links"})
 public class ClientDetailsDtoJaxb {
-	@XmlElement(name = "clientId", required = true)
+	@XmlElement(name = "client-id", required = true)
     private Long id;
     @XmlElement(required = true)
     private String name;
