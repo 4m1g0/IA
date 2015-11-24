@@ -32,7 +32,7 @@ import es.udc.ws.util.exceptions.InstanceNotFoundException;
 public abstract class RestClientService implements ClientService {
 	private static javax.ws.rs.client.Client client = null;
 
-	private final static String ENDPOINT_ADDRESS_PARAMETER = "RestClientMovieService.endpointAddress";
+	private final static String ENDPOINT_ADDRESS_PARAMETER = "RestClientService.endpointAddress";
 	private WebTarget endPointWebTarget = null;
 	
 	private static Client getClient() {
@@ -83,7 +83,7 @@ public abstract class RestClientService implements ClientService {
 				.accept(this.getMediaType())
 				.post(Entity.entity(
 						new GenericEntity<JAXBElement<ClientDtoJaxb>>(
-								ClientDtoToClientDtoJaxbConversor.toJaxbMovie(client)) {}, this.getMediaType())
+								ClientDtoToClientDtoJaxbConversor.toJaxbClient(client)) {}, this.getMediaType())
 								);
 		try {
 			validateResponse(Response.Status.CREATED.getStatusCode(), response);
@@ -127,12 +127,12 @@ public abstract class RestClientService implements ClientService {
 				.request()
 				.accept(this.getMediaType())
 				.put(Entity.entity(
-				// MovieDtoToMovieDtoJaxbConversor.toJaxbMovie(movie),
+				// ClientDtoToClientDtoJaxbConversor.toJaxbClient(client),
 				// this.getMediaType()));
 				// Necessary to run with JSON and MOXy
 						new GenericEntity<JAXBElement<ClientDtoJaxb>>(
 								ClientDtoToClientDtoJaxbConversor
-										.toJaxbMovie(client)) {
+										.toJaxbClient(client)) {
 						}, this.getMediaType()));
 		try {
 			validateResponse(Response.Status.NO_CONTENT.getStatusCode(),
@@ -156,7 +156,7 @@ public abstract class RestClientService implements ClientService {
 			validateResponse(Response.Status.OK.getStatusCode(), response);
 			ClientDtoJaxb client = response.readEntity(ClientDtoJaxb.class);
 			
-			return ClientDtoToClientDtoJaxbConversor.toMovieDtos(client);
+			return ClientDtoToClientDtoJaxbConversor.toClientDtos(client);
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		} finally {
@@ -174,7 +174,7 @@ public abstract class RestClientService implements ClientService {
 			validateResponse(Response.Status.OK.getStatusCode(), response);
 			ClientDtoJaxb client = response.readEntity(ClientDtoJaxb.class);
 			
-			return ClientDtoToClientDtoJaxbConversor.toMovieDtos(client);
+			return ClientDtoToClientDtoJaxbConversor.toClientDtos(client);
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		} finally {
@@ -234,7 +234,7 @@ public abstract class RestClientService implements ClientService {
 	}
 	@Override
 	public void changeCallState(Long clientId, Calendar date, enumState state) throws CallStateException, InstanceNotFoundException, MonthExpirationException {
-		WebTarget wt = getEndpointWebTarget().path("movies/{id}")
+		WebTarget wt = getEndpointWebTarget().path("clients/{id}")
 				.resolveTemplate("id", clientId)
 				.queryParam("month", date.get(Calendar.MONTH))
 				.queryParam("year", date.get(Calendar.YEAR))

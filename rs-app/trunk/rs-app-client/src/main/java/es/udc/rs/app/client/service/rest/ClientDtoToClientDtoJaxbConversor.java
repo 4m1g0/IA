@@ -10,27 +10,27 @@ import org.eclipse.persistence.jaxb.xmlmodel.ObjectFactory;
 import es.udc.rs.app.client.dto.ClientDto;
 
 public class ClientDtoToClientDtoJaxbConversor {
-	public static JAXBElement<ClientDtoJaxb> toJaxbMovie(ClientDto clientDto) {
+	public static JAXBElement<ClientDtoJaxb> toJaxbClient(ClientDto clientDto) {
 		ClientDtoJaxb client = new ClientDtoJaxb();
-		client.setCId(clientDto.getMovieId() != null ? movieDto.getMovieId() : -1);
+		client.setCId(clientDto.getClientId() != null ? clientDto.getClientId() : -1);
 		client.setTitle(clientDto.getTitle());
 		client.setRuntime(clientDto.getRuntime());
 		client.setDescription(clientDto.getDescription());
 		client.setPrice(clientDto.getPrice());
-		JAXBElement<ClientDtoJaxb> jaxbElement= new ObjectFactory().createMovie(client);
+		JAXBElement<ClientDtoJaxb> jaxbElement= new ObjectFactory().createClient(client);
 		return jaxbElement;
 	}
 
-	public static ClientDto toMovieDto(ClientDtoJaxb movie) {
-		return new ClientDto(movie.getMovieId(), movie.getTitle(),
-				movie.getRuntime(), movie.getDescription(), movie.getPrice());
+	public static ClientDto toClientDto(ClientDtoJaxb client) {
+		return new ClientDto(client.getClientId(), client.getTitle(),
+				client.getRuntime(), client.getDescription(), client.getPrice());
 	}
 
-	public static List<ClientDto> toMovieDtos(ClientDtoJaxbList ClientListDto) {
+	public static List<ClientDto> toClientDtos(ClientDtoJaxbList ClientListDto) {
 		List<ClientDtoJaxb> clientList = ClientListDto.getClients();
 		List<ClientDto> clientDtos = new ArrayList<>(clientList.size());
 		for (int i = 0; i < clientList.size(); i++) {
-			clientDtos.add(toMovieDto(clientList.get(i)));
+			clientDtos.add(toclientDto(clientList.get(i)));
 		}
 		return clientDtos;
 	}
