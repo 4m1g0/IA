@@ -1,7 +1,6 @@
 package es.udc.rs.app.client.service;
 
 import es.udc.rs.app.configuration.ConfigurationParametersManager;
-// TODO: Ojo con este import
 
 public class ClientServiceFactory {
 	private final static String CLASS_NAME_PARAMETER = 
