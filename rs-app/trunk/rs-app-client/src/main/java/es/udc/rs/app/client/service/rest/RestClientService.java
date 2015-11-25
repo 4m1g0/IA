@@ -13,10 +13,15 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBElement;
 
+import es.udc.rs.app.client.dto.CallDetailsDto;
 import es.udc.rs.app.client.dto.CallDto;
 import es.udc.rs.app.client.dto.ClientDto;
 import es.udc.rs.app.client.dto.ClientListIntervalDto;
+import es.udc.rs.app.client.rest.util.ClientDtoToClientDtoJaxbConversor;
+import es.udc.rs.app.client.rest.util.JaxbExceptionConversor;
+import es.udc.rs.app.client.rest.util.LinkUtil;
 import es.udc.rs.app.client.service.ClientService;
+import es.udc.rs.app.client.service.rest.dto.CallDetailsDtoJaxb;
 import es.udc.rs.app.client.service.rest.dto.CallDtoJaxb;
 import es.udc.rs.app.client.service.rest.dto.ClientDtoJaxb;
 import es.udc.rs.app.client.service.rest.dto.ClientDtoJaxbList;
@@ -59,16 +64,16 @@ public abstract class RestClientService implements ClientService {
 
 	protected abstract MediaType getMediaType();
 	
-	private ClientListIntervalDto findProducts(WebTarget wt, MediaType type) {
+	private ClientListIntervalDto findClients(WebTarget wt, MediaType type) {
 		Response response = (type != null) ? wt.request().accept(type).get()
 				: wt.request().get();
 		try {
 			validateResponse(Response.Status.OK.getStatusCode(), response);
 			ClientDtoJaxbList clients = response
-					.readEntity(ProductDtoJaxbList.class);
+					.readEntity(ClientDtoJaxbList.class);
 
 			return new ClientListIntervalDto(
-					ClientToClientDtoJaxbConversor.toClients(clients),
+					ClientDtoToClientDtoJaxbConversor.toClientDtos(clients),
 					LinkUtil.getHeaderLinkUri(response, "next"),
 					LinkUtil.getHeaderLinkUri(response, "previous"));
 		} catch (Exception ex) {
@@ -88,7 +93,7 @@ public abstract class RestClientService implements ClientService {
 				.accept(this.getMediaType())
 				.post(Entity.entity(
 						new GenericEntity<JAXBElement<ClientDtoJaxb>>(
-								ClientDtoToClientDtoJaxbConversor.toJaxbClient(client)) {}, this.getMediaType())
+								ClientDtoToClientDtoJaxbConversor.) {}, this.getMediaType())
 								);
 		try {
 			validateResponse(Response.Status.CREATED.getStatusCode(), response);
@@ -161,7 +166,7 @@ public abstract class RestClientService implements ClientService {
 			validateResponse(Response.Status.OK.getStatusCode(), response);
 			ClientDtoJaxb client = response.readEntity(ClientDtoJaxb.class);
 			
-			return ClientDtoToClientDtoJaxbConversor.toClientDtos(client);
+			return ClientDtoToClientDtoJaxbConversor.toClientDto(client);
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		} finally {
@@ -179,7 +184,7 @@ public abstract class RestClientService implements ClientService {
 			validateResponse(Response.Status.OK.getStatusCode(), response);
 			ClientDtoJaxb client = response.readEntity(ClientDtoJaxb.class);
 			
-			return ClientDtoToClientDtoJaxbConversor.toClientDtos(client);
+			return ClientDtoToClientDtoJaxbConversor.toClientDto(client);
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		} finally {
@@ -209,10 +214,10 @@ public abstract class RestClientService implements ClientService {
 		}
 	}
 	@Override
-	public void makeCall(Long clientId, Calendar date, Integer duration, enumType type, String destPhone) throws InstanceNotFoundException, InputValidationException {
+	public Long makeCall(Long clientId, Calendar date, Integer duration, enumType type, String destPhone) throws InstanceNotFoundException, InputValidationException {
 		WebTarget wt = getEndpointWebTarget().path("calls");
 		
-		CallDto call = new CallDto();
+		CallDetailsDto call = new CallDetailsDto();
 		call.setDateCall(date);
 		call.setClientId(clientId);
 		call.setDuration(duration);
@@ -225,8 +230,8 @@ public abstract class RestClientService implements ClientService {
 		
 		try {
 			validateResponse(Response.Status.CREATED.getStatusCode(), response);
-			CallDtoJaxb call = response.readEntity(CallDtoJaxb.class);
-			return call.getCallId();
+			CallDetailsDtoJaxb callDetails = response.readEntity(CallDetailsDtoJaxb.class);
+			return callDetails.getCallId();
 		} catch (InputValidationException | InstanceNotFoundException ex) {
 			throw ex;
 		} catch (Exception ex) {

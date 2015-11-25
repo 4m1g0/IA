@@ -1,40 +1,30 @@
 package es.udc.rs.app.client.dto;
 
+import java.net.URI;
 import java.util.Calendar;
+
+import javax.ws.rs.core.Link;
 
 public class ClientDto {
 	private Long clientId;
 	private String name;
 	private String DNI;
-	private String address;
-	private String phone;
+	private URI self;
 	
 	
-	public ClientDto(Long clientId, String name, String dNI, String address,
-			String phone) {
+	public ClientDto(Long clientId, String name, String dNI, URI self) {
 		super();
 		this.clientId = clientId;
 		this.name = name;
-		DNI = dNI;
-		this.address = address;
-		this.phone = phone;
+		this.DNI = dNI;
+		this.self = self;
 	}
 	
-	public ClientDto(String name, String dNI, String address,
-			String phone) {
+	public ClientDto(String name, String dNI) {
 		this.name = name;
 		DNI = dNI;
-		this.address = address;
-		this.phone = phone;
 	}
 	
-	@Override
-	public String toString() {
-		return "Client [clientId=" + clientId + ", name=" + name + ", DNI="
-				+ DNI + ", address=" + address + ", phone=" + phone
-				+ ", creationDate=" + "]";
-	}
-
 	public Long getClientId() {
 		return clientId;
 	}
@@ -53,17 +43,14 @@ public class ClientDto {
 	public void setDNI(String dNI) {
 		DNI = dNI;
 	}
-	public String getAddress() {
-		return address;
+
+	public URI getSelf() {
+		return self;
 	}
-	public void setAddress(String address) {
-		this.address = address;
+
+	public void setSelf(URI self) {
+		this.self = self;
 	}
-	public String getPhone() {
-		return phone;
-	}
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+	
 
 }
