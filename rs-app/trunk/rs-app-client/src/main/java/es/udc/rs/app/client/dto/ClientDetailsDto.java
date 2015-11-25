@@ -63,4 +63,13 @@ public class ClientDetailsDto {
 		this.phone = phone;
 	}
 
+	@Override
+	public String toString() {
+		return "ClientDetailsDto [clientId=" + clientId + ", name=" + name
+				+ ", DNI=" + DNI + ", address=" + address + ", phone=" + phone
+				+ "]";
+	}
+	
+	
+
 }

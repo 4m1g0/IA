@@ -99,7 +99,8 @@ public abstract class RestClientService implements ClientService {
 				.accept(this.getMediaType())
 				.post(Entity.entity(
 						new GenericEntity<JAXBElement<ClientDetailsDtoJaxb>>(
-								ClientDtoToClientDtoJaxbConversor.toJaxbClientDetails(client)) {}, this.getMediaType()));
+								ClientDtoToClientDtoJaxbConversor.toJaxbClientDetails(client)) {
+							}, this.getMediaType()));
 		try {
 			validateResponse(Response.Status.CREATED.getStatusCode(), response);
 			ClientDetailsDtoJaxb resultClient = response.readEntity(ClientDetailsDtoJaxb.class);
@@ -205,6 +206,7 @@ public abstract class RestClientService implements ClientService {
 		
 		Response response = wt.request().accept(this.getMediaType()).get();
 		try {
+			System.out.println(response.toString());
 			validateResponse(Response.Status.OK.getStatusCode(), response);
 			ClientDtoJaxbList clients = response.readEntity(ClientDtoJaxbList.class);
 			return ClientDtoToClientDtoJaxbConversor.toClientDtos(clients);
@@ -236,7 +238,7 @@ public abstract class RestClientService implements ClientService {
 			CallDetailsDtoJaxb callDetails = response.readEntity(CallDetailsDtoJaxb.class);
 			return callDetails.getCallId();
 		} catch (InputValidationException | InstanceNotFoundException ex) {
-			throw ex;
+			throw new RuntimeException(ex);
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		} finally {

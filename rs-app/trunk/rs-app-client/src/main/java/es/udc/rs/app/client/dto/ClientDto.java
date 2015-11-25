@@ -43,4 +43,11 @@ public class ClientDto {
 		DNI = dNI;
 	}
 
+	@Override
+	public String toString() {
+		return "ClientDto [clientId=" + clientId + ", name=" + name + ", DNI="
+				+ DNI + "]";
+	}
+	
+
 }

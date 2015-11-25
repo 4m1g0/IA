@@ -46,5 +46,13 @@ public class CallDto {
 	public void setDestPhone(String destPhone) {
 		this.destPhone = destPhone;
 	}
+
+	@Override
+	public String toString() {
+		return "CallDto [dateCall=" + dateCall + ", duration=" + duration
+				+ ", destPhone=" + destPhone + "]";
+	}
+	
+	
 	
 }

@@ -87,4 +87,14 @@ public class CallDetailsDto {
 		this.state = state;
 	}
 
+	@Override
+	public String toString() {
+		return "CallDetailsDto [callId=" + callId + ", clientId=" + clientId
+				+ ", dateCall=" + dateCall + ", duration=" + duration
+				+ ", destPhone=" + destPhone + ", type=" + type + ", state="
+				+ state + "]";
+	}
+	
+	
+
 }

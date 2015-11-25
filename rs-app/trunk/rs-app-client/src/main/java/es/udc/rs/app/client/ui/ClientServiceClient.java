@@ -26,6 +26,7 @@ public class ClientServiceClient {
 	public static void main(String[] args){
 		
 		if (args.length == 0){
+			System.out.println(args[0]);
 			printUsageAndExit();
 		}
 		
@@ -133,14 +134,12 @@ public class ClientServiceClient {
 		if("-mc".equalsIgnoreCase(args[0])){
 			validateArgs(args, 6, new int[] { 1, 2 });
 			
-			Long clientId = Long.valueOf(args[1]);
-			Calendar date = StringToDate.parseStringToDate(args[2]);
-			int duration = Integer.parseInt(args[3]);
-			String phone = args[4];
-			enumType type = enumType.valueOf(args[5]);
-			
-			
 			try {
+				Long clientId = Long.valueOf(args[1]);
+				Calendar date = StringToDate.parseStringToDate(args[2]);
+				int duration = Integer.parseInt(args[3]);
+				String phone = args[4];
+				enumType type = enumType.valueOf(args[5]);
 				CallDetailsDto callDto = new CallDetailsDto(null,clientId, date, duration,phone,type, enumState.PENDING);
 				clientService.makeCall(clientId, date, duration, type, phone);
 				System.out.println("call made successfully");
@@ -184,7 +183,10 @@ public class ClientServiceClient {
 			int numRows = Integer.parseInt(args[4]);
 			if(args[5] == null){
 				try {
-					clientService.findCalls(clientId, initDate, endDate, index, numRows);
+					List<CallDto> listCall = clientService.findCalls(clientId, initDate, endDate, index, numRows);
+					for (int i = 0; i < listCall.size(); i++) {
+						listCall.get(i).toString();
+					}
 				} catch (NumberFormatException e) {
 					e.printStackTrace();
 				} catch (InstanceNotFoundException e) {
@@ -194,7 +196,10 @@ public class ClientServiceClient {
 			}
 			else{
 				try {
-					clientService.findCalls(clientId, initDate, endDate, index, numRows, enumType.valueOf(args[5]));
+				List<CallDto> listCall = clientService.findCalls(clientId, initDate, endDate, index, numRows, enumType.valueOf(args[5]));
+				for (int i = 0; i < listCall.size(); i++) {
+					listCall.get(i).toString();
+				}
 				} catch (NumberFormatException e) {
 					e.printStackTrace();
 				} catch (InstanceNotFoundException e) {
@@ -215,7 +220,10 @@ public class ClientServiceClient {
 			int index = Integer.parseInt(args[4]);
 			int numRows = Integer.parseInt(args[5]);
 			try {
-				clientService.findCalls(clientId, date, index, numRows);
+				List<CallDto> listCall = clientService.findCalls(clientId, date, index, numRows);
+				for (int i = 0; i < listCall.size(); i++) {
+					listCall.get(i).toString();
+				}
 			} catch (NumberFormatException e) {
 				// TODO: handle exception
 			} catch (CallStateException e) {

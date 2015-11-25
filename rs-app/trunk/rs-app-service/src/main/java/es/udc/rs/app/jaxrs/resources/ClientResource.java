@@ -38,6 +38,7 @@ import es.udc.ws.util.exceptions.InstanceNotFoundException;
 public class ClientResource {
 	
 	@GET
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response findClients(
 	@DefaultValue("") @QueryParam("keywords") String keywords, 
@@ -82,7 +83,7 @@ public class ClientResource {
 			return null;
 		}
 		return ServiceUtil.getProductsIntervalLink(uriInfo, keyword, startIndex
-				+ count, count, "next", "Next interval of products", type);
+				+ count, count, "next", "Next interval of clients", type);
 	}
 
 	private Link getPreviousLink(UriInfo uriInfo, String keyword,
@@ -95,7 +96,7 @@ public class ClientResource {
 			startIndex = 0;
 		}
 		return ServiceUtil.getProductsIntervalLink(uriInfo, keyword,
-				startIndex, count, "previous", "Previous interval of products",
+				startIndex, count, "previous", "Previous interval of clients",
 				type);
 	}
 	
@@ -103,7 +104,7 @@ public class ClientResource {
 			int count, String type) {
 		return ServiceUtil
 				.getProductsIntervalLink(uriInfo, keyword, startIndex, count,
-						"self", "Current interval of products", type);
+						"self", "Current interval of clients", type);
 	}
 
 	@GET
@@ -129,7 +130,7 @@ public class ClientResource {
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public ClientDtoJaxb findByDni(@DefaultValue("") @QueryParam("dni") String dni,
 			@Context UriInfo uriInfo, @Context HttpHeaders headers)
-			throws InstanceNotFoundException {
+			throws InstanceNotFoundException {		
 		return ClientToClientDtoJaxbConversor.toClientDtoJaxb(ClientServiceFactory
 				.getService().findClient(dni), uriInfo.getBaseUri(), 
 				ServiceUtil.getTypeAsStringFromHeaders(headers));
