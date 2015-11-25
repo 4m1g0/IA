@@ -14,7 +14,7 @@ import es.udc.rs.app.constants.ModelConstants.enumType;
 
 @XmlRootElement(name="call-details")
 @XmlType(name="callDetailsType", propOrder = {"id", "clientId", "dateCall", 
-		"duration", "destPhone", "state", "type", "links"})
+		"duration", "destPhone", "state", "type"})
 
 public class CallDetailsDtoJaxb {
 	
@@ -32,9 +32,6 @@ public class CallDetailsDtoJaxb {
     private enumState state;
     @XmlElement(required = true)
     private enumType type;
-    @XmlElement(name = "link")
-    @XmlJavaTypeAdapter(Link.JaxbAdapter.class)
-    private List<Link> links;
     
     public CallDetailsDtoJaxb(){
     	
@@ -42,7 +39,7 @@ public class CallDetailsDtoJaxb {
     
 	public CallDetailsDtoJaxb(Long id, Long clientId, Calendar dateCall,
 			Integer duration, String destPhone, enumState state, 
-			enumType type, List<Link> links) {
+			enumType type) {
 		this.id = id;
 		this.clientId = clientId;
 		this.dateCall = new DateDtoJaxb(dateCall);
@@ -50,7 +47,6 @@ public class CallDetailsDtoJaxb {
 		this.destPhone = destPhone;
 		this.state = state;
 		this.type = type;
-		this.links = links;
 		
 	}
 
@@ -110,13 +106,6 @@ public class CallDetailsDtoJaxb {
 		this.type = type;
 	}
 
-	public List<Link> getLinks() {
-		return links;
-	}
-
-	public void setLinks(List<Link> links) {
-		this.links = links;
-	}
 
 	
 	

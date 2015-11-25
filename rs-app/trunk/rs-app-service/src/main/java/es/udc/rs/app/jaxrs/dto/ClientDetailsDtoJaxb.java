@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlRootElement(name = "client-details")
 @XmlType(name="clientDetailsType", propOrder = {"id", "name", "DNI", 
-		"address", "phone", "links"})
+		"address", "phone"})
 public class ClientDetailsDtoJaxb {
 	@XmlElement(name = "client-id", required = true)
     private Long id;
@@ -22,22 +22,18 @@ public class ClientDetailsDtoJaxb {
     private String address;
     @XmlElement(required = true)
     private String phone;
-    @XmlElement(name = "link")
-    @XmlJavaTypeAdapter(Link.JaxbAdapter.class)
-	private List<Link> links;
 
 	public ClientDetailsDtoJaxb(){
     	
     }
 
 	public ClientDetailsDtoJaxb(Long id, String name, String DNI, String address,
-			String phone, List<Link> links) {
+			String phone) {
 		this.id = id;
 		this.name = name;
 		this.DNI = DNI;
 		this.address = address;
 		this.phone = phone;
-		this.links = links;
 	}
 
 	public Long getId() {
@@ -78,27 +74,6 @@ public class ClientDetailsDtoJaxb {
 	
 	public void setPhone(String phone) {
 		this.phone = phone;
-	}
-
-	
-	public List<Link> getLinks() {
-		return links;
-	}
-
-	public void setLinks(List<Link> links) {
-		this.links = links;
-	}
-
-	
-	@Override
-	public String toString() {
-		return "ClientDtoJaxb [clientId=" + id + ", name=" + name
-                + ", DNI=" + DNI
-                + ", address=" + address + ", phone=" + phone + "]";
-	}
-	
-	
-    
-    
+	}    
 
 }

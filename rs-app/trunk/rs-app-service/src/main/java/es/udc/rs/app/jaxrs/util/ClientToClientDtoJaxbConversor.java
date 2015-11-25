@@ -26,24 +26,14 @@ public class ClientToClientDtoJaxbConversor {
 	
 	public static ClientDtoJaxb toClientDtoJaxb(Client client, URI baseUri,
 			String type) {
-		Link selfLink = ServiceUtil.getLinkFromUri(baseUri, ClientResource.class,
-				client.getClientId(), "self", "Self link", type);
 		return new ClientDtoJaxb(client.getClientId(), client.getName(),
-				client.getDNI(), selfLink);
+				client.getDNI());
 	}
 
 	public static ClientDetailsDtoJaxb toClientDetailsDtoJaxb(
 			Client client, URI baseUri, String type) {
-		Link nextLink = ServiceUtil.getLinkFromUri(baseUri,
-				ClientResource.class, client.getClientId(), "client",
-				"next", type);
-		Link selfLink = ServiceUtil.getLinkFromUri(baseUri, ClientResource.class,
-				client.getClientId(), "self", "Self link", type);
-		List<Link> links = new ArrayList<Link>();
-		links.add(nextLink);
-		links.add(selfLink);
 		return new ClientDetailsDtoJaxb(client.getClientId(), client.getName(),
-				client.getDNI(), client.getAddress(), client.getPhone(), links);
+				client.getDNI(), client.getAddress(), client.getPhone());
 	}  
 	
 	public static Client toClient(ClientDetailsDtoJaxb client) {

@@ -3,8 +3,13 @@ package es.udc.rs.app.client.ui;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.ws.rs.core.Response;
+
+import es.udc.rs.app.client.dto.CallDetailsDto;
 import es.udc.rs.app.client.dto.CallDto;
+import es.udc.rs.app.client.dto.ClientDetailsDto;
 import es.udc.rs.app.client.dto.ClientDto;
+import es.udc.rs.app.client.rest.util.LinkUtil;
 import es.udc.rs.app.client.service.ClientService;
 import es.udc.rs.app.client.service.ClientServiceFactory;
 import es.udc.rs.app.constants.ModelConstants.enumState;
@@ -35,7 +40,7 @@ public class ClientServiceClient {
 			String phone = args[4];
 			try {
 				Long clientId = clientService.addClient(
-						new ClientDto(name, dni, address, phone)).getClientId();
+						new ClientDetailsDto(null,name, dni, address, phone)).getClientId();
 				
 				System.out.println("Client " + clientId + " "
 						+ "created successfully");
@@ -79,7 +84,7 @@ public class ClientServiceClient {
 			String phone = args[5];
 			
 			try {
-				ClientDto clientDto = new ClientDto(clientId, name, dni, address, phone);
+				ClientDetailsDto clientDto = new ClientDetailsDto(clientId, name, dni, address, phone);
 				clientService.updateClient(clientDto);
 				System.out.println("Client " + clientId + " "
 						+ "updated successfully");
@@ -130,13 +135,13 @@ public class ClientServiceClient {
 			
 			Long clientId = Long.valueOf(args[1]);
 			Calendar date = StringToDate.parseStringToDate(args[2]);
-			Integer duration = Integer.parseInt(args[3]);
+			int duration = Integer.parseInt(args[3]);
 			String phone = args[4];
 			enumType type = enumType.valueOf(args[5]);
 			
 			
 			try {
-				CallDto callDto = new CallDto(clientId, date, duration, phone, type);
+				CallDetailsDto callDto = new CallDetailsDto(null,clientId, date, duration,phone,type, enumState.PENDING);
 				clientService.makeCall(clientId, date, duration, type, phone);
 				System.out.println("call made successfully");
 			} catch (NumberFormatException | InstanceNotFoundException | InputValidationException e) {

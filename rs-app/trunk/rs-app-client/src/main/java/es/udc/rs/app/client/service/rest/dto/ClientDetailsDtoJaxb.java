@@ -2,14 +2,12 @@
 // Este archivo ha sido generado por la arquitectura JavaTM para la implantación de la referencia de enlace (JAXB) XML v2.2.7 
 // Visite <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Todas las modificaciones realizadas en este archivo se perderán si se vuelve a compilar el esquema de origen. 
-// Generado el: 2015.11.25 a las 11:56:52 AM CET 
+// Generado el: 2015.11.25 a las 01:30:34 PM CET 
 //
 
 
 package es.udc.rs.app.client.service.rest.dto;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -31,7 +29,6 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="DNI" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="address" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="phone" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="link" type="{}jaxbLink" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -46,8 +43,7 @@ import javax.xml.bind.annotation.XmlType;
     "name",
     "dni",
     "address",
-    "phone",
-    "link"
+    "phone"
 })
 public class ClientDetailsDtoJaxb {
 
@@ -61,7 +57,6 @@ public class ClientDetailsDtoJaxb {
     protected String address;
     @XmlElement(required = true)
     protected String phone;
-    protected List<JaxbLink> link;
 
     /**
      * Obtiene el valor de la propiedad clientId.
@@ -173,35 +168,6 @@ public class ClientDetailsDtoJaxb {
      */
     public void setPhone(String value) {
         this.phone = value;
-    }
-
-    /**
-     * Gets the value of the link property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the link property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getLink().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link JaxbLink }
-     * 
-     * 
-     */
-    public List<JaxbLink> getLink() {
-        if (link == null) {
-            link = new ArrayList<JaxbLink>();
-        }
-        return this.link;
     }
 
 }

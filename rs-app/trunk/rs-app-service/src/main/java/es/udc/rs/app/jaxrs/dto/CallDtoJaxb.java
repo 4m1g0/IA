@@ -13,7 +13,7 @@ import es.udc.rs.app.constants.ModelConstants.enumType;
 
 @XmlRootElement(name="call")
 @XmlType(name="callType", propOrder = {"dateCall", 
-		"duration", "destPhone","self"})
+		"duration", "destPhone"})
 
 public class CallDtoJaxb {
 
@@ -23,20 +23,16 @@ public class CallDtoJaxb {
     private Integer duration;
     @XmlElement(required = true)
     private String destPhone;
-    @XmlElement(name = "link")
-    @XmlJavaTypeAdapter(Link.JaxbAdapter.class)
-    private Link self;
     
     public CallDtoJaxb(){
     	
     }
     
 	public CallDtoJaxb(Calendar dateCall,
-			Integer duration, enumType type, Link self) {
+			Integer duration, enumType type) {
 		this.dateCall = new DateDtoJaxb(dateCall);
 		this.duration = duration;
 		this.destPhone = destPhone;
-		this.self = self;
 		
 	}
 
@@ -62,14 +58,6 @@ public class CallDtoJaxb {
 
 	public void setDestPhone(String destPhone) {
 		this.destPhone = destPhone;
-	}
-
-	public Link getSelf() {
-		return self;
-	}
-
-	public void setSelf(Link self) {
-		this.self = self;
 	}
 	
 }

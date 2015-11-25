@@ -11,19 +11,16 @@ public class CallDto {
 	private Calendar dateCall;
 	private int duration;
 	private String destPhone;
-	private URI self;
 	
 	public CallDto() {
 		super();
 	}
 
-	public CallDto(Calendar dateCall, int duration, String destPhone,
-			URI self) {
+	public CallDto(Calendar dateCall, int duration, String destPhone) {
 		super();
 		this.dateCall = dateCall;
 		this.duration = duration;
 		this.destPhone = destPhone;
-		this.self = self;
 	}
 
 	public Calendar getDateCall() {
@@ -49,16 +46,5 @@ public class CallDto {
 	public void setDestPhone(String destPhone) {
 		this.destPhone = destPhone;
 	}
-
-	public URI getSelf() {
-		return self;
-	}
-
-	public void setSelf(URI self) {
-		this.self = self;
-	}
-
-	
-
 	
 }

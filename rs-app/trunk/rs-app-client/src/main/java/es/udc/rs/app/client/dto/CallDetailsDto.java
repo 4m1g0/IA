@@ -14,16 +14,13 @@ public class CallDetailsDto {
 	private String destPhone;
 	private enumType type;
 	private enumState state;
-	private URI selfURI;
-	private URI clientURI;
 	
 	public CallDetailsDto() {
 		super();
 	}
 
 	public CallDetailsDto(Long callId, Long clientId, Calendar dateCall,
-			int duration, String destPhone, enumType type, enumState state,
-			URI selfURI, URI clientURI) {
+			int duration, String destPhone, enumType type, enumState state) {
 		super();
 		this.callId = callId;
 		this.clientId = clientId;
@@ -32,8 +29,6 @@ public class CallDetailsDto {
 		this.destPhone = destPhone;
 		this.type = type;
 		this.state = state;
-		this.selfURI = selfURI;
-		this.clientURI = clientURI;
 	}
 
 	public Long getCallId() {
@@ -91,24 +86,5 @@ public class CallDetailsDto {
 	public void setState(enumState state) {
 		this.state = state;
 	}
-
-	public URI getSelfURI() {
-		return selfURI;
-	}
-
-	public void setSelfURI(URI selfURI) {
-		this.selfURI = selfURI;
-	}
-
-	public URI getClientURI() {
-		return clientURI;
-	}
-
-	public void setClientURI(URI clientURI) {
-		this.clientURI = clientURI;
-	}
-	
-	
-	
 
 }

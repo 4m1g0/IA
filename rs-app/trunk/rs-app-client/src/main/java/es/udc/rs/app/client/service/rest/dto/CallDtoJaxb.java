@@ -2,7 +2,7 @@
 // Este archivo ha sido generado por la arquitectura JavaTM para la implantación de la referencia de enlace (JAXB) XML v2.2.7 
 // Visite <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Todas las modificaciones realizadas en este archivo se perderán si se vuelve a compilar el esquema de origen. 
-// Generado el: 2015.11.25 a las 11:56:52 AM CET 
+// Generado el: 2015.11.25 a las 01:30:34 PM CET 
 //
 
 
@@ -27,7 +27,6 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="dateCall" type="{http://rs.udc.es/clients/xml}dateType"/>
  *         &lt;element name="duration" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="destPhone" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="link" type="{}jaxbLink" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -40,8 +39,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "callType", propOrder = {
     "dateCall",
     "duration",
-    "destPhone",
-    "link"
+    "destPhone"
 })
 public class CallDtoJaxb {
 
@@ -50,7 +48,6 @@ public class CallDtoJaxb {
     protected int duration;
     @XmlElement(required = true)
     protected String destPhone;
-    protected JaxbLink link;
 
     /**
      * Obtiene el valor de la propiedad dateCall.
@@ -114,30 +111,6 @@ public class CallDtoJaxb {
      */
     public void setDestPhone(String value) {
         this.destPhone = value;
-    }
-
-    /**
-     * Obtiene el valor de la propiedad link.
-     * 
-     * @return
-     *     possible object is
-     *     {@link JaxbLink }
-     *     
-     */
-    public JaxbLink getLink() {
-        return link;
-    }
-
-    /**
-     * Define el valor de la propiedad link.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link JaxbLink }
-     *     
-     */
-    public void setLink(JaxbLink value) {
-        this.link = value;
     }
 
 }

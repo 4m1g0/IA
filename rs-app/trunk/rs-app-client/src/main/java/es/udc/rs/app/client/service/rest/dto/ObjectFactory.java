@@ -2,7 +2,7 @@
 // Este archivo ha sido generado por la arquitectura JavaTM para la implantación de la referencia de enlace (JAXB) XML v2.2.7 
 // Visite <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Todas las modificaciones realizadas en este archivo se perderán si se vuelve a compilar el esquema de origen. 
-// Generado el: 2015.11.25 a las 11:56:52 AM CET 
+// Generado el: 2015.11.25 a las 01:30:34 PM CET 
 //
 
 
@@ -32,14 +32,14 @@ import javax.xml.namespace.QName;
 public class ObjectFactory {
 
     private final static QName _RemoveClientException_QNAME = new QName("http://rs.udc.es/clients/xml", "RemoveClientException");
-    private final static QName _ClientDetails_QNAME = new QName("http://rs.udc.es/clients/xml", "client-details");
-    private final static QName _InstanceNotFoundException_QNAME = new QName("http://rs.udc.es/clients/xml", "InstanceNotFoundException");
-    private final static QName _Call_QNAME = new QName("http://rs.udc.es/clients/xml", "call");
-    private final static QName _CallStateException_QNAME = new QName("http://rs.udc.es/clients/xml", "CallStateException");
-    private final static QName _Client_QNAME = new QName("http://rs.udc.es/clients/xml", "client");
-    private final static QName _Clients_QNAME = new QName("http://rs.udc.es/clients/xml", "clients");
     private final static QName _InputValidationException_QNAME = new QName("http://rs.udc.es/clients/xml", "InputValidationException");
+    private final static QName _Client_QNAME = new QName("http://rs.udc.es/clients/xml", "client");
+    private final static QName _InstanceNotFoundException_QNAME = new QName("http://rs.udc.es/clients/xml", "InstanceNotFoundException");
+    private final static QName _CallStateException_QNAME = new QName("http://rs.udc.es/clients/xml", "CallStateException");
+    private final static QName _Clients_QNAME = new QName("http://rs.udc.es/clients/xml", "clients");
+    private final static QName _Call_QNAME = new QName("http://rs.udc.es/clients/xml", "call");
     private final static QName _CallDetails_QNAME = new QName("http://rs.udc.es/clients/xml", "call-details");
+    private final static QName _ClientDetails_QNAME = new QName("http://rs.udc.es/clients/xml", "client-details");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: es.udc.rs.app.client.service.rest.dto
@@ -57,19 +57,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link InstanceNotFoundExceptionDtoJaxb }
+     * Create an instance of {@link CallDetailsDtoJaxb }
      * 
      */
-    public InstanceNotFoundExceptionDtoJaxb createInstanceNotFoundExceptionDtoJaxb() {
-        return new InstanceNotFoundExceptionDtoJaxb();
-    }
-
-    /**
-     * Create an instance of {@link RemoveClientExceptionDtoJaxb }
-     * 
-     */
-    public RemoveClientExceptionDtoJaxb createRemoveClientExceptionDtoJaxb() {
-        return new RemoveClientExceptionDtoJaxb();
+    public CallDetailsDtoJaxb createCallDetailsDtoJaxb() {
+        return new CallDetailsDtoJaxb();
     }
 
     /**
@@ -81,11 +73,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ClientDtoJaxb }
+     * Create an instance of {@link ClientDtoJaxbList }
      * 
      */
-    public ClientDtoJaxb createClientDtoJaxb() {
-        return new ClientDtoJaxb();
+    public ClientDtoJaxbList createClientDtoJaxbList() {
+        return new ClientDtoJaxbList();
     }
 
     /**
@@ -97,6 +89,22 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link InstanceNotFoundExceptionDtoJaxb }
+     * 
+     */
+    public InstanceNotFoundExceptionDtoJaxb createInstanceNotFoundExceptionDtoJaxb() {
+        return new InstanceNotFoundExceptionDtoJaxb();
+    }
+
+    /**
+     * Create an instance of {@link ClientDtoJaxb }
+     * 
+     */
+    public ClientDtoJaxb createClientDtoJaxb() {
+        return new ClientDtoJaxb();
+    }
+
+    /**
      * Create an instance of {@link InputValidationExceptionDtoJaxb }
      * 
      */
@@ -105,19 +113,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link CallDetailsDtoJaxb }
+     * Create an instance of {@link RemoveClientExceptionDtoJaxb }
      * 
      */
-    public CallDetailsDtoJaxb createCallDetailsDtoJaxb() {
-        return new CallDetailsDtoJaxb();
-    }
-
-    /**
-     * Create an instance of {@link ClientDtoJaxbList }
-     * 
-     */
-    public ClientDtoJaxbList createClientDtoJaxbList() {
-        return new ClientDtoJaxbList();
+    public RemoveClientExceptionDtoJaxb createRemoveClientExceptionDtoJaxb() {
+        return new RemoveClientExceptionDtoJaxb();
     }
 
     /**
@@ -126,14 +126,6 @@ public class ObjectFactory {
      */
     public DateDtoJaxb createDateDtoJaxb() {
         return new DateDtoJaxb();
-    }
-
-    /**
-     * Create an instance of {@link JaxbLink }
-     * 
-     */
-    public JaxbLink createJaxbLink() {
-        return new JaxbLink();
     }
 
     /**
@@ -146,39 +138,12 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link ClientDetailsDtoJaxb }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link InputValidationExceptionDtoJaxb }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://rs.udc.es/clients/xml", name = "client-details")
-    public JAXBElement<ClientDetailsDtoJaxb> createClientDetails(ClientDetailsDtoJaxb value) {
-        return new JAXBElement<ClientDetailsDtoJaxb>(_ClientDetails_QNAME, ClientDetailsDtoJaxb.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link InstanceNotFoundExceptionDtoJaxb }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://rs.udc.es/clients/xml", name = "InstanceNotFoundException")
-    public JAXBElement<InstanceNotFoundExceptionDtoJaxb> createInstanceNotFoundException(InstanceNotFoundExceptionDtoJaxb value) {
-        return new JAXBElement<InstanceNotFoundExceptionDtoJaxb>(_InstanceNotFoundException_QNAME, InstanceNotFoundExceptionDtoJaxb.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link CallDtoJaxb }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://rs.udc.es/clients/xml", name = "call")
-    public JAXBElement<CallDtoJaxb> createCall(CallDtoJaxb value) {
-        return new JAXBElement<CallDtoJaxb>(_Call_QNAME, CallDtoJaxb.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link CallStateExceptionDtoJaxb }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://rs.udc.es/clients/xml", name = "CallStateException")
-    public JAXBElement<CallStateExceptionDtoJaxb> createCallStateException(CallStateExceptionDtoJaxb value) {
-        return new JAXBElement<CallStateExceptionDtoJaxb>(_CallStateException_QNAME, CallStateExceptionDtoJaxb.class, null, value);
+    @XmlElementDecl(namespace = "http://rs.udc.es/clients/xml", name = "InputValidationException")
+    public JAXBElement<InputValidationExceptionDtoJaxb> createInputValidationException(InputValidationExceptionDtoJaxb value) {
+        return new JAXBElement<InputValidationExceptionDtoJaxb>(_InputValidationException_QNAME, InputValidationExceptionDtoJaxb.class, null, value);
     }
 
     /**
@@ -191,6 +156,24 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link InstanceNotFoundExceptionDtoJaxb }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://rs.udc.es/clients/xml", name = "InstanceNotFoundException")
+    public JAXBElement<InstanceNotFoundExceptionDtoJaxb> createInstanceNotFoundException(InstanceNotFoundExceptionDtoJaxb value) {
+        return new JAXBElement<InstanceNotFoundExceptionDtoJaxb>(_InstanceNotFoundException_QNAME, InstanceNotFoundExceptionDtoJaxb.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link CallStateExceptionDtoJaxb }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://rs.udc.es/clients/xml", name = "CallStateException")
+    public JAXBElement<CallStateExceptionDtoJaxb> createCallStateException(CallStateExceptionDtoJaxb value) {
+        return new JAXBElement<CallStateExceptionDtoJaxb>(_CallStateException_QNAME, CallStateExceptionDtoJaxb.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link ClientDtoJaxbList }{@code >}}
      * 
      */
@@ -200,12 +183,12 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link InputValidationExceptionDtoJaxb }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link CallDtoJaxb }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://rs.udc.es/clients/xml", name = "InputValidationException")
-    public JAXBElement<InputValidationExceptionDtoJaxb> createInputValidationException(InputValidationExceptionDtoJaxb value) {
-        return new JAXBElement<InputValidationExceptionDtoJaxb>(_InputValidationException_QNAME, InputValidationExceptionDtoJaxb.class, null, value);
+    @XmlElementDecl(namespace = "http://rs.udc.es/clients/xml", name = "call")
+    public JAXBElement<CallDtoJaxb> createCall(CallDtoJaxb value) {
+        return new JAXBElement<CallDtoJaxb>(_Call_QNAME, CallDtoJaxb.class, null, value);
     }
 
     /**
@@ -215,6 +198,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://rs.udc.es/clients/xml", name = "call-details")
     public JAXBElement<CallDetailsDtoJaxb> createCallDetails(CallDetailsDtoJaxb value) {
         return new JAXBElement<CallDetailsDtoJaxb>(_CallDetails_QNAME, CallDetailsDtoJaxb.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ClientDetailsDtoJaxb }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://rs.udc.es/clients/xml", name = "client-details")
+    public JAXBElement<ClientDetailsDtoJaxb> createClientDetails(ClientDetailsDtoJaxb value) {
+        return new JAXBElement<ClientDetailsDtoJaxb>(_ClientDetails_QNAME, ClientDetailsDtoJaxb.class, null, value);
     }
 
 }

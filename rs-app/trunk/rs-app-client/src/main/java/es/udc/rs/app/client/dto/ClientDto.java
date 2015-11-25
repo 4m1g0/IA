@@ -9,15 +9,14 @@ public class ClientDto {
 	private Long clientId;
 	private String name;
 	private String DNI;
-	private URI self;
 	
 	
-	public ClientDto(Long clientId, String name, String dNI, URI self) {
+	
+	public ClientDto(Long clientId, String name, String dNI) {
 		super();
 		this.clientId = clientId;
 		this.name = name;
 		this.DNI = dNI;
-		this.self = self;
 	}
 	
 	public ClientDto(String name, String dNI) {
@@ -43,14 +42,5 @@ public class ClientDto {
 	public void setDNI(String dNI) {
 		DNI = dNI;
 	}
-
-	public URI getSelf() {
-		return self;
-	}
-
-	public void setSelf(URI self) {
-		this.self = self;
-	}
-	
 
 }

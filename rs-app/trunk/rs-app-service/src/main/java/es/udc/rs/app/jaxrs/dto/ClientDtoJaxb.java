@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlRootElement(name = "client")
-@XmlType(name="clientType", propOrder = {"id", "name","dni", "self"})
+@XmlType(name="clientType", propOrder = {"id", "name","dni"})
 public class ClientDtoJaxb {
 	@XmlElement(name = "client-id", required = true)
     private Long id;
@@ -15,19 +15,15 @@ public class ClientDtoJaxb {
     private String name;
     @XmlElement(required = true)
     private String dni;
-    @XmlElement(name = "link")
-    @XmlJavaTypeAdapter(Link.JaxbAdapter.class)
-    private Link self;
 
 	public ClientDtoJaxb(){
     	
     }
 
-	public ClientDtoJaxb(Long id, String name, String dni, Link self) {
+	public ClientDtoJaxb(Long id, String name, String dni) {
 		this.id = id;
 		this.name = name;
 		this.dni = dni;
-		this.self = self;
 	}
 
 	public Long getId() {
@@ -52,13 +48,5 @@ public class ClientDtoJaxb {
 
 	public void setDNI(String dni) {
 		this.dni = dni;
-	}
-	
-	public Link getSelf() {
-		return self;
-	}
-
-	public void setSelf(Link self) {
-		this.self = self;
-	}    
+	}   
 }
