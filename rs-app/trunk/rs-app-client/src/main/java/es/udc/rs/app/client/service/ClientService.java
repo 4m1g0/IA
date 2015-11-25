@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import es.udc.rs.app.client.dto.CallDto;
+import es.udc.rs.app.client.dto.ClientDetailsDto;
 import es.udc.rs.app.client.dto.ClientDto;
 import es.udc.rs.app.constants.ModelConstants.enumState;
 import es.udc.rs.app.constants.ModelConstants.enumType;
@@ -14,11 +15,11 @@ import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 
 public interface ClientService {
-	public ClientDto addClient(ClientDto client) throws InputValidationException;
+	public ClientDetailsDto addClient(ClientDetailsDto client) throws InputValidationException;
 
     public void removeClient(Long clientId) throws InstanceNotFoundException, RemoveClientException;
 
-    public void updateClient(ClientDto client) throws InputValidationException, InstanceNotFoundException;
+    public void updateClient(ClientDetailsDto client) throws InputValidationException, InstanceNotFoundException;
 
     public ClientDto findClient(Long clientId) throws InstanceNotFoundException;
     

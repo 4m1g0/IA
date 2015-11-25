@@ -15,18 +15,23 @@ import javax.xml.bind.JAXBElement;
 
 import es.udc.rs.app.client.dto.CallDetailsDto;
 import es.udc.rs.app.client.dto.CallDto;
+import es.udc.rs.app.client.dto.ClientDetailsDto;
 import es.udc.rs.app.client.dto.ClientDto;
 import es.udc.rs.app.client.dto.ClientListIntervalDto;
+import es.udc.rs.app.client.rest.util.CallToCallDtoJaxbConversor;
 import es.udc.rs.app.client.rest.util.ClientDtoToClientDtoJaxbConversor;
 import es.udc.rs.app.client.rest.util.JaxbExceptionConversor;
 import es.udc.rs.app.client.rest.util.LinkUtil;
 import es.udc.rs.app.client.service.ClientService;
 import es.udc.rs.app.client.service.rest.dto.CallDetailsDtoJaxb;
 import es.udc.rs.app.client.service.rest.dto.CallDtoJaxb;
+import es.udc.rs.app.client.service.rest.dto.CallStateExceptionDtoJaxb;
+import es.udc.rs.app.client.service.rest.dto.ClientDetailsDtoJaxb;
 import es.udc.rs.app.client.service.rest.dto.ClientDtoJaxb;
 import es.udc.rs.app.client.service.rest.dto.ClientDtoJaxbList;
 import es.udc.rs.app.client.service.rest.dto.InputValidationExceptionDtoJaxb;
 import es.udc.rs.app.client.service.rest.dto.InstanceNotFoundExceptionDtoJaxb;
+import es.udc.rs.app.client.service.rest.dto.RemoveClientExceptionDtoJaxb;
 import es.udc.rs.app.configuration.ConfigurationParametersManager;
 import es.udc.rs.app.constants.ModelConstants.enumState;
 import es.udc.rs.app.constants.ModelConstants.enumType;
@@ -64,6 +69,7 @@ public abstract class RestClientService implements ClientService {
 
 	protected abstract MediaType getMediaType();
 	
+	
 	private ClientListIntervalDto findClients(WebTarget wt, MediaType type) {
 		Response response = (type != null) ? wt.request().accept(type).get()
 				: wt.request().get();
@@ -86,19 +92,18 @@ public abstract class RestClientService implements ClientService {
 	}
 	
 	@Override
-	public ClientDto addClient(ClientDto client) throws InputValidationException {
+	public ClientDetailsDto addClient(ClientDetailsDto client) throws InputValidationException {
 		WebTarget wt = getEndpointWebTarget().path("clients");
 		Response response = wt
 				.request()
 				.accept(this.getMediaType())
 				.post(Entity.entity(
-						new GenericEntity<JAXBElement<ClientDtoJaxb>>(
-								ClientDtoToClientDtoJaxbConversor.) {}, this.getMediaType())
-								);
+						new GenericEntity<JAXBElement<ClientDetailsDtoJaxb>>(
+								ClientDtoToClientDtoJaxbConversor.toJaxbClientDetails(client)) {}, this.getMediaType()));
 		try {
 			validateResponse(Response.Status.CREATED.getStatusCode(), response);
-			ClientDtoJaxb resultClient = response.readEntity(ClientDtoJaxb.class);
-			return resultClient.getClientId();
+			ClientDetailsDtoJaxb resultClient = response.readEntity(ClientDetailsDtoJaxb.class);
+			return ClientDtoToClientDtoJaxbConversor.toClientDetailsDto(resultClient);
 		} catch (InputValidationException ex) {
 			throw ex;
 		} catch (Exception ex) {
@@ -129,7 +134,7 @@ public abstract class RestClientService implements ClientService {
 		}
 	}
 	@Override
-	public void updateClient(ClientDto client) throws InputValidationException,
+	public void updateClient(ClientDetailsDto client) throws InputValidationException,
 			InstanceNotFoundException {
 		WebTarget wt = getEndpointWebTarget().path("clients/{id}")
 				.resolveTemplate("id", client.getClientId());
@@ -140,10 +145,8 @@ public abstract class RestClientService implements ClientService {
 				// ClientDtoToClientDtoJaxbConversor.toJaxbClient(client),
 				// this.getMediaType()));
 				// Necessary to run with JSON and MOXy
-						new GenericEntity<JAXBElement<ClientDtoJaxb>>(
-								ClientDtoToClientDtoJaxbConversor
-										.toJaxbClient(client)) {
-						}, this.getMediaType()));
+						new GenericEntity<JAXBElement<ClientDetailsDtoJaxb>>(
+								ClientDtoToClientDtoJaxbConversor.toJaxbClientDetails(client)) {}, this.getMediaType()));
 		try {
 			validateResponse(Response.Status.NO_CONTENT.getStatusCode(),
 					response);
@@ -226,7 +229,7 @@ public abstract class RestClientService implements ClientService {
 
 		Response response = wt.request().accept(this.getMediaType())
 				.post(Entity.entity(
-						new GenericEntity<JAXBElement<CallDtoJaxb>>(CallDtoToClalDtoJaxbConversor.toJaxbCall(call)) {}, this.getMediaType()));
+						new GenericEntity<JAXBElement<CallDetailsDtoJaxb>>(CallToCallDtoJaxbConversor.toJaxbCallDetails(call)) {}, this.getMediaType()));
 		
 		try {
 			validateResponse(Response.Status.CREATED.getStatusCode(), response);
@@ -284,14 +287,14 @@ public abstract class RestClientService implements ClientService {
 		return null;
 	}
 	@Override
-	public String getClientUrl(Long saleId) throws InstanceNotFoundException {
+	public String getClientUrl(Long clientId) throws InstanceNotFoundException {
 		// TODO Apéndice de método generado automáticamente
 		return null;
 	}
 	
 	private void validateResponse(int expectedStatusCode, Response response)
 			throws InstanceNotFoundException, CallStateException,
-			InputValidationException {
+			InputValidationException, RemoveClientException {
 
 		Response.Status statusCode = Response.Status.fromStatusCode(response
 				.getStatus());
@@ -316,10 +319,15 @@ public abstract class RestClientService implements ClientService {
 					.readEntity(InputValidationExceptionDtoJaxb.class);
 			throw JaxbExceptionConversor.toInputValidationException(exDto);
 		}
-		case GONE: {
-			SaleExpirationExceptionDtoJaxb exDto = response
-					.readEntity(SaleExpirationExceptionDtoJaxb.class);
-			throw JaxbExceptionConversor.toSaleExpirationException(exDto);
+		case CONFLICT: {
+			CallStateExceptionDtoJaxb exDto = response
+					.readEntity(CallStateExceptionDtoJaxb.class);
+			throw JaxbExceptionConversor.toCallStatException(exDto);
+		}
+		case FORBIDDEN: {
+			RemoveClientExceptionDtoJaxb exDto = response
+					.readEntity(RemoveClientExceptionDtoJaxb.class);
+			throw JaxbExceptionConversor.toRemoveClientException(exDto);
 		}
 		default:
 			if (statusCode.getStatusCode() != expectedStatusCode) {
