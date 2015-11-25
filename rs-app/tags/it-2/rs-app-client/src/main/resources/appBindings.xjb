@@ -1,0 +1,38 @@
+<jxb:bindings version="1.0" 
+    xmlns:jxb="http://java.sun.com/xml/ns/jaxb" 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <jxb:bindings schemaLocation="../../../../rs-app-service/target/generated-resources/schemagen/schema1.xsd">
+        <jxb:bindings node="//xs:complexType[@name='clientDetailsType']">    
+            <jxb:class name="clientDetailsDtoJaxb"/>
+        </jxb:bindings> 
+        <jxb:bindings node="//xs:complexType[@name='clientType']">    
+            <jxb:class name="clientDtoJaxb"/>
+        </jxb:bindings> 
+        <jxb:bindings node="//xs:complexType[@name='clientListType']">    
+            <jxb:class name="clientDtoJaxbList"/>    
+        </jxb:bindings>
+        <jxb:bindings node="//xs:complexType[@name='dateType']">    
+            <jxb:class name="DateDtoJaxb"/>
+        </jxb:bindings>
+        <jxb:bindings node="//xs:complexType[@name='callDetailsType']">    
+            <jxb:class name="callDetailsDtoJaxb"/>
+        </jxb:bindings>  
+        <jxb:bindings node="//xs:complexType[@name='callType']">    
+            <jxb:class name="callDtoJaxb"/>
+        </jxb:bindings>
+        <jxb:bindings node="//xs:complexType[@name='inputValidationExceptionType']">    
+            <jxb:class name="InputValidationExceptionDtoJaxb"/>
+        </jxb:bindings>
+        <jxb:bindings node="//xs:complexType[@name='instanceNotFoundExceptionType']">    
+            <jxb:class name="InstanceNotFoundExceptionDtoJaxb"/>
+        </jxb:bindings>   
+        <jxb:bindings node="//xs:complexType[@name='callStateExceptionType']">    
+            <jxb:class name="CallStateExceptionDtoJaxb"/>
+        </jxb:bindings> 
+        <jxb:bindings node="//xs:complexType[@name='removeClientExceptionType']">    
+            <jxb:class name="RemoveClientExceptionDtoJaxb"/>
+        </jxb:bindings> 
+    </jxb:bindings>
+    
+</jxb:bindings>    
