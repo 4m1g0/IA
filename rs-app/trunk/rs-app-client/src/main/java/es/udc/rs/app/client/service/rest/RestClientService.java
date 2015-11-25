@@ -167,6 +167,7 @@ public abstract class RestClientService implements ClientService {
 				.resolveTemplate("id", clientId);
 		Response response = wt.request().accept(this.getMediaType()).get();
 		try {
+			System.out.println(response.getStatus());
 			validateResponse(Response.Status.OK.getStatusCode(), response);
 			ClientDtoJaxb client = response.readEntity(ClientDtoJaxb.class);
 			
@@ -206,7 +207,6 @@ public abstract class RestClientService implements ClientService {
 		
 		Response response = wt.request().accept(this.getMediaType()).get();
 		try {
-			System.out.println(response.toString());
 			validateResponse(Response.Status.OK.getStatusCode(), response);
 			ClientDtoJaxbList clients = response.readEntity(ClientDtoJaxbList.class);
 			return ClientDtoToClientDtoJaxbConversor.toClientDtos(clients);
@@ -271,7 +271,28 @@ public abstract class RestClientService implements ClientService {
 	@Override
 	public List<CallDto> findCalls(Long clientId, Calendar month, int index,
 			int numRows) throws CallStateException, InstanceNotFoundException {
-		// TODO Apéndice de método generado automáticamente
+		WebTarget wt = getEndpointWebTarget().path("clients/{id}")
+				.resolveTemplate("id", clientId)
+				.queryParam("month", month.get(Calendar.MONTH))
+				.queryParam("year", month.get(Calendar.YEAR))
+				.queryParam("index", index)
+				.queryParam("numRows", numRows);
+				
+				Response response = wt.request().accept(this.getMediaType()).put(null);
+		try {
+			validateResponse(Response.Status.NO_CONTENT.getStatusCode(),
+					response);
+			CallDtoJaxbList callss = response.readEntity(CallDtoJaxbList.class);
+			return ClientDtoToClientDtoJaxbConversor.toClientDtos(call);
+		} catch (InstanceNotFoundException ex) {
+			throw ex;
+		} catch (Exception ex) {
+			throw new RuntimeException(ex);
+		} finally {
+			if (response != null) {
+				response.close();
+			}
+		}
 		return null;
 	}
 	@Override
