@@ -2,7 +2,7 @@
 // Este archivo ha sido generado por la arquitectura JavaTM para la implantación de la referencia de enlace (JAXB) XML v2.2.7 
 // Visite <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Todas las modificaciones realizadas en este archivo se perderán si se vuelve a compilar el esquema de origen. 
-// Generado el: 2015.11.25 a las 01:34:43 PM CET 
+// Generado el: 2015.11.25 a las 04:42:46 PM CET 
 //
 
 
@@ -21,8 +21,8 @@ import javax.xml.bind.annotation.XmlType;
  * &lt;simpleType name="enumType">
  *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
  *     &lt;enumeration value="LOCAL"/>
- *     &lt;enumeration value="INTERNATIONAL"/>
  *     &lt;enumeration value="NATIONAL"/>
+ *     &lt;enumeration value="INTERNATIONAL"/>
  *   &lt;/restriction>
  * &lt;/simpleType>
  * </pre>
@@ -33,8 +33,8 @@ import javax.xml.bind.annotation.XmlType;
 public enum EnumType {
 
     LOCAL,
-    INTERNATIONAL,
-    NATIONAL;
+    NATIONAL,
+    INTERNATIONAL;
 
     public String value() {
         return name();

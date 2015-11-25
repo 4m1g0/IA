@@ -2,7 +2,7 @@
 // Este archivo ha sido generado por la arquitectura JavaTM para la implantación de la referencia de enlace (JAXB) XML v2.2.7 
 // Visite <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Todas las modificaciones realizadas en este archivo se perderán si se vuelve a compilar el esquema de origen. 
-// Generado el: 2015.11.25 a las 01:34:43 PM CET 
+// Generado el: 2015.11.25 a las 04:42:46 PM CET 
 //
 
 
@@ -36,6 +36,7 @@ public class ObjectFactory {
     private final static QName _Client_QNAME = new QName("http://rs.udc.es/clients/xml", "client");
     private final static QName _InstanceNotFoundException_QNAME = new QName("http://rs.udc.es/clients/xml", "InstanceNotFoundException");
     private final static QName _CallStateException_QNAME = new QName("http://rs.udc.es/clients/xml", "CallStateException");
+    private final static QName _Calls_QNAME = new QName("http://rs.udc.es/clients/xml", "calls");
     private final static QName _Clients_QNAME = new QName("http://rs.udc.es/clients/xml", "clients");
     private final static QName _Call_QNAME = new QName("http://rs.udc.es/clients/xml", "call");
     private final static QName _CallDetails_QNAME = new QName("http://rs.udc.es/clients/xml", "call-details");
@@ -86,6 +87,14 @@ public class ObjectFactory {
      */
     public CallStateExceptionDtoJaxb createCallStateExceptionDtoJaxb() {
         return new CallStateExceptionDtoJaxb();
+    }
+
+    /**
+     * Create an instance of {@link CallListType }
+     * 
+     */
+    public CallListType createCallListType() {
+        return new CallListType();
     }
 
     /**
@@ -171,6 +180,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://rs.udc.es/clients/xml", name = "CallStateException")
     public JAXBElement<CallStateExceptionDtoJaxb> createCallStateException(CallStateExceptionDtoJaxb value) {
         return new JAXBElement<CallStateExceptionDtoJaxb>(_CallStateException_QNAME, CallStateExceptionDtoJaxb.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link CallListType }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://rs.udc.es/clients/xml", name = "calls")
+    public JAXBElement<CallListType> createCalls(CallListType value) {
+        return new JAXBElement<CallListType>(_Calls_QNAME, CallListType.class, null, value);
     }
 
     /**

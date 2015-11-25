@@ -22,11 +22,11 @@ public class CallDtoJaxbList {
 		this.calls = calls;
 	}
 
-	public List<CallDtoJaxb> getClients() {
+	public List<CallDtoJaxb> getCalls() {
 		return calls;
 	}
 
-	public void setClients(List<CallDtoJaxb> calls) {
+	public void setCalls(List<CallDtoJaxb> calls) {
 		this.calls = calls;
 	}
 	

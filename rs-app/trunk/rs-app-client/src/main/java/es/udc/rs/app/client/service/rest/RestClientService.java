@@ -271,7 +271,7 @@ public abstract class RestClientService implements ClientService {
 	@Override
 	public List<CallDto> findCalls(Long clientId, Calendar month, int index,
 			int numRows) throws CallStateException, InstanceNotFoundException {
-		WebTarget wt = getEndpointWebTarget().path("clients/{id}")
+		/*WebTarget wt = getEndpointWebTarget().path("clients/{id}")
 				.resolveTemplate("id", clientId)
 				.queryParam("month", month.get(Calendar.MONTH))
 				.queryParam("year", month.get(Calendar.YEAR))
@@ -292,7 +292,7 @@ public abstract class RestClientService implements ClientService {
 			if (response != null) {
 				response.close();
 			}
-		}
+		}*/
 		return null;
 	}
 	@Override

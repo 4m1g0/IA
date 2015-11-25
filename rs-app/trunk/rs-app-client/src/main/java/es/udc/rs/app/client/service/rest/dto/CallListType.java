@@ -16,16 +16,16 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Clase Java para clientListType complex type.
+ * <p>Clase Java para callListType complex type.
  * 
  * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.
  * 
  * <pre>
- * &lt;complexType name="clientListType">
+ * &lt;complexType name="callListType">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element ref="{http://rs.udc.es/clients/xml}client" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element ref="{http://rs.udc.es/clients/xml}call" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -35,40 +35,40 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "clientListType", propOrder = {
-    "client"
+@XmlType(name = "callListType", propOrder = {
+    "call"
 })
-public class ClientDtoJaxbList {
+public class CallListType {
 
-    protected List<ClientDtoJaxb> client;
+    protected List<CallDtoJaxb> call;
 
     /**
-     * Gets the value of the client property.
+     * Gets the value of the call property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the client property.
+     * This is why there is not a <CODE>set</CODE> method for the call property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getClient().add(newItem);
+     *    getCall().add(newItem);
      * </pre>
      * 
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link ClientDtoJaxb }
+     * {@link CallDtoJaxb }
      * 
      * 
      */
-    public List<ClientDtoJaxb> getClient() {
-        if (client == null) {
-            client = new ArrayList<ClientDtoJaxb>();
+    public List<CallDtoJaxb> getCall() {
+        if (call == null) {
+            call = new ArrayList<CallDtoJaxb>();
         }
-        return this.client;
+        return this.call;
     }
 
 }

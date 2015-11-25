@@ -73,7 +73,7 @@ public class CallResource {
 		ClientServiceFactory.getService().changeCallState(clientId, cal, st);
 	}
 	
-	@GET
+	/*@GET
 	@Path("/{id}")
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
@@ -150,6 +150,6 @@ public class CallResource {
 				.getProductsIntervalLink(uriInfo, keyword, startIndex, count,
 						"self", "Current interval of clients", type);
 	}
-	
+	*/
 
 }
