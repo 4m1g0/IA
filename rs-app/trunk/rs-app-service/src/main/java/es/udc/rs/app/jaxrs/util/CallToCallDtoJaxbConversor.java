@@ -15,7 +15,7 @@ import es.udc.ws.util.exceptions.InputValidationException;
 public class CallToCallDtoJaxbConversor {
 
 	public static CallDtoJaxb toCallDtoJaxb(Call call, URI baseUri, String type) {
-		return new CallDtoJaxb(call.getDateCall(), call.getDuration(), call.getType());
+		return new CallDtoJaxb(call.getDateCall(), call.getDuration(), call.getDestPhone());
 	}
 
 	public static List<CallDtoJaxb> toCallDtoJaxb(List<Call> calls, URI baseUri, String type) {
@@ -30,7 +30,7 @@ public class CallToCallDtoJaxbConversor {
 
 	public static Call toCall(CallDetailsDtoJaxb call) throws InputValidationException {
 		Calendar callDate = Calendar.getInstance();
-		SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
 		try {
 			callDate.setTime(sdf.parse(call.getDateCall()));
 		} catch (ParseException e) {

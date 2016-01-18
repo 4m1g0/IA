@@ -4,9 +4,11 @@ import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.ws.rs.Consumes;
-
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -14,14 +16,19 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.Link;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.UriInfo;
 import es.udc.rs.app.constants.ModelConstants.enumState;
+import es.udc.rs.app.constants.ModelConstants.enumType;
 import es.udc.rs.app.exceptions.CallStateException;
 import es.udc.rs.app.exceptions.MonthExpirationException;
 import es.udc.rs.app.jaxrs.dto.CallDetailsDtoJaxb;
 import es.udc.rs.app.jaxrs.dto.CallDtoJaxb;
+import es.udc.rs.app.jaxrs.dto.CallDtoJaxbList;
 import es.udc.rs.app.jaxrs.util.CallToCallDtoJaxbConversor;
 import es.udc.rs.app.jaxrs.util.ServiceUtil;
 import es.udc.rs.app.model.call.Call;
@@ -37,7 +44,7 @@ public class CallResource {
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response makeCall(CallDetailsDtoJaxb callDto, @Context UriInfo ui, @Context HttpHeaders headers) throws InputValidationException, InstanceNotFoundException{
 		Calendar callDate = Calendar.getInstance();
-		SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat(ServiceUtil.DATE_FORMAT_DAY);
 		try {
 			callDate.setTime(sdf.parse(callDto.getDateCall()));
 		} catch (ParseException e) {
@@ -62,7 +69,7 @@ public class CallResource {
 		
 		enumState st;
 		Calendar callDate = Calendar.getInstance();
-		SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat(ServiceUtil.DATE_FORMAT_DAY);
 		try {
 			callDate.setTime(sdf.parse(date));
 			st = enumState.valueOf(state);
@@ -74,45 +81,59 @@ public class CallResource {
 		ClientServiceFactory.getService().changeCallState(id, callDate, st);
 	}
 	
-	/*@GET
-	@Path("/{id}")
-	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@GET
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response findCalls(
-			@PathParam("id") String id,
-	@DefaultValue("") @QueryParam("month") String month,
-	@DefaultValue("") @QueryParam("year") String year, 
-	@DefaultValue("0") @QueryParam("index") String index, 
-	@DefaultValue("2") @QueryParam("numRows") String numRows,
-	@Context UriInfo uriInfo, @Context HttpHeaders headers) throws InputValidationException, NumberFormatException, CallStateException, InstanceNotFoundException{
+			@QueryParam("id") Long id,
+			@QueryParam("initdate") String initDate,
+			@QueryParam("enddate") String endDate,
+			@DefaultValue("-1") @QueryParam("index") int index, 
+			@DefaultValue("-1") @QueryParam("numRows") int numRows,
+			@QueryParam("type") String callType,
+			@Context UriInfo uriInfo, @Context HttpHeaders headers) throws InputValidationException, NumberFormatException, CallStateException, InstanceNotFoundException{
 		
-		Long clientId = null;
-		Calendar cal = Calendar.getInstance();
-		int startIndex;
-		int size;
+		Calendar callInitDate = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat(ServiceUtil.DATE_FORMAT_DAY);
 		try {
-			startIndex = Integer.valueOf(index);
-			size = Integer.valueOf(numRows);
-			clientId = Long.parseLong(id);
-			cal.set(Integer.parseInt(year), Integer.parseInt(month), 10);
+			callInitDate.setTime(sdf.parse(initDate));
 		} catch (Exception e) {
-			throw new InputValidationException("Invalid Request: "
-					+ "unable to parse Frames '" + index + "'" + "'" + numRows + "'");
+			throw new InputValidationException("Formato de fecha incorrecto");
 		}
+		List<Call> calls;
 		
-		List<Call> calls =ClientServiceFactory.getService().findCalls(clientId, cal, Integer.parseInt(index), 
-				Integer.parseInt(numRows));
+		if (endDate == null){
+			calls = ClientServiceFactory.getService().findCalls(id, callInitDate, index, numRows);
+		} else{
+			Calendar callEndDate = Calendar.getInstance();
+			try {
+				callEndDate.setTime(sdf.parse(endDate));
+			} catch (Exception e) {
+				throw new InputValidationException("Formato de fecha incorrecto");
+			}
+			
+			if (callType == null){
+				calls = ClientServiceFactory.getService().findCalls(id, callInitDate, callEndDate, index, numRows);
+			} else {
+				enumType et;
+				try {
+					et = enumType.valueOf(callType);
+				}catch (Exception e) {
+					throw new InputValidationException("Tipo incorrecto");
+				}
+				calls = ClientServiceFactory.getService().findCalls(id, callInitDate, callEndDate, index, numRows, et);
+			}
+		}
 		
 		String type = ServiceUtil.getTypeAsStringFromHeaders(headers);
 
-		List<CallDtoJaxb> callDtos = CallToCallDtoJaxbConversor.toCallDtoJaxb(
-				calls, uriInfo.getBaseUri(), type);
-		Link selfLink = getSelfLink(uriInfo, id, startIndex, size, type);
-		Link nextLink = getNextLink(uriInfo, id, startIndex, size, calls.size(), type);
-		Link previousLink = getPreviousLink(uriInfo, id, startIndex,
-				size, type);
-		ResponseBuilder response = Response.ok(
-				new CallDtoJaxbList(callDtos)).links(selfLink);
+		List<CallDtoJaxb> callDtos = CallToCallDtoJaxbConversor.toCallDtoJaxb(calls, uriInfo.getBaseUri(), type);
+		
+		Link selfLink = Link.fromUri(uriInfo.getRequestUri()).build();
+		Link nextLink = getNextLink(uriInfo, index, numRows);
+		Link previousLink = getPreviousLink(uriInfo, index, numRows);
+		
+		ResponseBuilder response = Response.ok(new CallDtoJaxbList(callDtos)).links(selfLink);
+		
 		if (nextLink != null) {
 			response.links(nextLink);
 		}
@@ -122,35 +143,32 @@ public class CallResource {
 		return response.build();
 	}
 	
-	private static Link getNextLink(UriInfo uriInfo, String keyword,
-			int startIndex, int count, int numberOfProducts, String type) {
-		if (numberOfProducts < count) {
+	private static Link getNextLink(UriInfo self, int index, int numrows) {
+		if (index == -1 || numrows == -1)
 			return null;
-		}
-		return ServiceUtil.getProductsIntervalLink(uriInfo, keyword, startIndex
-				+ count, count, "next", "Next interval of clients", type);
+		
+		UriBuilder uriBuilder = self.getRequestUriBuilder()
+				.queryParam("inde", index+numrows)
+				.queryParam("numrows", numrows);
+		Link.Builder linkBuilder = Link.fromUriBuilder(uriBuilder)
+				.rel("next")
+				.title("Next call page");
+		
+		return linkBuilder.build();
 	}
 
-	private Link getPreviousLink(UriInfo uriInfo, String keyword,
-			int startIndex, int count, String type) {
-		if (startIndex <= 0) {
+	private static Link getPreviousLink(UriInfo self, int index, int numrows) {
+		if (index == -1 || numrows == -1)
 			return null;
-		}
-		startIndex = startIndex - count;
-		if (startIndex < 0) {
-			startIndex = 0;
-		}
-		return ServiceUtil.getProductsIntervalLink(uriInfo, keyword,
-				startIndex, count, "previous", "Previous interval of clients",
-				type);
+		
+		UriBuilder uriBuilder = self.getRequestUriBuilder()
+				.queryParam("inde", index-numrows)
+				.queryParam("numrows", numrows);
+		Link.Builder linkBuilder = Link.fromUriBuilder(uriBuilder)
+				.rel("previous")
+				.title("previous call page");
+		
+		return linkBuilder.build();
 	}
-	
-	private Link getSelfLink(UriInfo uriInfo, String keyword, int startIndex,
-			int count, String type) {
-		return ServiceUtil
-				.getProductsIntervalLink(uriInfo, keyword, startIndex, count,
-						"self", "Current interval of clients", type);
-	}
-	*/
 
 }

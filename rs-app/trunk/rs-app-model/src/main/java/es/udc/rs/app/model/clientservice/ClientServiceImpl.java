@@ -9,6 +9,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.persistence.annotations.AdditionalCriteria;
+
 import es.udc.rs.app.constants.ModelConstants.enumState;
 import es.udc.rs.app.constants.ModelConstants.enumType;
 import es.udc.rs.app.exceptions.CallStateException;
@@ -31,6 +33,7 @@ public class ClientServiceImpl implements ClientService {
 	public ClientServiceImpl() {
 		try{
 			addClient(new Client("pepe", "234345546", "caslle del pozo", "234345546"));
+			makeCall(0L, Calendar.getInstance(), 50, enumType.LOCAL, "696969699");
 			
 		}catch (Exception e){
 			

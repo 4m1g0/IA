@@ -11,6 +11,8 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
 public class ServiceUtil {
+	public static final String DATE_FORMAT_MIN = "yyyy-MM-dd HH:mm:ss";
+	public static final String DATE_FORMAT_DAY = "yyyy-MM-dd";
 
 	private static List<MediaType> responseMediaTypes = Arrays
 			.asList(new MediaType[] { MediaType.APPLICATION_JSON_TYPE,

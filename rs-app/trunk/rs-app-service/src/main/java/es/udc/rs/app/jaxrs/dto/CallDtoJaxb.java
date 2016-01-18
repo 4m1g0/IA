@@ -1,5 +1,6 @@
 package es.udc.rs.app.jaxrs.dto;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import javax.ws.rs.core.Link;
@@ -10,6 +11,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import es.udc.rs.app.constants.ModelConstants.enumState;
 import es.udc.rs.app.constants.ModelConstants.enumType;
+import es.udc.rs.app.jaxrs.util.ServiceUtil;
 
 @XmlRootElement(name="call")
 @XmlType(name="callType", propOrder = {"dateCall", 
@@ -29,8 +31,10 @@ public class CallDtoJaxb {
     }
     
 	public CallDtoJaxb(Calendar dateCall,
-			Integer duration, enumType type) {
-		this.dateCall = dateCall.toString();
+			Integer duration, String destPhone) {
+		SimpleDateFormat format = new SimpleDateFormat(ServiceUtil.DATE_FORMAT_MIN);
+		String date = format.format(dateCall.getTime());
+		this.dateCall = date;
 		this.duration = duration;
 		this.destPhone = destPhone;
 		
