@@ -29,6 +29,11 @@ public class ClientServiceImpl implements ClientService {
 	
 	
 	public ClientServiceImpl() {
+		try {
+			addClient(new Client("Pepito", "345T", "calle del pozo", "69669"));
+		}catch (Exception e){
+			
+		}
 		
 	}
 	
@@ -97,7 +102,7 @@ public class ClientServiceImpl implements ClientService {
 	@Override
 	public Client findClient(Long clientId) throws InstanceNotFoundException {
 		if(clients.get(clientId) == null){
-			throw new InstanceNotFoundException(null, clientId.toString());
+			throw new InstanceNotFoundException(clientId, clientId.toString());
 		}
 		return clients.get(clientId);
 	}
