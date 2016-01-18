@@ -49,7 +49,7 @@ public class ServiceUtil {
 		return linkBuilder.build();
 	}
 	
-	public static Link getProductsIntervalLink(UriInfo uriInfo, String keyword,
+	public static Link getIntervalLink(UriInfo uriInfo, String keyword,
 			int startIndex, int count, String rel, String title, String type) {
 		UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder()
 				.queryParam("keyword", keyword)
