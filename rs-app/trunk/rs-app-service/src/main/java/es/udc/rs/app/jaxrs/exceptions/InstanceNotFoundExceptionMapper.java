@@ -15,8 +15,8 @@ public class InstanceNotFoundExceptionMapper implements
 	public Response toResponse(InstanceNotFoundException ex) {
 		return Response
 				.status(Response.Status.NOT_FOUND)
-				.entity(new InstanceNotFoundExceptionDtoJaxb(
-						ex.getInstanceId(), ex.getInstanceType())).build();
+				.entity(new InstanceNotFoundExceptionDtoJaxb(ex.getInstanceId(), ex.getInstanceType()))
+				.build();
 
 	}
 

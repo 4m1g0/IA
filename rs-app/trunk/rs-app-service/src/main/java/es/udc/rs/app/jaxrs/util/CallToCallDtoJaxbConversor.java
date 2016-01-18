@@ -14,16 +14,13 @@ import es.udc.rs.app.jaxrs.resources.ClientResource;
 import es.udc.rs.app.model.call.Call;
 
 public class CallToCallDtoJaxbConversor {
-	
-	public static CallDtoJaxb toCallDtoJaxb(Call call, URI  baseUri,
-			String type){
-		return new CallDtoJaxb(call.getDateCall(),
-				call.getDuration(), call.getType());
+
+	public static CallDtoJaxb toCallDtoJaxb(Call call, URI baseUri, String type) {
+		return new CallDtoJaxb(call.getDateCall(), call.getDuration(), call.getType());
 	}
-	
-	public static List<CallDtoJaxb> toCallDtoJaxb(List<Call> calls, URI baseUri,
-			String type){
-		
+
+	public static List<CallDtoJaxb> toCallDtoJaxb(List<Call> calls, URI baseUri, String type) {
+
 		List<CallDtoJaxb> callsDtos = new ArrayList<>(calls.size());
 		for (int i = 0; i < calls.size(); i++) {
 			Call call = calls.get(i);
@@ -31,19 +28,16 @@ public class CallToCallDtoJaxbConversor {
 		}
 		return callsDtos;
 	}
-	
-	public static Call toCall(CallDetailsDtoJaxb call){
+
+	public static Call toCall(CallDetailsDtoJaxb call) {
 		Calendar callDate = Calendar.getInstance();
-		callDate.set(call.getDateCall().getYear(), call.getDateCall().getMonth(), 
-				call.getDateCall().getDay());
-		return new Call(call.getClientId(), callDate, call.getDuration(),
-				call.getType(), call.getDestPhone());
+		callDate.set(call.getDateCall().getYear(), call.getDateCall().getMonth(), call.getDateCall().getDay());
+		return new Call(call.getClientId(), callDate, call.getDuration(), call.getType(), call.getDestPhone());
 	}
-	
-	public static CallDetailsDtoJaxb toCallDetailsDtoJaxb(Call call, URI baseUri,
-			String type){
-		return new CallDetailsDtoJaxb(call.getCallId(), call.getClientId(), call.getDateCall(), 
-				call.getDuration(), call.getDestPhone(), call.getState(), call.getType());
+
+	public static CallDetailsDtoJaxb toCallDetailsDtoJaxb(Call call, URI baseUri, String type) {
+		return new CallDetailsDtoJaxb(call.getCallId(), call.getClientId(), call.getDateCall(), call.getDuration(),
+				call.getDestPhone(), call.getState(), call.getType());
 	}
 
 }

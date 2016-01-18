@@ -17,7 +17,8 @@ public class InstanceNotFoundExceptionDtoJaxb {
 	}
 
 	public InstanceNotFoundExceptionDtoJaxb(Object instanceId, String instanceType) {
-		this.instanceId = instanceId.toString();
+		if (instanceId != null)
+			this.instanceId = instanceId.toString();
 		this.instanceType = instanceType;
 	}
 

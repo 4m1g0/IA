@@ -39,8 +39,7 @@ public class ServiceUtil {
 	public static Link getLinkFromUri(URI baseUri, Class<?> resourceClass,
 			Object instanceId, String rel, String title, String type) {
 		Link.Builder linkBuilder = Link
-				.fromPath(
-						baseUri.toString()
+				.fromPath(baseUri.toString()
 								+ UriBuilder.fromResource(resourceClass)
 										.build().toString().substring(1) + "/"
 								+ instanceId).rel(rel).title(title);
