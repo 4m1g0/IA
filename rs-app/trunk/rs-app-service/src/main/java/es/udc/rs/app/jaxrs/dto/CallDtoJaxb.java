@@ -18,7 +18,7 @@ import es.udc.rs.app.constants.ModelConstants.enumType;
 public class CallDtoJaxb {
 
     @XmlElement(required = true)
-    private DateDtoJaxb dateCall;
+    private String dateCall;
     @XmlElement(required = true)
     private Integer duration;
     @XmlElement(required = true)
@@ -30,17 +30,17 @@ public class CallDtoJaxb {
     
 	public CallDtoJaxb(Calendar dateCall,
 			Integer duration, enumType type) {
-		this.dateCall = new DateDtoJaxb(dateCall);
+		this.dateCall = dateCall.toString();
 		this.duration = duration;
 		this.destPhone = destPhone;
 		
 	}
 
-	public DateDtoJaxb getDateCall() {
+	public String getDateCall() {
 		return dateCall;
 	}
 
-	public void setDateCall(DateDtoJaxb dateCall) {
+	public void setDateCall(String dateCall) {
 		this.dateCall = dateCall;
 	}
 

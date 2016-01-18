@@ -1,6 +1,7 @@
 package es.udc.rs.app.jaxrs.resources;
 
 import java.net.URI;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -47,25 +48,17 @@ import es.udc.rs.app.jaxb.StringToDate;
 public class CallResource {
 	
 	@POST
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public Response makeCall(@FormParam("clientId") Long clientId,
-						 @FormParam("date") String date,
-						 @FormParam("duration") Integer duration,
-						 @FormParam("type") String type,
-						 @FormParam("destPhone") String destPhone,
-						 @Context UriInfo ui, @Context HttpHeaders headers) throws InputValidationException, InstanceNotFoundException{
-		
-		Calendar cal;
-		enumType type2;
+	public Response makeCall(CallDetailsDtoJaxb callDto, @Context UriInfo ui, @Context HttpHeaders headers) throws InputValidationException, InstanceNotFoundException{
+		Calendar callDate = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
 		try {
-			cal = StringToDate.parseStringToDate(date);
-			type2 = enumType.valueOf(type);
-		} catch (Exception e){
-			throw new InputValidationException("Invalid date format.");
+			callDate.setTime(sdf.parse(callDto.getDateCall()));
+		} catch (ParseException e) {
+			throw new InputValidationException("Formato de fecha incorrecto");
 		}
-		
-
-		Call call = ClientServiceFactory.getService().makeCall(clientId, cal, duration, type2, destPhone);
+		Call call = ClientServiceFactory.getService().makeCall(callDto.getClientId(), callDate, callDto.getDuration(), callDto.getType(), callDto.getDestPhone());
 		CallDtoJaxb resultCallDto = CallToCallDtoJaxbConversor.toCallDtoJaxb(call, ui.getBaseUri(), ServiceUtil.getTypeAsStringFromHeaders(headers));
 		
 		String newId = String.valueOf(call.getClientId());
@@ -77,7 +70,7 @@ public class CallResource {
 	}
 	
 	@PUT
-	@Path("/{id}/{month}/{year}/{state}")
+	@Path("/{id}/{year}/{month}/{state}")
 	public void changeState(@PathParam("id") String id, @PathParam("month") String monthDate,
 			@PathParam("year") String yearDate, @PathParam("state") String state) 
 			throws InputValidationException, CallStateException, InstanceNotFoundException, 

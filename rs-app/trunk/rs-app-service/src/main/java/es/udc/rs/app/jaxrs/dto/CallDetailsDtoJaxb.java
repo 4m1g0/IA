@@ -23,7 +23,7 @@ public class CallDetailsDtoJaxb {
     @XmlElement(required = true)
     private Long clientId;
     @XmlElement(required = true)
-    private DateDtoJaxb dateCall;
+    private String dateCall;
     @XmlElement(required = true)
     private Integer duration;
     @XmlElement(required = true)
@@ -42,7 +42,7 @@ public class CallDetailsDtoJaxb {
 			enumType type) {
 		this.id = id;
 		this.clientId = clientId;
-		this.dateCall = new DateDtoJaxb(dateCall);
+		this.dateCall = dateCall.toString();
 		this.duration = duration;
 		this.destPhone = destPhone;
 		this.state = state;
@@ -66,11 +66,11 @@ public class CallDetailsDtoJaxb {
 		this.clientId = clientId;
 	}
 
-	public DateDtoJaxb getDateCall() {
+	public String getDateCall() {
 		return dateCall;
 	}
 
-	public void setDateCall(DateDtoJaxb dateCall) {
+	public void setDateCall(String dateCall) {
 		this.dateCall = dateCall;
 	}
 

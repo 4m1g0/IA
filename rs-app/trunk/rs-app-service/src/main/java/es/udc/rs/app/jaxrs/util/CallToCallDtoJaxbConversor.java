@@ -1,17 +1,16 @@
 package es.udc.rs.app.jaxrs.util;
 
 import java.net.URI;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.ws.rs.core.Link;
-
 import es.udc.rs.app.jaxrs.dto.CallDetailsDtoJaxb;
 import es.udc.rs.app.jaxrs.dto.CallDtoJaxb;
-import es.udc.rs.app.jaxrs.resources.CallResource;
-import es.udc.rs.app.jaxrs.resources.ClientResource;
 import es.udc.rs.app.model.call.Call;
+import es.udc.ws.util.exceptions.InputValidationException;
 
 public class CallToCallDtoJaxbConversor {
 
@@ -29,9 +28,14 @@ public class CallToCallDtoJaxbConversor {
 		return callsDtos;
 	}
 
-	public static Call toCall(CallDetailsDtoJaxb call) {
+	public static Call toCall(CallDetailsDtoJaxb call) throws InputValidationException {
 		Calendar callDate = Calendar.getInstance();
-		callDate.set(call.getDateCall().getYear(), call.getDateCall().getMonth(), call.getDateCall().getDay());
+		SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+		try {
+			callDate.setTime(sdf.parse(call.getDateCall()));
+		} catch (ParseException e) {
+			throw new InputValidationException("Formato de fecha incorrecto");
+		}
 		return new Call(call.getClientId(), callDate, call.getDuration(), call.getType(), call.getDestPhone());
 	}
 
