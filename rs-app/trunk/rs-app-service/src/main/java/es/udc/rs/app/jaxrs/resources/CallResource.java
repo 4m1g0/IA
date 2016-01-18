@@ -129,8 +129,8 @@ public class CallResource {
 		List<CallDtoJaxb> callDtos = CallToCallDtoJaxbConversor.toCallDtoJaxb(calls, uriInfo.getBaseUri(), type);
 		
 		Link selfLink = Link.fromUri(uriInfo.getRequestUri()).build();
-		Link nextLink = getNextLink(uriInfo, index, numRows);
-		Link previousLink = getPreviousLink(uriInfo, index, numRows);
+		Link nextLink = getNextLink(uriInfo, index, numRows, calls.size());
+		Link previousLink = getPreviousLink(uriInfo, index, numRows, calls.size());
 		
 		ResponseBuilder response = Response.ok(new CallDtoJaxbList(callDtos)).links(selfLink);
 		
@@ -143,8 +143,11 @@ public class CallResource {
 		return response.build();
 	}
 	
-	private static Link getNextLink(UriInfo self, int index, int numrows) {
+	private static Link getNextLink(UriInfo self, int index, int numrows, int size) {
 		if (index == -1 || numrows == -1)
+			return null;
+		
+		if (size < numrows)
 			return null;
 		
 		UriBuilder uriBuilder = self.getRequestUriBuilder()
@@ -157,8 +160,11 @@ public class CallResource {
 		return linkBuilder.build();
 	}
 
-	private static Link getPreviousLink(UriInfo self, int index, int numrows) {
+	private static Link getPreviousLink(UriInfo self, int index, int numrows, int size) {
 		if (index == -1 || numrows == -1)
+			return null;
+		
+		if (size < numrows)
 			return null;
 		
 		UriBuilder uriBuilder = self.getRequestUriBuilder()
