@@ -4,45 +4,30 @@ import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
 
-import javax.sql.rowset.spi.TransactionalWriter;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
+
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Link;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.core.Response.ResponseBuilder;
-
-import es.udc.rs.app.constants.ModelConstants;
 import es.udc.rs.app.constants.ModelConstants.enumState;
-import es.udc.rs.app.constants.ModelConstants.enumType;
 import es.udc.rs.app.exceptions.CallStateException;
 import es.udc.rs.app.exceptions.MonthExpirationException;
 import es.udc.rs.app.jaxrs.dto.CallDetailsDtoJaxb;
 import es.udc.rs.app.jaxrs.dto.CallDtoJaxb;
-import es.udc.rs.app.jaxrs.dto.ClientDtoJaxb;
-import es.udc.rs.app.jaxrs.dto.ClientDtoJaxbList;
 import es.udc.rs.app.jaxrs.util.CallToCallDtoJaxbConversor;
-import es.udc.rs.app.jaxrs.util.ClientToClientDtoJaxbConversor;
 import es.udc.rs.app.jaxrs.util.ServiceUtil;
 import es.udc.rs.app.model.call.Call;
 import es.udc.rs.app.model.clientservice.ClientServiceFactory;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
-import es.udc.rs.app.jaxb.StringToDate;
 
 @Path("/calls")
 public class CallResource {
@@ -70,28 +55,23 @@ public class CallResource {
 	}
 	
 	@PUT
-	@Path("/{id}/{year}/{month}/{state}")
-	public void changeState(@PathParam("id") String id, @PathParam("month") String monthDate,
-			@PathParam("year") String yearDate, @PathParam("state") String state) 
-			throws InputValidationException, CallStateException, InstanceNotFoundException, 
-			MonthExpirationException{
+	public void changeState(@QueryParam("id") Long id, 
+							@QueryParam("date") String date,
+							@QueryParam("state") String state) 
+			throws InputValidationException, CallStateException, InstanceNotFoundException, MonthExpirationException{
 		
-		Long clientId;
-		enumState st = ModelConstants.enumState.valueOf(state);
-		int month;
-		int year;
+		enumState st;
+		Calendar callDate = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
 		try {
-			clientId = Long.valueOf(id);
-			month = Integer.parseInt(monthDate)- 1;
-			year = Integer.parseInt(yearDate);
+			callDate.setTime(sdf.parse(date));
+			st = enumState.valueOf(state);
 		} catch (Exception e) {
-			throw new InputValidationException("Invalid Request: "
-					+ "unable to parse client id '" + id + "'");
+			throw new InputValidationException("Formato de fecha incorrecto");
 		}
-		Calendar cal = Calendar.getInstance();
-		cal.set(Calendar.MONTH, month);
-		cal.set(Calendar.YEAR, year);
-		ClientServiceFactory.getService().changeCallState(clientId, cal, st);
+		
+
+		ClientServiceFactory.getService().changeCallState(id, callDate, st);
 	}
 	
 	/*@GET

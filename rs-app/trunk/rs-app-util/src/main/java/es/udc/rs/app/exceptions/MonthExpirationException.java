@@ -3,6 +3,7 @@ package es.udc.rs.app.exceptions;
 import java.util.Calendar;
 
 public class MonthExpirationException extends Exception {
+	private static final long serialVersionUID = 1L;
 	private Calendar date;
 	
 	public MonthExpirationException(Calendar date){
