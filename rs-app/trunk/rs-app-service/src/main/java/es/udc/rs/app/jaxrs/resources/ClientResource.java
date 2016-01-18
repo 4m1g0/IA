@@ -28,9 +28,7 @@ import es.udc.rs.app.jaxrs.dto.ClientDtoJaxbList;
 import es.udc.rs.app.jaxrs.util.ClientToClientDtoJaxbConversor;
 import es.udc.rs.app.jaxrs.util.ServiceUtil;
 import es.udc.rs.app.model.client.Client;
-import es.udc.rs.app.model.clientservice.ClientService;
 import es.udc.rs.app.model.clientservice.ClientServiceFactory;
-import es.udc.rs.app.model.clientservice.ClientServiceImpl;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 
@@ -44,7 +42,20 @@ public class ClientResource {
 		@DefaultValue("") @QueryParam("keywords") String keywords, 
 		@DefaultValue("0") @QueryParam("index") String index, 
 		@DefaultValue("2") @QueryParam("numRows") String numRows,
-		@Context UriInfo uriInfo, @Context HttpHeaders headers) throws InputValidationException{
+		@DefaultValue("") @QueryParam("dni") String dni,
+		@Context UriInfo uriInfo, @Context HttpHeaders headers) throws InputValidationException, InstanceNotFoundException{
+		
+		if (!dni.equals("")){
+			ClientDetailsDtoJaxb clientDto =  ClientToClientDtoJaxbConversor.toClientDetailsDtoJaxb(ClientServiceFactory.getService().findClient(dni), uriInfo.getBaseUri(), 
+					ServiceUtil.getTypeAsStringFromHeaders(headers));
+			
+			String newId = String.valueOf(clientDto.getId());
+			URI uri = uriInfo.getAbsolutePathBuilder().path(newId).build();
+			
+			return Response.ok(clientDto)
+					.link(uri, "self")
+					.build();
+		}
 		
 		int startIndex;
 		int size;
@@ -105,21 +116,12 @@ public class ClientResource {
 	@GET
 	@Path("/{id}")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public ClientDtoJaxb findById(@PathParam("id") Long id, @Context UriInfo uriInfo, @Context HttpHeaders headers)
+	public ClientDetailsDtoJaxb findById(@PathParam("id") Long id, @Context UriInfo uriInfo, @Context HttpHeaders headers)
 			throws InstanceNotFoundException, InputValidationException {
 		
-		return ClientToClientDtoJaxbConversor.toClientDtoJaxb(ClientServiceFactory.getService().findClient(id), uriInfo.getBaseUri(), 
+		return ClientToClientDtoJaxbConversor.toClientDetailsDtoJaxb(ClientServiceFactory.getService().findClient(id), uriInfo.getBaseUri(), 
 				ServiceUtil.getTypeAsStringFromHeaders(headers));
 
-	}
-	
-	@GET
-	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public ClientDtoJaxb findByDni(@DefaultValue("") @QueryParam("dni") String dni, @Context UriInfo uriInfo, @Context HttpHeaders headers)
-			throws InstanceNotFoundException {	
-		
-		return ClientToClientDtoJaxbConversor.toClientDtoJaxb(ClientServiceFactory.getService().findClient(dni), uriInfo.getBaseUri(), 
-				ServiceUtil.getTypeAsStringFromHeaders(headers));
 	}
 	
 	@POST
@@ -131,7 +133,7 @@ public class ClientResource {
 		Client client = ClientToClientDtoJaxbConversor.toClient(clientDto);
 		client = ClientServiceFactory.getService().addClient(client);
 		
-		ClientDtoJaxb resultClientDto = ClientToClientDtoJaxbConversor.toClientDtoJaxb(client, ui.getBaseUri(), ServiceUtil.getTypeAsStringFromHeaders(headers));
+		ClientDetailsDtoJaxb resultClientDto = ClientToClientDtoJaxbConversor.toClientDetailsDtoJaxb(client, ui.getBaseUri(), ServiceUtil.getTypeAsStringFromHeaders(headers));
 		
 		String newId = String.valueOf(client.getClientId());
 		URI uri = ui.getAbsolutePathBuilder().path(newId).build();
