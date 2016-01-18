@@ -2,10 +2,12 @@ package es.udc.rs.app.jaxrs.exceptions;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
+import javax.ws.rs.ext.Provider;
 
 import es.udc.rs.app.exceptions.RemoveClientException;
 import es.udc.rs.app.jaxrs.dto.RemoveClientExceptionDtoJaxb;
 
+@Provider
 public class RemoveClientExceptionMapper implements ExceptionMapper<RemoveClientException>{
 
 	@Override
