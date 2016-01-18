@@ -5,7 +5,7 @@ import java.util.Calendar;
 public final class StringToDate {
 	
 	
-	public static Calendar parseStringToDate(String date){
+	public static Calendar parseStringToDate(String date) {
 		
 		String [] elem = date.split("[- :]");
 		Calendar cal = Calendar.getInstance();

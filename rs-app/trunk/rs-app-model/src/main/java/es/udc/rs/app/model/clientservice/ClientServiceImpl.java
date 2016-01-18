@@ -29,12 +29,12 @@ public class ClientServiceImpl implements ClientService {
 	
 	
 	public ClientServiceImpl() {
-		try {
-			addClient(new Client("Pepito", "345T", "calle del pozo", "69669"));
+		try{
+			addClient(new Client("pepe", "234345546", "caslle del pozo", "234345546"));
+			
 		}catch (Exception e){
 			
 		}
-		
 	}
 	
 	public synchronized long incrementClient(){
@@ -132,7 +132,7 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public void makeCall(Long clientId, Calendar date, Integer duration, enumType type, String destPhone) 
+	public Call makeCall(Long clientId, Calendar date, Integer duration, enumType type, String destPhone) 
 			throws InstanceNotFoundException, InputValidationException { // FIXME: esto nunca lanza inputvalidation y deberia¿?!! SI, comprobar las fechas por ejemplo
 		Client c = clients.get(clientId);
 		
@@ -143,6 +143,8 @@ public class ClientServiceImpl implements ClientService {
 		Call call = new Call(clientId, date, duration, type, destPhone);
 		call.setCallId(incrementCall());
 		calls.put(call.getCallId(), call);
+		
+		return call;
 	}
 
 	@Override

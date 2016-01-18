@@ -3,8 +3,6 @@ package es.udc.rs.app.model.clientservice;
 import es.udc.rs.app.configuration.ConfigurationParametersManager;
 
 
-
-
 public class ClientServiceFactory {
 	private final static String CLASS_NAME_PARAMETER = "ClientServiceFactory.className";
     private static ClientService service = null;

@@ -1,10 +1,15 @@
 package es.udc.rs.app.jaxrs.resources;
 
+import java.net.URI;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
+import javax.sql.rowset.spi.TransactionalWriter;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -22,6 +27,7 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 
 import es.udc.rs.app.constants.ModelConstants;
 import es.udc.rs.app.constants.ModelConstants.enumState;
+import es.udc.rs.app.constants.ModelConstants.enumType;
 import es.udc.rs.app.exceptions.CallStateException;
 import es.udc.rs.app.exceptions.MonthExpirationException;
 import es.udc.rs.app.jaxrs.dto.CallDetailsDtoJaxb;
@@ -35,17 +41,39 @@ import es.udc.rs.app.model.call.Call;
 import es.udc.rs.app.model.clientservice.ClientServiceFactory;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
+import es.udc.rs.app.jaxb.StringToDate;
 
 @Path("/calls")
 public class CallResource {
 	
 	@POST
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public void makeCall(CallDetailsDtoJaxb callDto) throws InputValidationException, InstanceNotFoundException{
-		Call call = CallToCallDtoJaxbConversor.toCall(callDto);
-		ClientServiceFactory.getService().makeCall(call.getClientId(), call.getDateCall(), 
-				call.getDuration(), call.getType(), call.getDestPhone());
+	public Response makeCall(@FormParam("clientId") Long clientId,
+						 @FormParam("date") String date,
+						 @FormParam("duration") Integer duration,
+						 @FormParam("type") String type,
+						 @FormParam("destPhone") String destPhone,
+						 @Context UriInfo ui, @Context HttpHeaders headers) throws InputValidationException, InstanceNotFoundException{
 		
+		Calendar cal;
+		enumType type2;
+		try {
+			cal = StringToDate.parseStringToDate(date);
+			type2 = enumType.valueOf(type);
+		} catch (Exception e){
+			throw new InputValidationException("Invalid date format.");
+		}
+		
+
+		Call call = ClientServiceFactory.getService().makeCall(clientId, cal, duration, type2, destPhone);
+		CallDtoJaxb resultCallDto = CallToCallDtoJaxbConversor.toCallDtoJaxb(call, ui.getBaseUri(), ServiceUtil.getTypeAsStringFromHeaders(headers));
+		
+		String newId = String.valueOf(call.getClientId());
+		URI uri = ui.getAbsolutePathBuilder().path(newId).build();
+		
+		return Response.created(uri)
+					   .entity(resultCallDto)
+					   .build();
 	}
 	
 	@PUT
