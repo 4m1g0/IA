@@ -12,9 +12,6 @@
         <jxb:bindings node="//xs:complexType[@name='clientListType']">    
             <jxb:class name="clientDtoJaxbList"/>    
         </jxb:bindings>
-        <jxb:bindings node="//xs:complexType[@name='dateType']">    
-            <jxb:class name="DateDtoJaxb"/>
-        </jxb:bindings>
         <jxb:bindings node="//xs:complexType[@name='callDetailsType']">    
             <jxb:class name="callDetailsDtoJaxb"/>
         </jxb:bindings>  
