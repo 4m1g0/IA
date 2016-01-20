@@ -30,8 +30,7 @@ public class CallDtoJaxb {
     	
     }
     
-	public CallDtoJaxb(Calendar dateCall,
-			Integer duration, String destPhone) {
+	public CallDtoJaxb(Calendar dateCall, Integer duration, String destPhone) {
 		SimpleDateFormat format = new SimpleDateFormat(ServiceUtil.DATE_FORMAT_MIN);
 		String date = format.format(dateCall.getTime());
 		this.dateCall = date;

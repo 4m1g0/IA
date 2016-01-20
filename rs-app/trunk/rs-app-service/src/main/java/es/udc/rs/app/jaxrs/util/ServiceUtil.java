@@ -1,7 +1,9 @@
 package es.udc.rs.app.jaxrs.util;
 
 import java.net.URI;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.ws.rs.core.HttpHeaders;
@@ -10,9 +12,28 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
+import es.udc.ws.util.exceptions.InputValidationException;
+
 public class ServiceUtil {
 	public static final String DATE_FORMAT_MIN = "yyyy-MM-dd HH:mm:ss";
-	public static final String DATE_FORMAT_DAY = "yyyy-MM-dd";
+	public static final String DATE_FORMAT_DAY = "yyyy-MM-dd HH:mm:ss";
+	
+	public static Calendar getCalendar(String date) throws InputValidationException{
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat(ServiceUtil.DATE_FORMAT_MIN);
+		try {
+			cal.setTime(sdf.parse(date));
+		} catch (Exception e) {
+			throw new InputValidationException("Formato de fecha incorrecto");
+		}
+		
+		return cal;
+	}
+	
+	public static String getDateString(Calendar cal) {
+		SimpleDateFormat format = new SimpleDateFormat(ServiceUtil.DATE_FORMAT_MIN);
+		return format.format(cal.getTime());
+	}
 
 	private static List<MediaType> responseMediaTypes = Arrays
 			.asList(new MediaType[] { MediaType.APPLICATION_JSON_TYPE,
