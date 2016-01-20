@@ -2,11 +2,8 @@ package es.udc.rs.app.model.clientservice;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Calendar;
-
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -41,7 +38,7 @@ public class ClientServiceTest {
 			Calendar cal = Calendar.getInstance();
 			Calendar cal2 = Calendar.getInstance();
 			cal.set(Calendar.MONTH, 4);
-			List<Call> callist = new ArrayList<Call>();
+
 			clientService.makeCall(client1.getClientId(), cal, 234, enumType.LOCAL,"65943902");
 			clientService.makeCall(client1.getClientId(), cal, 244, enumType.LOCAL,"65954912");
 			clientService.makeCall(client1.getClientId(), cal, 244, enumType.LOCAL,"65954912");
@@ -52,23 +49,6 @@ public class ClientServiceTest {
 			
 		}
 
-	}
-
-	@Before
-	public void setUp() throws Exception {
-		
-	
-	}
-
-	
-	private Client getValidClient(String name)
-	{
-		return new Client(name, "45777777C", "Calle pepito 22", "678956745");
-	}
-	
-	private Client getValidClient()
-	{
-		return getValidClient("Paco");
 	}
 
 	@Test
@@ -105,17 +85,13 @@ public class ClientServiceTest {
 	InstanceNotFoundException{
 		
 		Client client = new Client("alberto", "12345678W", "asdfff", "654321265");
-		try {
-			clientService.addClient(client);
-			client.setDNI("87654321A");
-			client.setAddress("fffff");
-			clientService.updateClient(client);
-			Client result = clientService.findClient(client.getClientId());
-			assertEquals(result, client);
-		} finally{
-			//clientService.removeClient(client.getClientId());
-			
-		}
+
+		clientService.addClient(client);
+		client.setDNI("87654321A");
+		client.setAddress("fffff");
+		clientService.updateClient(client);
+		Client result = clientService.findClient(client.getClientId());
+		assertEquals(result, client);
 	}
 
 	@Test
@@ -192,12 +168,12 @@ public class ClientServiceTest {
 		Client c = clientService.findClient("66673477R");
 		Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.MONTH, 7);
-		List<Call> callist = new ArrayList<Call>();
+
 		clientService.makeCall(c.getClientId(), cal, 234, enumType.LOCAL,"65943902");
 		clientService.makeCall(c.getClientId(), cal, 244, enumType.LOCAL,"65954912");
 		clientService.changeCallState(c.getClientId(), cal, enumState.BILLED);
 		// la busqueda debe lanzar excepcion si el estado se ha cambiado correctamente
-		List<Call> calls = clientService.findCalls(c.getClientId(), cal, 0, 99999);
+		clientService.findCalls(c.getClientId(), cal, 0, 99999);
 	}
 	
 	@Test(expected = MonthExpirationException.class)

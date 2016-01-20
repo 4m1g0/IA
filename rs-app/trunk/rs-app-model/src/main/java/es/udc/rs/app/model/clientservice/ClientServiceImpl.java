@@ -2,15 +2,11 @@ package es.udc.rs.app.model.clientservice;
 
 import java.util.ArrayList;
 
-// TODO: excepciones permanentes: inputvalidation y error de cliente ya tiene llamadas al borrarlo!
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.eclipse.persistence.annotations.AdditionalCriteria;
-
 import es.udc.rs.app.constants.ModelConstants.enumState;
 import es.udc.rs.app.constants.ModelConstants.enumType;
 import es.udc.rs.app.exceptions.CallStateException;
@@ -136,7 +132,7 @@ public class ClientServiceImpl implements ClientService {
 
 	@Override
 	public Call makeCall(Long clientId, Calendar date, Integer duration, enumType type, String destPhone) 
-			throws InstanceNotFoundException, InputValidationException { // FIXME: esto nunca lanza inputvalidation y deberia¿?!! SI, comprobar las fechas por ejemplo
+			throws InstanceNotFoundException, InputValidationException { 
 		Client c = clients.get(clientId);
 		
 		if(c == null){
@@ -183,7 +179,7 @@ public class ClientServiceImpl implements ClientService {
 				continue;
 			}
 			
-			if(call.getDateCall().MONTH == date.MONTH && call.getDateCall().YEAR == date.YEAR && i++ >= index){
+			if(call.getDateCall().get(Calendar.MONTH) == date.get(Calendar.MONTH) && call.getDateCall().get(Calendar.YEAR) == date.get(Calendar.YEAR) && i++ >= index){
 				if (call.getState() != enumState.PENDING)
 					throw new CallStateException(clientId, call.getCallId());
 				findCalls.add(call);
@@ -201,7 +197,7 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public List<Call> findCalls(Long clientId, Calendar initDate, Calendar endDate, int index, int numRows, enumType type) throws InstanceNotFoundException { //TODO: no hace falta callStateexception
+	public List<Call> findCalls(Long clientId, Calendar initDate, Calendar endDate, int index, int numRows, enumType type) throws InstanceNotFoundException { 
 		List<Call> findCalls = new ArrayList<Call>();
 		
 		int i = 0;
