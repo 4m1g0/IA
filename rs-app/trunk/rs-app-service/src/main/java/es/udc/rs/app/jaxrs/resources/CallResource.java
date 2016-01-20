@@ -1,8 +1,6 @@
 package es.udc.rs.app.jaxrs.resources;
 
 import java.net.URI;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
@@ -43,13 +41,7 @@ public class CallResource {
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response makeCall(CallDetailsDtoJaxb callDto, @Context UriInfo ui, @Context HttpHeaders headers) throws InputValidationException, InstanceNotFoundException{
-		Calendar callDate = Calendar.getInstance();
-		SimpleDateFormat sdf = new SimpleDateFormat(ServiceUtil.DATE_FORMAT_DAY);
-		try {
-			callDate.setTime(sdf.parse(callDto.getDateCall()));
-		} catch (ParseException e) {
-			throw new InputValidationException("Formato de fecha incorrecto");
-		}
+		Calendar callDate = ServiceUtil.getCalendar(callDto.getDateCall()); // throws input validation
 		Call call = ClientServiceFactory.getService().makeCall(callDto.getClientId(), callDate, callDto.getDuration(), callDto.getType(), callDto.getDestPhone());
 		CallDtoJaxb resultCallDto = CallToCallDtoJaxbConversor.toCallDtoJaxb(call, ui.getBaseUri(), ServiceUtil.getTypeAsStringFromHeaders(headers));
 		
@@ -68,10 +60,8 @@ public class CallResource {
 			throws InputValidationException, CallStateException, InstanceNotFoundException, MonthExpirationException{
 		
 		enumState st;
-		Calendar callDate = Calendar.getInstance();
-		SimpleDateFormat sdf = new SimpleDateFormat(ServiceUtil.DATE_FORMAT_DAY);
+		Calendar callDate = ServiceUtil.getCalendar(date); // throws input validation
 		try {
-			callDate.setTime(sdf.parse(date));
 			st = enumState.valueOf(state);
 		} catch (Exception e) {
 			throw new InputValidationException("Formato de fecha incorrecto");
@@ -92,24 +82,13 @@ public class CallResource {
 			@QueryParam("type") String callType,
 			@Context UriInfo uriInfo, @Context HttpHeaders headers) throws InputValidationException, NumberFormatException, CallStateException, InstanceNotFoundException{
 		
-		Calendar callInitDate = Calendar.getInstance();
-		SimpleDateFormat sdf = new SimpleDateFormat(ServiceUtil.DATE_FORMAT_DAY);
-		try {
-			callInitDate.setTime(sdf.parse(initDate));
-		} catch (Exception e) {
-			throw new InputValidationException("Formato de fecha incorrecto");
-		}
+		Calendar callInitDate = ServiceUtil.getCalendar(initDate); // throws input validation
 		List<Call> calls;
 		
 		if (endDate == null){
 			calls = ClientServiceFactory.getService().findCalls(id, callInitDate, index, numRows);
 		} else{
-			Calendar callEndDate = Calendar.getInstance();
-			try {
-				callEndDate.setTime(sdf.parse(endDate));
-			} catch (Exception e) {
-				throw new InputValidationException("Formato de fecha incorrecto");
-			}
+			Calendar callEndDate = ServiceUtil.getCalendar(initDate); // throws input validation
 			
 			if (callType == null){
 				calls = ClientServiceFactory.getService().findCalls(id, callInitDate, callEndDate, index, numRows);
