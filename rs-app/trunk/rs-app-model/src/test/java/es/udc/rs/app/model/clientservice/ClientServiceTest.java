@@ -187,7 +187,7 @@ public class ClientServiceTest {
 		
 	}
 
-	@Test(expected = CallStateException.class)
+	@Test(expected = MonthExpirationException.class)
 	public void testChangeCallState() throws InstanceNotFoundException, CallStateException, InputValidationException, MonthExpirationException {
 		Client c = clientService.findClient("66673477R");
 		Calendar cal = Calendar.getInstance();
@@ -200,7 +200,7 @@ public class ClientServiceTest {
 		List<Call> calls = clientService.findCalls(c.getClientId(), cal, 0, 99999);
 	}
 	
-	@Test(expected = CallStateException.class)
+	@Test(expected = MonthExpirationException.class)
 	public void testNotChangeState() throws CallStateException, InstanceNotFoundException, MonthExpirationException {
 		Client c = clientService.findClient("66673477R");
 		Calendar cal = Calendar.getInstance();
