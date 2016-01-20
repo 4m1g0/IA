@@ -2,14 +2,10 @@ package es.udc.rs.app.client.ui;
 
 import java.util.Calendar;
 import java.util.List;
-
-import javax.ws.rs.core.Response;
-
 import es.udc.rs.app.client.dto.CallDetailsDto;
 import es.udc.rs.app.client.dto.CallDto;
 import es.udc.rs.app.client.dto.ClientDetailsDto;
 import es.udc.rs.app.client.dto.ClientDto;
-//import es.udc.rs.app.client.rest.util.LinkUtil;
 import es.udc.rs.app.client.service.ClientService;
 import es.udc.rs.app.client.service.ClientServiceFactory;
 import es.udc.rs.app.constants.ModelConstants.enumState;
@@ -136,7 +132,7 @@ public class ClientServiceClient {
 			
 			try {
 				Long clientId = Long.valueOf(args[1]);
-				Calendar date = StringToDate.parseStringToDate(args[2]);
+				Calendar date = StringToDate.getCalendar(args[2]);
 				int duration = Integer.parseInt(args[3]);
 				String phone = args[4];
 				enumType type = enumType.valueOf(args[5]);
@@ -177,8 +173,15 @@ public class ClientServiceClient {
 		}
 		if("-fcll".equalsIgnoreCase(args[0])){
 			Long clientId = Long.parseLong(args[1]);
-			Calendar initDate = StringToDate.parseStringToDate(args[2]);
-			Calendar endDate = StringToDate.parseStringToDate(args[3]);
+			Calendar initDate = null, endDate = null;
+			
+			try {
+				initDate = StringToDate.getCalendar(args[2]);
+				endDate = StringToDate.getCalendar(args[3]);
+			} catch (InputValidationException e1) {
+				e1.printStackTrace();
+			}
+			
 			int index = Integer.parseInt(args[4]);
 			int numRows = Integer.parseInt(args[4]);
 			if(args[5] == null){

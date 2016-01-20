@@ -1,13 +1,8 @@
 package es.udc.rs.app.client.rest.util;
 
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-
 import javax.ws.rs.core.Link;
 import javax.ws.rs.core.Response;
-import javax.xml.namespace.QName;
-
 
 public class LinkUtil {
 
@@ -19,5 +14,4 @@ public class LinkUtil {
 		}
 		return linkUri;
 	}
-
 }
