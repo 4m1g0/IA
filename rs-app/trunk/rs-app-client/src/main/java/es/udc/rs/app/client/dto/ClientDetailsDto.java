@@ -1,7 +1,5 @@
 package es.udc.rs.app.client.dto;
 
-import java.net.URI;
-
 public class ClientDetailsDto {
 	private Long clientId;
 	private String name;

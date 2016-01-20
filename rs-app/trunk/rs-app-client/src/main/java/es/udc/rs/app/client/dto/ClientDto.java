@@ -1,10 +1,5 @@
 package es.udc.rs.app.client.dto;
 
-import java.net.URI;
-import java.util.Calendar;
-
-import javax.ws.rs.core.Link;
-
 public class ClientDto {
 	private Long clientId;
 	private String name;

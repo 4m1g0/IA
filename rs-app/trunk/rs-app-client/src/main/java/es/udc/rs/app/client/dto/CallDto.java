@@ -1,10 +1,6 @@
 package es.udc.rs.app.client.dto;
 
-import java.net.URI;
 import java.util.Calendar;
-
-import es.udc.rs.app.constants.ModelConstants.enumState;
-import es.udc.rs.app.constants.ModelConstants.enumType;
 
 public class CallDto {
 
