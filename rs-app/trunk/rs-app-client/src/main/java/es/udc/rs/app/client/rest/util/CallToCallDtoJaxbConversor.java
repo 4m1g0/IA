@@ -1,5 +1,6 @@
 package es.udc.rs.app.client.rest.util;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import javax.xml.bind.JAXBElement;
 
@@ -11,6 +12,8 @@ import es.udc.rs.app.client.service.rest.dto.DateDtoJaxb;
 import es.udc.rs.app.client.service.rest.dto.EnumState;
 import es.udc.rs.app.client.service.rest.dto.EnumType;
 import es.udc.rs.app.client.service.rest.dto.ObjectFactory;
+import es.udc.rs.app.jaxrs.util.ServiceUtil;
+import es.udc.ws.util.exceptions.InputValidationException;
 
 public class CallToCallDtoJaxbConversor {
 	
@@ -22,7 +25,12 @@ public class CallToCallDtoJaxbConversor {
 	
 	public static CallDetailsDto toCallDetailsDto(CallDetailsDtoJaxb call){
 		Calendar cal = Calendar.getInstance();
-		cal.set(call.getDateCall().getYear(), call.getDateCall().getMonth(), call.getDateCall().getDay());
+		SimpleDateFormat sdf = new SimpleDateFormat(ServiceUtil.DATE_FORMAT_DAY);
+		try {
+			callInitDate.setTime(sdf.parse(initDate));
+		} catch (Exception e) {
+			throw new InputValidationException("Formato de fecha incorrecto");
+		}
 		return new CallDetailsDto(call.getCallId(), call.getClientId(), 
 				cal, call.getDuration(), call.getDestPhone(), 
 				callEnumToCallEnumDtoJaxbConversor.toEnumType(call.getType()), 
