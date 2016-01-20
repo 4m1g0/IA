@@ -190,10 +190,10 @@ public class ClientServiceTest {
 		Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.MONTH, 4);
 		List<Call> calls = clientService.findCalls(c1.getClientId(),cal, 0, 9999);
-		assertEquals(4, calls.size());
+		assertEquals(3, calls.size());
 		cal.set(Calendar.MONTH, 6);
 		calls = clientService.findCalls(c1.getClientId(),cal, 0, 99999);
-		assertEquals(4, calls.size());
+		assertEquals(1, calls.size());
 		
 	}
 
