@@ -5,7 +5,7 @@ import java.util.Calendar;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import es.udc.rs.app.jaxrs.util.ServiceUtil;
+import es.udc.rs.app.jaxb.StringToDate;
 
 @XmlRootElement(name="call")
 @XmlType(name="callType", propOrder = {"dateCall", 
@@ -25,7 +25,7 @@ public class CallDtoJaxb {
     }
     
 	public CallDtoJaxb(Calendar dateCall, Integer duration, String destPhone) {
-		SimpleDateFormat format = new SimpleDateFormat(ServiceUtil.DATE_FORMAT_MIN);
+		SimpleDateFormat format = new SimpleDateFormat(StringToDate.DATE_FORMAT_MIN);
 		String date = format.format(dateCall.getTime());
 		this.dateCall = date;
 		this.duration = duration;

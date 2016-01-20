@@ -3,7 +3,6 @@ package es.udc.rs.app.jaxrs.resources;
 import java.net.URI;
 import java.util.Calendar;
 import java.util.List;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -33,6 +32,7 @@ import es.udc.rs.app.model.call.Call;
 import es.udc.rs.app.model.clientservice.ClientServiceFactory;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
+import es.udc.rs.app.jaxb.*;
 
 @Path("/calls")
 public class CallResource {
@@ -41,7 +41,7 @@ public class CallResource {
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response makeCall(CallDetailsDtoJaxb callDto, @Context UriInfo ui, @Context HttpHeaders headers) throws InputValidationException, InstanceNotFoundException{
-		Calendar callDate = ServiceUtil.getCalendar(callDto.getDateCall()); // throws input validation
+		Calendar callDate = StringToDate.getCalendar(callDto.getDateCall()); // throws input validation
 		Call call = ClientServiceFactory.getService().makeCall(callDto.getClientId(), callDate, callDto.getDuration(), callDto.getType(), callDto.getDestPhone());
 		CallDtoJaxb resultCallDto = CallToCallDtoJaxbConversor.toCallDtoJaxb(call, ui.getBaseUri(), ServiceUtil.getTypeAsStringFromHeaders(headers));
 		
@@ -54,21 +54,22 @@ public class CallResource {
 	}
 	
 	@PUT
-	public void changeState(@QueryParam("id") Long id, 
+	public Response changeState(@QueryParam("id") Long id, 
 							@QueryParam("date") String date,
 							@QueryParam("state") String state) 
 			throws InputValidationException, CallStateException, InstanceNotFoundException, MonthExpirationException{
 		
 		enumState st;
-		Calendar callDate = ServiceUtil.getCalendar(date); // throws input validation
+		Calendar callDate = StringToDate.getCalendar(date); // throws input validation
 		try {
 			st = enumState.valueOf(state);
 		} catch (Exception e) {
 			throw new InputValidationException("Formato de fecha incorrecto");
 		}
 		
-
 		ClientServiceFactory.getService().changeCallState(id, callDate, st);
+
+		return Response.ok().build();
 	}
 	
 	@GET
@@ -82,13 +83,13 @@ public class CallResource {
 			@QueryParam("type") String callType,
 			@Context UriInfo uriInfo, @Context HttpHeaders headers) throws InputValidationException, NumberFormatException, CallStateException, InstanceNotFoundException{
 		
-		Calendar callInitDate = ServiceUtil.getCalendar(initDate); // throws input validation
+		Calendar callInitDate = StringToDate.getCalendar(initDate); // throws input validation
 		List<Call> calls;
 		
 		if (endDate == null){
 			calls = ClientServiceFactory.getService().findCalls(id, callInitDate, index, numRows);
 		} else{
-			Calendar callEndDate = ServiceUtil.getCalendar(initDate); // throws input validation
+			Calendar callEndDate = StringToDate.getCalendar(initDate); // throws input validation
 			
 			if (callType == null){
 				calls = ClientServiceFactory.getService().findCalls(id, callInitDate, callEndDate, index, numRows);
