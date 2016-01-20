@@ -1,12 +1,7 @@
 package es.udc.rs.app.jaxrs.dto;
-
-import java.util.List;
-
-import javax.ws.rs.core.Link;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlRootElement(name = "client-details")
 @XmlType(name="clientDetailsType", propOrder = {"id", "name", "DNI", 
