@@ -1,6 +1,5 @@
 package es.udc.rs.app.client.service;
 
-import java.util.Calendar;
 import java.util.List;
 
 import es.udc.rs.app.client.dto.CallDto;
@@ -29,15 +28,15 @@ public interface ClientService {
     
     public ClientListIntervalDto findClients(String keywords, int index, int numRows);
     
-    public Long makeCall(Long clientId, Calendar date, Integer duration, enumType type, String destPhone) throws InstanceNotFoundException, InputValidationException;
+    public Long makeCall(Long clientId, String date, Integer duration, enumType type, String destPhone) throws InstanceNotFoundException, InputValidationException;
     
-    public void changeCallState(Long clientId, Calendar date , enumState state) throws CallStateException, InstanceNotFoundException, MonthExpirationException;
+    public void changeCallState(Long clientId, String date , enumState state) throws CallStateException, InstanceNotFoundException, MonthExpirationException;
     
-    public CallListIntervalDto findCalls(Long clientId, Calendar month, int index, int numRows) throws CallStateException, InstanceNotFoundException;
+    public CallListIntervalDto findCalls(Long clientId, String month, int index, int numRows) throws CallStateException, InstanceNotFoundException;
     
-    public CallListIntervalDto findCalls(Long clientId, Calendar initDate, Calendar endDate, int index, int numRows) throws  InstanceNotFoundException;
+    public CallListIntervalDto findCalls(Long clientId, String initDate, String endDate, int index, int numRows) throws  InstanceNotFoundException;
 
-    public CallListIntervalDto findCalls(Long clientId, Calendar initDate, Calendar endDate, int index, int numRows, enumType type) throws CallStateException, InstanceNotFoundException;
+    public CallListIntervalDto findCalls(Long clientId, String initDate, String endDate, int index, int numRows, enumType type) throws CallStateException, InstanceNotFoundException;
 
     public String getClientUrl(Long saleId) throws InstanceNotFoundException;
 }

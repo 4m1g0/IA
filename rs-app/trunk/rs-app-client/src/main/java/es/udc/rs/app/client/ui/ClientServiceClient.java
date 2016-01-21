@@ -132,7 +132,7 @@ public class ClientServiceClient {
 			
 			try {
 				Long clientId = Long.valueOf(args[1]);
-				Calendar date = StringToDate.getCalendar(args[2]);
+				String date = args[2];
 				int duration = Integer.parseInt(args[3]);
 				String phone = args[4];
 				enumType type = enumType.valueOf(args[5]);
@@ -148,11 +148,11 @@ public class ClientServiceClient {
 			validateArgs(args, 5, new int[] { 1 });
 			Long clientId = Long.parseLong(args[1]);
 			Calendar date = Calendar.getInstance();
-			date.set(Integer.parseInt(args[2]), Integer.parseInt(args[1]), 10);
+			date.set(Integer.parseInt(args[2]), Integer.parseInt(args[1]), 1);
 			enumState state = enumState.valueOf(args[4]);
 			
 			try {
-				clientService.changeCallState(clientId, date, state);
+				clientService.changeCallState(clientId, StringToDate.getDateString(date), state);
 				System.out.println("State calls from " + clientId
 						+ "on month" + args[2] + " has been updated successfully.");
 			} catch (NumberFormatException e) {
@@ -172,14 +172,14 @@ public class ClientServiceClient {
 		}
 		if("-fcll".equalsIgnoreCase(args[0])){
 			Long clientId = Long.parseLong(args[1]);
-			Calendar initDate = null, endDate = null;
+			String initDate = null, endDate = null;
 			CallListIntervalDto listCall = null;
 			int index, numRows;
 			
 			try {
-				initDate = StringToDate.getCalendar(args[2]);
+				initDate = args[2];
 				if(args.length > 5){
-					endDate = StringToDate.getCalendar(args[3]);
+					endDate = args[3];
 					index = Integer.parseInt(args[4]);
 					numRows = Integer.parseInt(args[5]);
 					if(args.length > 6){
@@ -195,8 +195,6 @@ public class ClientServiceClient {
 				}
 				System.out.println(listCall.toString());
 				
-			} catch (InputValidationException e1) {
-				e1.printStackTrace();
 			} catch (CallStateException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -215,7 +213,7 @@ public class ClientServiceClient {
 			int index = Integer.parseInt(args[4]);
 			int numRows = Integer.parseInt(args[5]);
 			try {
-				CallListIntervalDto listCall = clientService.findCalls(clientId, date, index, numRows);
+				CallListIntervalDto listCall = clientService.findCalls(clientId, StringToDate.getDateString(date), index, numRows);
 				System.out.println(listCall.toString());
 			} catch (NumberFormatException e) {
 				// TODO: handle exception

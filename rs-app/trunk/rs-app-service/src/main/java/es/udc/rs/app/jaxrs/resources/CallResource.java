@@ -76,8 +76,8 @@ public class CallResource {
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response findCalls(
 			@QueryParam("id") Long id,
-			@QueryParam("initdate") String initDate,
-			@QueryParam("enddate") String endDate,
+			@QueryParam("initDate") String initDate,
+			@QueryParam("endDate") String endDate,
 			@DefaultValue("-1") @QueryParam("index") int index, 
 			@DefaultValue("-1") @QueryParam("numRows") int numRows,
 			@QueryParam("type") String callType,
