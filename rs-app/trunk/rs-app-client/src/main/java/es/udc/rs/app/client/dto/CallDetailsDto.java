@@ -4,6 +4,7 @@ import java.util.Calendar;
 
 import es.udc.rs.app.constants.ModelConstants.enumState;
 import es.udc.rs.app.constants.ModelConstants.enumType;
+import es.udc.rs.app.jaxb.StringToDate;
 
 public class CallDetailsDto {
 	private Long callId;
@@ -89,7 +90,7 @@ public class CallDetailsDto {
 	@Override
 	public String toString() {
 		return "CallDetailsDto [callId=" + callId + ", clientId=" + clientId
-				+ ", dateCall=" + dateCall + ", duration=" + duration
+				+ ", dateCall=" + StringToDate.getDateString(dateCall) + ", duration=" + duration
 				+ ", destPhone=" + destPhone + ", type=" + type + ", state="
 				+ state + "]";
 	}

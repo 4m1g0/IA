@@ -11,6 +11,7 @@ import es.udc.rs.app.client.dto.ClientDto;
 import es.udc.rs.app.client.dto.ClientListIntervalDto;
 import es.udc.rs.app.client.service.ClientService;
 import es.udc.rs.app.client.service.ClientServiceFactory;
+import es.udc.rs.app.constants.ModelConstants;
 import es.udc.rs.app.constants.ModelConstants.enumState;
 import es.udc.rs.app.constants.ModelConstants.enumType;
 import es.udc.rs.app.exceptions.CallStateException;
@@ -149,10 +150,8 @@ public class ClientServiceClient {
 			Long clientId = Long.parseLong(args[1]);
 			Calendar date = Calendar.getInstance();
 			date.set(Integer.parseInt(args[2]), Integer.parseInt(args[1]), 1);
-			enumState state = enumState.valueOf(args[4]);
-			
 			try {
-				clientService.changeCallState(clientId, StringToDate.getDateString(date), state);
+				clientService.changeCallState(clientId, StringToDate.getDateString(date), args[4]);
 				System.out.println("State calls from " + clientId
 						+ "on month" + args[2] + " has been updated successfully.");
 			} catch (NumberFormatException e) {
@@ -183,7 +182,7 @@ public class ClientServiceClient {
 					index = Integer.parseInt(args[4]);
 					numRows = Integer.parseInt(args[5]);
 					if(args.length > 6){
-						listCall = clientService.findCalls(clientId, initDate, endDate, index, numRows, enumType.valueOf(args[5]));
+						listCall = clientService.findCalls(clientId, initDate, endDate, index, numRows, args[6]);
 					}
 					else{
 						listCall = clientService.findCalls(clientId, initDate, endDate, index, numRows);

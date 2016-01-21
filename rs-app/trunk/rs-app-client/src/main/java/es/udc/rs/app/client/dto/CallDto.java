@@ -2,6 +2,8 @@ package es.udc.rs.app.client.dto;
 
 import java.util.Calendar;
 
+import es.udc.rs.app.jaxb.StringToDate;
+
 public class CallDto {
 
 	private Calendar dateCall;
@@ -45,7 +47,7 @@ public class CallDto {
 
 	@Override
 	public String toString() {
-		return "CallDto [dateCall=" + dateCall + ", duration=" + duration
+		return "CallDto [dateCall=" + StringToDate.getDateString(dateCall) + ", duration=" + duration
 				+ ", destPhone=" + destPhone + "]";
 	}
 	

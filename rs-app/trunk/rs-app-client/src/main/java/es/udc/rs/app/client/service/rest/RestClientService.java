@@ -253,11 +253,11 @@ public abstract class RestClientService implements ClientService {
 		}
 	}
 	@Override
-	public void changeCallState(Long clientId, String date, enumState state) throws CallStateException, InstanceNotFoundException, MonthExpirationException {
+	public void changeCallState(Long clientId, String date, String state) throws CallStateException, InstanceNotFoundException, MonthExpirationException {
 		WebTarget wt = getEndpointWebTarget().path("calls")
 				.resolveTemplate("id", clientId)
 				.queryParam("date", date)
-				.queryParam("state", state.toString());
+				.queryParam("state", state);
 				Response response = wt.request().accept(this.getMediaType()).put(null);
 		try {
 			validateResponse(Response.Status.NO_CONTENT.getStatusCode(),
@@ -276,14 +276,13 @@ public abstract class RestClientService implements ClientService {
 	public CallListIntervalDto findCalls(Long clientId, String month, int index,
 			int numRows) throws CallStateException, InstanceNotFoundException {
 		WebTarget wt = getEndpointWebTarget().path("calls")
-				.resolveTemplate("id", clientId)
+				.queryParam("id", clientId)
 				.queryParam("initDate", month)
 				.queryParam("index", index)
 				.queryParam("numRows", numRows);
 				
-				Response response = wt.request().accept(this.getMediaType()).get();
+		Response response = wt.request().accept(this.getMediaType()).get();
 		try {
-			System.out.println(response.getStatus());
 			validateResponse(Response.Status.OK.getStatusCode(), response);
 			CallDtoJaxbList calls = response.readEntity(CallDtoJaxbList.class);
 			return new CallListIntervalDto(
@@ -331,7 +330,7 @@ public abstract class RestClientService implements ClientService {
 	}
 	@Override
 	public CallListIntervalDto findCalls(Long clientId, String initDate,
-			String endDate, int index, int numRows, enumType type)
+			String endDate, int index, int numRows, String type)
 			throws CallStateException, InstanceNotFoundException {
 		WebTarget wt = getEndpointWebTarget().path("calls")
 				.resolveTemplate("id", clientId)

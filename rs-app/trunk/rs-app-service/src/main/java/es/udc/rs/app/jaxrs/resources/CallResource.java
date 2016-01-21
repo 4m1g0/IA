@@ -3,6 +3,7 @@ package es.udc.rs.app.jaxrs.resources;
 import java.net.URI;
 import java.util.Calendar;
 import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -19,6 +20,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.UriInfo;
+
+import es.udc.rs.app.constants.ModelConstants;
 import es.udc.rs.app.constants.ModelConstants.enumState;
 import es.udc.rs.app.constants.ModelConstants.enumType;
 import es.udc.rs.app.exceptions.CallStateException;
@@ -54,6 +57,7 @@ public class CallResource {
 	}
 	
 	@PUT
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response changeState(@QueryParam("id") Long id, 
 							@QueryParam("date") String date,
 							@QueryParam("state") String state) 
@@ -73,6 +77,7 @@ public class CallResource {
 	}
 	
 	@GET
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response findCalls(
 			@QueryParam("id") Long id,
@@ -89,14 +94,14 @@ public class CallResource {
 		if (endDate == null){
 			calls = ClientServiceFactory.getService().findCalls(id, callInitDate, index, numRows);
 		} else{
-			Calendar callEndDate = StringToDate.getCalendar(initDate); // throws input validation
+			Calendar callEndDate = StringToDate.getCalendar(endDate); // throws input validation
 			
 			if (callType == null){
 				calls = ClientServiceFactory.getService().findCalls(id, callInitDate, callEndDate, index, numRows);
 			} else {
 				enumType et;
 				try {
-					et = enumType.valueOf(callType);
+					et = ModelConstants.toEnumType(callType);
 				}catch (Exception e) {
 					throw new InputValidationException("Tipo incorrecto");
 				}
@@ -109,6 +114,7 @@ public class CallResource {
 		List<CallDtoJaxb> callDtos = CallToCallDtoJaxbConversor.toCallDtoJaxb(calls, uriInfo.getBaseUri(), type);
 		
 		Link selfLink = Link.fromUri(uriInfo.getRequestUri()).build();
+		
 		Link nextLink = getNextLink(uriInfo, index, numRows, calls.size());
 		Link previousLink = getPreviousLink(uriInfo, index, numRows, calls.size());
 		
@@ -127,12 +133,12 @@ public class CallResource {
 		if (index == -1 || numrows == -1)
 			return null;
 		
-		if (size < numrows)
+		if (index + numrows >= size)
 			return null;
 		
 		UriBuilder uriBuilder = self.getRequestUriBuilder()
-				.queryParam("inde", index+numrows)
-				.queryParam("numrows", numrows);
+				.replaceQueryParam("index", index+numrows)
+				.replaceQueryParam("numRows", numrows);
 		Link.Builder linkBuilder = Link.fromUriBuilder(uriBuilder)
 				.rel("next")
 				.title("Next call page");
@@ -141,15 +147,15 @@ public class CallResource {
 	}
 
 	private static Link getPreviousLink(UriInfo self, int index, int numrows, int size) {
-		if (index == -1 || numrows == -1)
+		if (index == 0 || numrows == -1)
 			return null;
 		
 		if (size < numrows)
 			return null;
 		
 		UriBuilder uriBuilder = self.getRequestUriBuilder()
-				.queryParam("inde", index-numrows)
-				.queryParam("numrows", numrows);
+				.replaceQueryParam("index", index-numrows)
+				.replaceQueryParam("numRows", numrows);
 		Link.Builder linkBuilder = Link.fromUriBuilder(uriBuilder)
 				.rel("previous")
 				.title("previous call page");
