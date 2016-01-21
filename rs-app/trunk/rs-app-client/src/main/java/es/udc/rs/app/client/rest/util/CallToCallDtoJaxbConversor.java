@@ -62,7 +62,7 @@ public class CallToCallDtoJaxbConversor {
 		callDetails.setClientId(callDetailsDto.getClientId());
 		callDetails.setDuration(callDetailsDto.getDuration());
 		callDetails.setType(EnumType.valueOf(callDetailsDto.getType().toString()));
-		callDetails.setState(EnumState.valueOf(callDetailsDto.getState().toString()));
+		callDetails.setState(null);
 		callDetails.setDestPhone(callDetailsDto.getDestPhone());
 		callDetails.setDateCall(StringToDate.getDateString(callDetailsDto.getDateCall()));
 		JAXBElement<CallDetailsDtoJaxb> jaxbElement = new ObjectFactory().createCallDetails(callDetails);

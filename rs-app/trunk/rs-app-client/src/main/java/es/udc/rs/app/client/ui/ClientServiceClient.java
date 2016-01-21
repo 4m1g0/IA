@@ -96,7 +96,7 @@ public class ClientServiceClient {
 			validateArgs(args, 2, new int[] { 1 });
 			
 			try {
-				ClientDto clientDto = clientService.findClient(Long.parseLong(args[1]));
+				ClientDetailsDto clientDto = clientService.findClient(Long.parseLong(args[1]));
 				System.out.println(clientDto.toString());
 			} catch (NumberFormatException  | InstanceNotFoundException e) {
 				e.printStackTrace(System.err);
@@ -105,9 +105,8 @@ public class ClientServiceClient {
 		}
 		if("-fdni".equalsIgnoreCase(args[0])){
 			validateArgs(args, 2, new int[] { 1 });
-			
 			try {
-				ClientDto clientDto = clientService.findClient(args[1]);
+				ClientDetailsDto clientDto = clientService.findClient(args[1]);
 				System.out.println(clientDto.toString());
 			} catch (NumberFormatException  | InstanceNotFoundException e) {
 				e.printStackTrace(System.err);
@@ -123,17 +122,13 @@ public class ClientServiceClient {
 			
 			try {
 				ClientListIntervalDto clientDtos = clientService.findClients(keywords, index, numRows);
-				System.out.println(clientDtos.getPreviousIntervalUri());
-				for (int i = 0; i < clientDtos.getClients().size(); i++) {
-					System.out.println(clientDtos.getClients().get(i).toString());
-				}
-				System.out.println(clientDtos.getPreviousIntervalUri());
+				System.out.println(clientDtos.toString());
 			} catch (NumberFormatException e) {
 				e.printStackTrace(System.err);
 			}
 		}
 		if("-mc".equalsIgnoreCase(args[0])){
-			validateArgs(args, 6, new int[] { 1, 2 });
+			validateArgs(args, 6, new int[] { 1, 3 });
 			
 			try {
 				Long clientId = Long.valueOf(args[1]);
@@ -141,7 +136,6 @@ public class ClientServiceClient {
 				int duration = Integer.parseInt(args[3]);
 				String phone = args[4];
 				enumType type = enumType.valueOf(args[5]);
-				CallDetailsDto callDto = new CallDetailsDto(null,clientId, date, duration,phone,type, enumState.PENDING);
 				clientService.makeCall(clientId, date, duration, type, phone);
 				System.out.println("call made successfully");
 			} catch (NumberFormatException | InstanceNotFoundException | InputValidationException e) {
@@ -179,50 +173,39 @@ public class ClientServiceClient {
 		if("-fcll".equalsIgnoreCase(args[0])){
 			Long clientId = Long.parseLong(args[1]);
 			Calendar initDate = null, endDate = null;
+			CallListIntervalDto listCall = null;
+			int index, numRows;
 			
 			try {
 				initDate = StringToDate.getCalendar(args[2]);
-				endDate = StringToDate.getCalendar(args[3]);
+				if(args.length > 5){
+					endDate = StringToDate.getCalendar(args[3]);
+					index = Integer.parseInt(args[4]);
+					numRows = Integer.parseInt(args[5]);
+					if(args.length > 6){
+						listCall = clientService.findCalls(clientId, initDate, endDate, index, numRows, enumType.valueOf(args[5]));
+					}
+					else{
+						listCall = clientService.findCalls(clientId, initDate, endDate, index, numRows);
+					}
+				}else{
+					index = Integer.parseInt(args[3]);
+					numRows = Integer.parseInt(args[4]);
+					listCall = clientService.findCalls(clientId, initDate,index, numRows);
+				}
+				System.out.println(listCall.toString());
+				
 			} catch (InputValidationException e1) {
 				e1.printStackTrace();
-			}
-			
-			int index = Integer.parseInt(args[4]);
-			int numRows = Integer.parseInt(args[4]);
-			if(args[5] == null){
-				try {
-					CallListIntervalDto listCall = clientService.findCalls(clientId, initDate, endDate, index, numRows);
-					System.out.println(listCall.getPreviousIntervalUri());
-					for (int i = 0; i < listCall.getCalls().size(); i++) {
-						System.out.println(listCall.getCalls().get(i).toString());
-					}
-					System.out.println(listCall.getNextIntervalUri());
-				} catch (NumberFormatException e) {
-					e.printStackTrace();
-				} catch (InstanceNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			else{
-				try {
-				CallListIntervalDto listCall = clientService.findCalls(clientId, initDate, endDate, index, numRows, enumType.valueOf(args[5]));
-				System.out.println(listCall.getPreviousIntervalUri());
-				for (int i = 0; i < listCall.getCalls().size(); i++) {
-					System.out.println(listCall.getCalls().get(i).toString());
-				}
-				System.out.println(listCall.getNextIntervalUri());
-				} catch (NumberFormatException e) {
-					e.printStackTrace();
-				} catch (InstanceNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (CallStateException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			} catch (CallStateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InstanceNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}	
 		}
+		
 		if("-fcb".equalsIgnoreCase(args[0])){
 			validateArgs(args, 6, new int[] { 1 });
 			
@@ -233,11 +216,7 @@ public class ClientServiceClient {
 			int numRows = Integer.parseInt(args[5]);
 			try {
 				CallListIntervalDto listCall = clientService.findCalls(clientId, date, index, numRows);
-				System.out.println(listCall.getPreviousIntervalUri());
-				for (int i = 0; i < listCall.getCalls().size(); i++) {
-					System.out.println(listCall.getCalls().get(i).toString());
-				}
-				System.out.println(listCall.getNextIntervalUri());
+				System.out.println(listCall.toString());
 			} catch (NumberFormatException e) {
 				// TODO: handle exception
 			} catch (CallStateException e) {
@@ -285,7 +264,7 @@ public class ClientServiceClient {
 						+ "    [findClients]     ServiceClient -fcs <keywords> <index> <numRows>\n"
 						+ "    [makeCall]        ServiceClient -mc <clientId> <date> <duration> <phoneDest> <type>\n"
 						+ "    [changeState]     ServiceClient -cs <clientId> <month>  <year> <state>\n"
-						+ "    [findCalls]       ServiceClient -fcll <clientId> <dateInit>  <dateEnd> <index> <numRows>\n"
+						+ "    [findCalls]       ServiceClient -fcll <clientId> <dateInit>  <dateEnd>(OP) <index> <numRows> <type>(OP)\n"
 						+ "    [findCallsBill]   ServiceClient -fcb <clientId> <month> <year> <index> <numRows>\n");
 	}
 

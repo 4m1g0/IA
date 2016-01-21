@@ -38,6 +38,7 @@ import es.udc.rs.app.constants.ModelConstants.enumType;
 import es.udc.rs.app.exceptions.CallStateException;
 import es.udc.rs.app.exceptions.MonthExpirationException;
 import es.udc.rs.app.exceptions.RemoveClientException;
+import es.udc.rs.app.jaxb.StringToDate;
 import es.udc.rs.app.json.JsonMoxyConfigurationContextResolver;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
@@ -162,16 +163,16 @@ public abstract class RestClientService implements ClientService {
 		}
 	}
 	@Override
-	public ClientDto findClient(Long clientId) throws InstanceNotFoundException {
+	public ClientDetailsDto findClient(Long clientId) throws InstanceNotFoundException {
 		WebTarget wt = getEndpointWebTarget().path("clients/{id}")
 				.resolveTemplate("id", clientId);
 		Response response = wt.request().accept(this.getMediaType()).get();
 		try {
 			System.out.println(response.getStatus());
 			validateResponse(Response.Status.OK.getStatusCode(), response);
-			ClientDtoJaxb client = response.readEntity(ClientDtoJaxb.class);
+			ClientDetailsDtoJaxb client = response.readEntity(ClientDetailsDtoJaxb.class);
 			
-			return ClientDtoToClientDtoJaxbConversor.toClientDto(client);
+			return ClientDtoToClientDtoJaxbConversor.toClientDetailsDto(client);
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		} finally {
@@ -181,15 +182,15 @@ public abstract class RestClientService implements ClientService {
 		}
 	}
 	@Override
-	public ClientDto findClient(String DNI) throws InstanceNotFoundException {
+	public ClientDetailsDto findClient(String DNI) throws InstanceNotFoundException {
 		WebTarget wt = getEndpointWebTarget().path("clients")
 				.queryParam("dni", DNI);
 		Response response = wt.request().accept(this.getMediaType()).get();
 		try {
 			validateResponse(Response.Status.OK.getStatusCode(), response);
-			ClientDtoJaxb client = response.readEntity(ClientDtoJaxb.class);
+			ClientDetailsDtoJaxb client = response.readEntity(ClientDetailsDtoJaxb.class);
 			
-			return ClientDtoToClientDtoJaxbConversor.toClientDto(client);
+			return ClientDtoToClientDtoJaxbConversor.toClientDetailsDto(client);
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		} finally {
@@ -253,7 +254,7 @@ public abstract class RestClientService implements ClientService {
 	}
 	@Override
 	public void changeCallState(Long clientId, Calendar date, enumState state) throws CallStateException, InstanceNotFoundException, MonthExpirationException {
-		WebTarget wt = getEndpointWebTarget().path("clients/{id}")
+		WebTarget wt = getEndpointWebTarget().path("calls")
 				.resolveTemplate("id", clientId)
 				.queryParam("month", date.get(Calendar.MONTH))
 				.queryParam("year", date.get(Calendar.YEAR))
@@ -275,16 +276,16 @@ public abstract class RestClientService implements ClientService {
 	@Override
 	public CallListIntervalDto findCalls(Long clientId, Calendar month, int index,
 			int numRows) throws CallStateException, InstanceNotFoundException {
-		WebTarget wt = getEndpointWebTarget().path("clients/{id}")
+		String fecha = StringToDate.getDateString(month);
+		WebTarget wt = getEndpointWebTarget().path("calls")
 				.resolveTemplate("id", clientId)
-				.queryParam("initDate", month)
+				.queryParam("initDate", fecha)
 				.queryParam("index", index)
 				.queryParam("numRows", numRows);
 				
-				Response response = wt.request().accept(this.getMediaType()).put(null);
+				Response response = wt.request().accept(this.getMediaType()).get();
 		try {
-			validateResponse(Response.Status.NO_CONTENT.getStatusCode(),
-					response);
+			validateResponse(Response.Status.OK.getStatusCode(), response);
 			CallDtoJaxbList calls = response.readEntity(CallDtoJaxbList.class);
 			return new CallListIntervalDto(
 					CallToCallDtoJaxbConversor.toCallDtos(calls),
@@ -304,17 +305,16 @@ public abstract class RestClientService implements ClientService {
 	public CallListIntervalDto findCalls(Long clientId, Calendar initDate,
 			Calendar endDate, int index, int numRows)
 			throws InstanceNotFoundException {
-		WebTarget wt = getEndpointWebTarget().path("clients/{id}")
+		WebTarget wt = getEndpointWebTarget().path("calls")
 				.resolveTemplate("id", clientId)
 				.queryParam("initDate", initDate)
 				.queryParam("endDate", endDate)
 				.queryParam("index", index)
 				.queryParam("numRows", numRows);
 				
-				Response response = wt.request().accept(this.getMediaType()).put(null);
+				Response response = wt.request().accept(this.getMediaType()).get();
 		try {
-			validateResponse(Response.Status.NO_CONTENT.getStatusCode(),
-					response);
+			validateResponse(Response.Status.OK.getStatusCode(), response);
 			CallDtoJaxbList calls = response.readEntity(CallDtoJaxbList.class);
 			return new CallListIntervalDto(
 					CallToCallDtoJaxbConversor.toCallDtos(calls),
@@ -334,7 +334,7 @@ public abstract class RestClientService implements ClientService {
 	public CallListIntervalDto findCalls(Long clientId, Calendar initDate,
 			Calendar endDate, int index, int numRows, enumType type)
 			throws CallStateException, InstanceNotFoundException {
-		WebTarget wt = getEndpointWebTarget().path("clients/{id}")
+		WebTarget wt = getEndpointWebTarget().path("calls")
 				.resolveTemplate("id", clientId)
 				.queryParam("initDate", initDate)
 				.queryParam("endDate", endDate)
@@ -342,10 +342,9 @@ public abstract class RestClientService implements ClientService {
 				.queryParam("numRows", numRows)
 				.queryParam("type", type);
 				
-				Response response = wt.request().accept(this.getMediaType()).put(null);
+				Response response = wt.request().accept(this.getMediaType()).get();
 		try {
-			validateResponse(Response.Status.NO_CONTENT.getStatusCode(),
-					response);
+			validateResponse(Response.Status.OK.getStatusCode(), response);
 			CallDtoJaxbList calls = response.readEntity(CallDtoJaxbList.class);
 			return new CallListIntervalDto(
 					CallToCallDtoJaxbConversor.toCallDtos(calls),

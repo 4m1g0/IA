@@ -23,9 +23,9 @@ public interface ClientService {
 
     public void updateClient(ClientDetailsDto client) throws InputValidationException, InstanceNotFoundException;
 
-    public ClientDto findClient(Long clientId) throws InstanceNotFoundException;
+    public ClientDetailsDto findClient(Long clientId) throws InstanceNotFoundException;
     
-    public ClientDto findClient(String DNI) throws InstanceNotFoundException;
+    public ClientDetailsDto findClient(String DNI) throws InstanceNotFoundException;
     
     public ClientListIntervalDto findClients(String keywords, int index, int numRows);
     
