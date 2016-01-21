@@ -87,8 +87,8 @@ public class ClientResource {
 	}
 	
 	private static Link getNextLink(UriInfo uriInfo, String keyword,
-			int startIndex, int count, int numberOfProducts, String type) {
-		if (numberOfProducts < count) {
+			int startIndex, int count, int numRows, String type) {
+		if (numRows < count) {
 			return null;
 		}
 		return ServiceUtil.getIntervalLink(uriInfo, keyword, startIndex
@@ -145,7 +145,7 @@ public class ClientResource {
 	@PUT
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Path("/{id}")
-	public void updateclient(ClientDetailsDtoJaxb clientDto,@PathParam("id") Long id)
+	public void updateClient(ClientDetailsDtoJaxb clientDto,@PathParam("id") Long id)
 			throws InputValidationException, InstanceNotFoundException {
 		
 		Client client = ClientToClientDtoJaxbConversor.toClient(clientDto);

@@ -18,6 +18,9 @@
         <jxb:bindings node="//xs:complexType[@name='callType']">    
             <jxb:class name="callDtoJaxb"/>
         </jxb:bindings>
+        <jxb:bindings node="//xs:complexType[@name='callListType']">    
+            <jxb:class name="callDtoJaxbList"/>    
+        </jxb:bindings>
         <jxb:bindings node="//xs:complexType[@name='inputValidationExceptionType']">    
             <jxb:class name="InputValidationExceptionDtoJaxb"/>
         </jxb:bindings>

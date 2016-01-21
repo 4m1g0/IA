@@ -1,12 +1,19 @@
 package es.udc.rs.app.client.rest.util;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+
 import javax.xml.bind.JAXBElement;
 
 import es.udc.rs.app.client.dto.CallDetailsDto;
 import es.udc.rs.app.client.dto.CallDto;
+import es.udc.rs.app.client.dto.ClientDto;
 import es.udc.rs.app.client.service.rest.dto.CallDetailsDtoJaxb;
 import es.udc.rs.app.client.service.rest.dto.CallDtoJaxb;
+import es.udc.rs.app.client.service.rest.dto.CallDtoJaxbList;
+import es.udc.rs.app.client.service.rest.dto.ClientDtoJaxb;
+import es.udc.rs.app.client.service.rest.dto.ClientDtoJaxbList;
 import es.udc.rs.app.client.service.rest.dto.EnumState;
 import es.udc.rs.app.client.service.rest.dto.EnumType;
 import es.udc.rs.app.client.service.rest.dto.ObjectFactory;
@@ -24,6 +31,16 @@ public class CallToCallDtoJaxbConversor {
 		}
 		
 		return new CallDto(cal, call.getDuration(), call.getDestPhone());
+	}
+	
+	public static List<CallDto> toCallDtos(CallDtoJaxbList callListDto){
+		
+		List<CallDtoJaxb> callList = callListDto.getCall();
+		List<CallDto> callDtos = new ArrayList<>(callList.size());
+		for (int i = 0; i < callList.size(); i++) {
+			callDtos.add(toCallDto(callList.get(i)));
+		}
+		return callDtos;
 	}
 	
 	public static CallDetailsDto toCallDetailsDto(CallDetailsDtoJaxb call){

@@ -8,26 +8,26 @@ public class ClientListIntervalDto {
 	private URI nextIntervalUri;
 	private URI previousIntervalUri;
 	
-	public ClientListIntervalDto(List<ClientDto> products, URI nextIntervalUri,
+	public ClientListIntervalDto(List<ClientDto> clients, URI nextIntervalUri,
 			URI previousIntervalUri) {
 		super();
-		this.clients = products;
+		this.clients = clients;
 		this.nextIntervalUri = nextIntervalUri;
 		this.previousIntervalUri = previousIntervalUri;
 	}
 	
 	@Override
 	public String toString() {
-		return "ClientListInterval [products=" + clients
+		return "ClientListInterval [clients=" + clients
 				+ ", nextIntervalUri=" + nextIntervalUri
 				+ ", previousIntervalUri=" + previousIntervalUri + "]";
 	}
 
-	public List<ClientDto> getProducts() {
+	public List<ClientDto> getClients() {
 		return clients;
 	}
-	public void setProducts(List<ClientDto> products) {
-		this.clients = products;
+	public void setclients(List<ClientDto> clients) {
+		this.clients = clients;
 	}
 	public URI getNextIntervalUri() {
 		return nextIntervalUri;

@@ -14,6 +14,7 @@ import javax.xml.bind.JAXBElement;
 
 import es.udc.rs.app.client.dto.CallDetailsDto;
 import es.udc.rs.app.client.dto.CallDto;
+import es.udc.rs.app.client.dto.CallListIntervalDto;
 import es.udc.rs.app.client.dto.ClientDetailsDto;
 import es.udc.rs.app.client.dto.ClientDto;
 import es.udc.rs.app.client.dto.ClientListIntervalDto;
@@ -23,6 +24,7 @@ import es.udc.rs.app.client.rest.util.JaxbExceptionConversor;
 import es.udc.rs.app.client.rest.util.LinkUtil;
 import es.udc.rs.app.client.service.ClientService;
 import es.udc.rs.app.client.service.rest.dto.CallDetailsDtoJaxb;
+import es.udc.rs.app.client.service.rest.dto.CallDtoJaxbList;
 import es.udc.rs.app.client.service.rest.dto.CallStateExceptionDtoJaxb;
 import es.udc.rs.app.client.service.rest.dto.ClientDetailsDtoJaxb;
 import es.udc.rs.app.client.service.rest.dto.ClientDtoJaxb;
@@ -68,7 +70,7 @@ public abstract class RestClientService implements ClientService {
 	protected abstract MediaType getMediaType();
 	
 	
-	private ClientListIntervalDto findClients(WebTarget wt, MediaType type) {
+/*	private ClientListIntervalDto findClients(WebTarget wt, MediaType type) {
 		Response response = (type != null) ? wt.request().accept(type).get()
 				: wt.request().get();
 		try {
@@ -87,7 +89,7 @@ public abstract class RestClientService implements ClientService {
 				response.close();
 			}
 		}
-	}
+	}*/
 	
 	@Override
 	public ClientDetailsDto addClient(ClientDetailsDto client) throws InputValidationException {
@@ -197,7 +199,7 @@ public abstract class RestClientService implements ClientService {
 		}
 	}
 	@Override
-	public List<ClientDto> findClients(String keywords, int index, int numRows) {
+	public ClientListIntervalDto findClients(String keywords, int index, int numRows) {
 		WebTarget wt = getEndpointWebTarget().path("clients")
 				.queryParam("keywords", keywords)
 				.queryParam("index", index)
@@ -207,7 +209,11 @@ public abstract class RestClientService implements ClientService {
 		try {
 			validateResponse(Response.Status.OK.getStatusCode(), response);
 			ClientDtoJaxbList clients = response.readEntity(ClientDtoJaxbList.class);
-			return ClientDtoToClientDtoJaxbConversor.toClientDtos(clients);
+			
+			return new ClientListIntervalDto(
+					ClientDtoToClientDtoJaxbConversor.toClientDtos(clients),
+					LinkUtil.getHeaderLinkUri(response, "next"),
+					LinkUtil.getHeaderLinkUri(response, "previous"));
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		} finally {
@@ -267,12 +273,11 @@ public abstract class RestClientService implements ClientService {
 		}
 	}
 	@Override
-	public List<CallDto> findCalls(Long clientId, Calendar month, int index,
+	public CallListIntervalDto findCalls(Long clientId, Calendar month, int index,
 			int numRows) throws CallStateException, InstanceNotFoundException {
-		/*WebTarget wt = getEndpointWebTarget().path("clients/{id}")
+		WebTarget wt = getEndpointWebTarget().path("clients/{id}")
 				.resolveTemplate("id", clientId)
-				.queryParam("month", month.get(Calendar.MONTH))
-				.queryParam("year", month.get(Calendar.YEAR))
+				.queryParam("initDate", month)
 				.queryParam("index", index)
 				.queryParam("numRows", numRows);
 				
@@ -280,8 +285,11 @@ public abstract class RestClientService implements ClientService {
 		try {
 			validateResponse(Response.Status.NO_CONTENT.getStatusCode(),
 					response);
-			CallDtoJaxbList callss = response.readEntity(CallDtoJaxbList.class);
-			return ClientDtoToClientDtoJaxbConversor.toClientDtos(call);
+			CallDtoJaxbList calls = response.readEntity(CallDtoJaxbList.class);
+			return new CallListIntervalDto(
+					CallToCallDtoJaxbConversor.toCallDtos(calls),
+					LinkUtil.getHeaderLinkUri(response, "next"),
+					LinkUtil.getHeaderLinkUri(response, "previous"));
 		} catch (InstanceNotFoundException ex) {
 			throw ex;
 		} catch (Exception ex) {
@@ -290,22 +298,68 @@ public abstract class RestClientService implements ClientService {
 			if (response != null) {
 				response.close();
 			}
-		}*/
-		return null;
+		}
 	}
 	@Override
-	public List<CallDto> findCalls(Long clientId, Calendar initDate,
+	public CallListIntervalDto findCalls(Long clientId, Calendar initDate,
 			Calendar endDate, int index, int numRows)
 			throws InstanceNotFoundException {
-		// TODO Apéndice de método generado automáticamente
-		return null;
+		WebTarget wt = getEndpointWebTarget().path("clients/{id}")
+				.resolveTemplate("id", clientId)
+				.queryParam("initDate", initDate)
+				.queryParam("endDate", endDate)
+				.queryParam("index", index)
+				.queryParam("numRows", numRows);
+				
+				Response response = wt.request().accept(this.getMediaType()).put(null);
+		try {
+			validateResponse(Response.Status.NO_CONTENT.getStatusCode(),
+					response);
+			CallDtoJaxbList calls = response.readEntity(CallDtoJaxbList.class);
+			return new CallListIntervalDto(
+					CallToCallDtoJaxbConversor.toCallDtos(calls),
+					LinkUtil.getHeaderLinkUri(response, "next"),
+					LinkUtil.getHeaderLinkUri(response, "previous"));
+		} catch (InstanceNotFoundException ex) {
+			throw ex;
+		} catch (Exception ex) {
+			throw new RuntimeException(ex);
+		} finally {
+			if (response != null) {
+				response.close();
+			}
+		}
 	}
 	@Override
-	public List<CallDto> findCalls(Long clientId, Calendar initDate,
+	public CallListIntervalDto findCalls(Long clientId, Calendar initDate,
 			Calendar endDate, int index, int numRows, enumType type)
 			throws CallStateException, InstanceNotFoundException {
-		// TODO Apéndice de método generado automáticamente
-		return null;
+		WebTarget wt = getEndpointWebTarget().path("clients/{id}")
+				.resolveTemplate("id", clientId)
+				.queryParam("initDate", initDate)
+				.queryParam("endDate", endDate)
+				.queryParam("index", index)
+				.queryParam("numRows", numRows)
+				.queryParam("type", type);
+				
+				Response response = wt.request().accept(this.getMediaType()).put(null);
+		try {
+			validateResponse(Response.Status.NO_CONTENT.getStatusCode(),
+					response);
+			CallDtoJaxbList calls = response.readEntity(CallDtoJaxbList.class);
+			return new CallListIntervalDto(
+					CallToCallDtoJaxbConversor.toCallDtos(calls),
+					LinkUtil.getHeaderLinkUri(response, "next"),
+					LinkUtil.getHeaderLinkUri(response, "previous"));
+		} catch (InstanceNotFoundException ex) {
+			throw ex;
+		} catch (Exception ex) {
+			throw new RuntimeException(ex);
+		} finally {
+			if (response != null) {
+				response.close();
+			}
+		}
 	}
 	@Override
 	public String getClientUrl(Long clientId) throws InstanceNotFoundException {

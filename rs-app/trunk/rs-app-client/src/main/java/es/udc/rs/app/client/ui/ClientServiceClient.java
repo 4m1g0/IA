@@ -2,10 +2,13 @@ package es.udc.rs.app.client.ui;
 
 import java.util.Calendar;
 import java.util.List;
+
 import es.udc.rs.app.client.dto.CallDetailsDto;
 import es.udc.rs.app.client.dto.CallDto;
+import es.udc.rs.app.client.dto.CallListIntervalDto;
 import es.udc.rs.app.client.dto.ClientDetailsDto;
 import es.udc.rs.app.client.dto.ClientDto;
+import es.udc.rs.app.client.dto.ClientListIntervalDto;
 import es.udc.rs.app.client.service.ClientService;
 import es.udc.rs.app.client.service.ClientServiceFactory;
 import es.udc.rs.app.constants.ModelConstants.enumState;
@@ -119,10 +122,12 @@ public class ClientServiceClient {
 			Integer numRows = Integer.valueOf(args[3]);
 			
 			try {
-				List<ClientDto> clientDtos = clientService.findClients(keywords, index, numRows);
-				for (int i = 0; i < clientDtos.size(); i++) {
-					System.out.println(clientDtos.get(i).toString());
+				ClientListIntervalDto clientDtos = clientService.findClients(keywords, index, numRows);
+				System.out.println(clientDtos.getPreviousIntervalUri());
+				for (int i = 0; i < clientDtos.getClients().size(); i++) {
+					System.out.println(clientDtos.getClients().get(i).toString());
 				}
+				System.out.println(clientDtos.getPreviousIntervalUri());
 			} catch (NumberFormatException e) {
 				e.printStackTrace(System.err);
 			}
@@ -186,10 +191,12 @@ public class ClientServiceClient {
 			int numRows = Integer.parseInt(args[4]);
 			if(args[5] == null){
 				try {
-					List<CallDto> listCall = clientService.findCalls(clientId, initDate, endDate, index, numRows);
-					for (int i = 0; i < listCall.size(); i++) {
-						listCall.get(i).toString();
+					CallListIntervalDto listCall = clientService.findCalls(clientId, initDate, endDate, index, numRows);
+					System.out.println(listCall.getPreviousIntervalUri());
+					for (int i = 0; i < listCall.getCalls().size(); i++) {
+						System.out.println(listCall.getCalls().get(i).toString());
 					}
+					System.out.println(listCall.getNextIntervalUri());
 				} catch (NumberFormatException e) {
 					e.printStackTrace();
 				} catch (InstanceNotFoundException e) {
@@ -199,10 +206,12 @@ public class ClientServiceClient {
 			}
 			else{
 				try {
-				List<CallDto> listCall = clientService.findCalls(clientId, initDate, endDate, index, numRows, enumType.valueOf(args[5]));
-				for (int i = 0; i < listCall.size(); i++) {
-					listCall.get(i).toString();
+				CallListIntervalDto listCall = clientService.findCalls(clientId, initDate, endDate, index, numRows, enumType.valueOf(args[5]));
+				System.out.println(listCall.getPreviousIntervalUri());
+				for (int i = 0; i < listCall.getCalls().size(); i++) {
+					System.out.println(listCall.getCalls().get(i).toString());
 				}
+				System.out.println(listCall.getNextIntervalUri());
 				} catch (NumberFormatException e) {
 					e.printStackTrace();
 				} catch (InstanceNotFoundException e) {
@@ -223,10 +232,12 @@ public class ClientServiceClient {
 			int index = Integer.parseInt(args[4]);
 			int numRows = Integer.parseInt(args[5]);
 			try {
-				List<CallDto> listCall = clientService.findCalls(clientId, date, index, numRows);
-				for (int i = 0; i < listCall.size(); i++) {
-					listCall.get(i).toString();
+				CallListIntervalDto listCall = clientService.findCalls(clientId, date, index, numRows);
+				System.out.println(listCall.getPreviousIntervalUri());
+				for (int i = 0; i < listCall.getCalls().size(); i++) {
+					System.out.println(listCall.getCalls().get(i).toString());
 				}
+				System.out.println(listCall.getNextIntervalUri());
 			} catch (NumberFormatException e) {
 				// TODO: handle exception
 			} catch (CallStateException e) {
