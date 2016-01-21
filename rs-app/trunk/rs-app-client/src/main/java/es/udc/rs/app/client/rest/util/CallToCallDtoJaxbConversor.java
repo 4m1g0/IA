@@ -10,6 +10,7 @@ import es.udc.rs.app.client.dto.CallDetailsDto;
 import es.udc.rs.app.client.dto.CallDto;
 import es.udc.rs.app.client.dto.ClientDto;
 import es.udc.rs.app.client.service.rest.dto.CallDetailsDtoJaxb;
+import es.udc.rs.app.client.service.rest.dto.CallDetailsDtoJaxbList;
 import es.udc.rs.app.client.service.rest.dto.CallDtoJaxb;
 import es.udc.rs.app.client.service.rest.dto.CallDtoJaxbList;
 import es.udc.rs.app.client.service.rest.dto.ClientDtoJaxb;
@@ -17,6 +18,7 @@ import es.udc.rs.app.client.service.rest.dto.ClientDtoJaxbList;
 import es.udc.rs.app.client.service.rest.dto.EnumState;
 import es.udc.rs.app.client.service.rest.dto.EnumType;
 import es.udc.rs.app.client.service.rest.dto.ObjectFactory;
+import es.udc.rs.app.constants.ModelConstants;
 import es.udc.rs.app.jaxb.StringToDate;
 import es.udc.ws.util.exceptions.InputValidationException;
 
@@ -43,6 +45,16 @@ public class CallToCallDtoJaxbConversor {
 		return callDtos;
 	}
 	
+public static List<CallDetailsDto> toCallDetailsDtos(CallDetailsDtoJaxbList callDetailsListDto){
+		
+		List<CallDetailsDtoJaxb> callList = callDetailsListDto.getCall();
+		List<CallDetailsDto> callDetailsDtos = new ArrayList<>(callList.size());
+		for (int i = 0; i < callList.size(); i++) {
+			callDetailsDtos.add(toCallDetailsDto(callList.get(i)));
+		}
+		return callDetailsDtos;
+	}
+	
 	public static CallDetailsDto toCallDetailsDto(CallDetailsDtoJaxb call){
 		Calendar cal = null;
 		try {
@@ -52,8 +64,8 @@ public class CallToCallDtoJaxbConversor {
 		}
 		return new CallDetailsDto(call.getCallId(), call.getClientId(), 
 				cal, call.getDuration(), call.getDestPhone(), 
-				callEnumToCallEnumDtoJaxbConversor.toEnumType(call.getType()), 
-				callEnumToCallEnumDtoJaxbConversor.toEnumState(call.getState()));
+				ModelConstants.toEnumType(call.getType()), 
+				ModelConstants.toEnumState(call.getState()));
 	}
 	
 	public static JAXBElement<CallDetailsDtoJaxb> toJaxbCallDetails(CallDetailsDto callDetailsDto){
@@ -61,7 +73,7 @@ public class CallToCallDtoJaxbConversor {
 		callDetails.setCallId(callDetailsDto.getCallId()!= null ? callDetailsDto.getCallId() : -1);
 		callDetails.setClientId(callDetailsDto.getClientId());
 		callDetails.setDuration(callDetailsDto.getDuration());
-		callDetails.setType(EnumType.valueOf(callDetailsDto.getType().toString()));
+		callDetails.setType(ModelConstants.toStringType(callDetailsDto.getType()));
 		callDetails.setState(null);
 		callDetails.setDestPhone(callDetailsDto.getDestPhone());
 		callDetails.setDateCall(StringToDate.getDateString(callDetailsDto.getDateCall()));

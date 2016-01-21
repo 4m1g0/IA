@@ -28,6 +28,28 @@ public final class ModelConstants {
 		
 		return null;
 	}
+	
+	public static final String toStringState(enumState state){
+		if(state.equals(enumState.PENDING))
+			return "PENDING";
+		if(state.equals(enumState.BILLED))
+			return "BILLED";
+		if(state.equals(enumState.PAID))
+			return "PAID";
+		return null;
+	}
+	
+	public static final String toStringType(enumType type){
+		if(type.equals(enumType.LOCAL))
+			return "LOCAL";
+		if(type.equals(enumType.NATIONAL))
+			return "NATIONAL";
+		if(type.equals(enumType.INTERNATIONAL))
+			return "INTERNATIONAL";
+		return null;
+	}
+	
+	
 	private ModelConstants() {
     }
 

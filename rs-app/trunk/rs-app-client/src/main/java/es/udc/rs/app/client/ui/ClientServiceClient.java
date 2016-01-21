@@ -136,8 +136,7 @@ public class ClientServiceClient {
 				String date = args[2];
 				int duration = Integer.parseInt(args[3]);
 				String phone = args[4];
-				enumType type = enumType.valueOf(args[5]);
-				clientService.makeCall(clientId, date, duration, type, phone);
+				clientService.makeCall(clientId, date, duration, args[5], phone);
 				System.out.println("call made successfully");
 			} catch (NumberFormatException | InstanceNotFoundException | InputValidationException e) {
 				e.printStackTrace(System.err);
@@ -148,12 +147,11 @@ public class ClientServiceClient {
 		if("-cs".equalsIgnoreCase(args[0])){
 			validateArgs(args, 5, new int[] { 1 });
 			Long clientId = Long.parseLong(args[1]);
-			Calendar date = Calendar.getInstance();
-			date.set(Integer.parseInt(args[2]), Integer.parseInt(args[1]), 1);
+			
 			try {
-				clientService.changeCallState(clientId, StringToDate.getDateString(date), args[4]);
+				clientService.changeCallState(clientId, args[3],args[2], args[4]);
 				System.out.println("State calls from " + clientId
-						+ "on month" + args[2] + " has been updated successfully.");
+						+ " on month " + args[2] + " has been updated successfully.");
 			} catch (NumberFormatException e) {
 				// TODO: handle exception
 				e.printStackTrace();
@@ -176,8 +174,8 @@ public class ClientServiceClient {
 			int index, numRows;
 			
 			try {
-				initDate = args[2];
 				if(args.length > 5){
+					initDate = args[2];
 					endDate = args[3];
 					index = Integer.parseInt(args[4]);
 					numRows = Integer.parseInt(args[5]);
@@ -187,10 +185,6 @@ public class ClientServiceClient {
 					else{
 						listCall = clientService.findCalls(clientId, initDate, endDate, index, numRows);
 					}
-				}else{
-					index = Integer.parseInt(args[3]);
-					numRows = Integer.parseInt(args[4]);
-					listCall = clientService.findCalls(clientId, initDate,index, numRows);
 				}
 				System.out.println(listCall.toString());
 				
@@ -207,13 +201,13 @@ public class ClientServiceClient {
 			validateArgs(args, 6, new int[] { 1 });
 			
 			Long clientId = Long.parseLong(args[1]);
-			Calendar date = Calendar.getInstance();
-			date.set(Integer.parseInt(args[3]), Integer.parseInt(args[2]), 10);
 			int index = Integer.parseInt(args[4]);
 			int numRows = Integer.parseInt(args[5]);
 			try {
-				CallListIntervalDto listCall = clientService.findCalls(clientId, StringToDate.getDateString(date), index, numRows);
-				System.out.println(listCall.toString());
+				List<CallDetailsDto> listCall = clientService.findCallsToBill(clientId, args[2], args[3], index, numRows);
+				for (CallDetailsDto callDetailsDto : listCall) {
+					System.out.println(callDetailsDto.toString());
+				}
 			} catch (NumberFormatException e) {
 				// TODO: handle exception
 			} catch (CallStateException e) {
@@ -260,8 +254,8 @@ public class ClientServiceClient {
 						+ "    [findClientByDNI] ServiceClient -fdni <DNI>\n"
 						+ "    [findClients]     ServiceClient -fcs <keywords> <index> <numRows>\n"
 						+ "    [makeCall]        ServiceClient -mc <clientId> <date> <duration> <phoneDest> <type>\n"
-						+ "    [changeState]     ServiceClient -cs <clientId> <month>  <year> <state>\n"
-						+ "    [findCalls]       ServiceClient -fcll <clientId> <dateInit>  <dateEnd>(OP) <index> <numRows> <type>(OP)\n"
+						+ "    [changeState]     ServiceClient -cs <clientId> <month> <year> <state>\n"
+						+ "    [findCalls]       ServiceClient -fcll <clientId> <dateInit>  <dateEnd> <index> <numRows> <type>(OP)\n"
 						+ "    [findCallsBill]   ServiceClient -fcb <clientId> <month> <year> <index> <numRows>\n");
 	}
 

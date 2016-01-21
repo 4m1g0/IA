@@ -1,5 +1,8 @@
 package es.udc.rs.app.client.service;
 
+import java.util.List;
+
+import es.udc.rs.app.client.dto.CallDetailsDto;
 import es.udc.rs.app.client.dto.CallListIntervalDto;
 import es.udc.rs.app.client.dto.ClientDetailsDto;
 import es.udc.rs.app.client.dto.ClientListIntervalDto;
@@ -24,15 +27,13 @@ public interface ClientService {
     
     public ClientListIntervalDto findClients(String keywords, int index, int numRows);
     
-    public Long makeCall(Long clientId, String date, Integer duration, enumType type, String destPhone) throws InstanceNotFoundException, InputValidationException;
+    public Long makeCall(Long clientId, String date, Integer duration, String type, String destPhone) throws InstanceNotFoundException, InputValidationException;
     
-    public void changeCallState(Long clientId, String date , String state) throws CallStateException, InstanceNotFoundException, MonthExpirationException;
+    public void changeCallState(Long clientId, String month, String year , String state) throws CallStateException, InstanceNotFoundException, MonthExpirationException;
     
-    public CallListIntervalDto findCalls(Long clientId, String month, int index, int numRows) throws CallStateException, InstanceNotFoundException;
+    public List<CallDetailsDto> findCallsToBill(Long clientId, String month, String year ,int index, int numRows ) throws CallStateException, InstanceNotFoundException;
     
     public CallListIntervalDto findCalls(Long clientId, String initDate, String endDate, int index, int numRows) throws  InstanceNotFoundException;
 
     public CallListIntervalDto findCalls(Long clientId, String initDate, String endDate, int index, int numRows, String type) throws CallStateException, InstanceNotFoundException;
-
-    public String getClientUrl(Long saleId) throws InstanceNotFoundException;
 }

@@ -27,6 +27,7 @@ import es.udc.rs.app.constants.ModelConstants.enumType;
 import es.udc.rs.app.exceptions.CallStateException;
 import es.udc.rs.app.exceptions.MonthExpirationException;
 import es.udc.rs.app.jaxrs.dto.CallDetailsDtoJaxb;
+import es.udc.rs.app.jaxrs.dto.CallDetailsDtoJaxbList;
 import es.udc.rs.app.jaxrs.dto.CallDtoJaxb;
 import es.udc.rs.app.jaxrs.dto.CallDtoJaxbList;
 import es.udc.rs.app.jaxrs.util.CallToCallDtoJaxbConversor;
@@ -45,7 +46,7 @@ public class CallResource {
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response makeCall(CallDetailsDtoJaxb callDto, @Context UriInfo ui, @Context HttpHeaders headers) throws InputValidationException, InstanceNotFoundException{
 		Calendar callDate = StringToDate.getCalendar(callDto.getDateCall()); // throws input validation
-		Call call = ClientServiceFactory.getService().makeCall(callDto.getClientId(), callDate, callDto.getDuration(), callDto.getType(), callDto.getDestPhone());
+		Call call = ClientServiceFactory.getService().makeCall(callDto.getClientId(), callDate, callDto.getDuration(), ModelConstants.toEnumType(callDto.getType()), callDto.getDestPhone());
 		CallDtoJaxb resultCallDto = CallToCallDtoJaxbConversor.toCallDtoJaxb(call, ui.getBaseUri(), ServiceUtil.getTypeAsStringFromHeaders(headers));
 		
 		String newId = String.valueOf(call.getClientId());
@@ -56,33 +57,33 @@ public class CallResource {
 					   .build();
 	}
 	
-	@PUT
-	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@POST
+	@Path("/state")
 	public Response changeState(@QueryParam("id") Long id, 
-							@QueryParam("date") String date,
+							@QueryParam("month") String month,
+							@QueryParam("year") String year,
 							@QueryParam("state") String state) 
 			throws InputValidationException, CallStateException, InstanceNotFoundException, MonthExpirationException{
 		
 		enumState st;
-		Calendar callDate = StringToDate.getCalendar(date); // throws input validation
-		try {
-			st = enumState.valueOf(state);
-		} catch (Exception e) {
-			throw new InputValidationException("Formato de fecha incorrecto");
-		}
+		Calendar callDate = StringToDate.getCalendar(year + "-" + month + "-01 00:00:00"); // throws input validation
+		st = ModelConstants.toEnumState(state);
 		
 		ClientServiceFactory.getService().changeCallState(id, callDate, st);
 
 		return Response.ok().build();
 	}
 	
+	
+	
 	@GET
-	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response findCalls(
 			@QueryParam("id") Long id,
 			@QueryParam("initDate") String initDate,
 			@QueryParam("endDate") String endDate,
+			@QueryParam("month") String month,
+			@QueryParam("year") String year,
 			@DefaultValue("-1") @QueryParam("index") int index, 
 			@DefaultValue("-1") @QueryParam("numRows") int numRows,
 			@QueryParam("type") String callType,
@@ -91,9 +92,20 @@ public class CallResource {
 		Calendar callInitDate = StringToDate.getCalendar(initDate); // throws input validation
 		List<Call> calls;
 		
-		if (endDate == null){
-			calls = ClientServiceFactory.getService().findCalls(id, callInitDate, index, numRows);
-		} else{
+		String type = ServiceUtil.getTypeAsStringFromHeaders(headers);
+		
+		if(month != null){
+			calls = ClientServiceFactory.getService().findCalls(id, StringToDate.getCalendar(year + "-" + month + "-01 00:00:00"), index, numRows);
+			List<CallDetailsDtoJaxb> callDetailsDtos = CallToCallDtoJaxbConversor.toCallDetailsDtoJaxb(calls, uriInfo.getBaseUri(), type);
+			
+			Link selfLink = Link.fromUri(uriInfo.getRequestUri()).build();
+			
+			ResponseBuilder response = Response.ok(new CallDetailsDtoJaxbList(callDetailsDtos)).links(selfLink);
+			return response.build();
+			
+		}
+		
+
 			Calendar callEndDate = StringToDate.getCalendar(endDate); // throws input validation
 			
 			if (callType == null){
@@ -106,10 +118,9 @@ public class CallResource {
 					throw new InputValidationException("Tipo incorrecto");
 				}
 				calls = ClientServiceFactory.getService().findCalls(id, callInitDate, callEndDate, index, numRows, et);
-			}
 		}
 		
-		String type = ServiceUtil.getTypeAsStringFromHeaders(headers);
+		
 
 		List<CallDtoJaxb> callDtos = CallToCallDtoJaxbConversor.toCallDtoJaxb(calls, uriInfo.getBaseUri(), type);
 		

@@ -24,20 +24,19 @@ public class CallDetailsDtoJaxb {
     @XmlElement(required = true)
     private String destPhone;
     @XmlElement(required = true)
-    private enumState state;
+    private String state;
     @XmlElement(required = true)
-    private enumType type;
+    private String type;
     
     public CallDetailsDtoJaxb(){
     	
     }
-    
-	public CallDetailsDtoJaxb(Long id, Long clientId, Calendar dateCall,
-			Integer duration, String destPhone, enumState state, 
-			enumType type) {
+	public CallDetailsDtoJaxb(Long id, Long clientId, String dateCall,
+			Integer duration, String destPhone, String state, 
+			String type) {
 		this.id = id;
 		this.clientId = clientId;
-		this.dateCall = dateCall.toString();
+		this.dateCall = dateCall;
 		this.duration = duration;
 		this.destPhone = destPhone;
 		this.state = state;
@@ -85,19 +84,19 @@ public class CallDetailsDtoJaxb {
 		this.destPhone = destPhone;
 	}
 	
-	public enumState getState() {
+	public String getState() {
 		return state;
 	}
 
-	public void setState(enumState state) {
+	public void setState(String state) {
 		this.state = state;
 	}
 
-	public enumType getType() {
+	public String getType() {
 		return type;
 	}
 
-	public void setType(enumType type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 

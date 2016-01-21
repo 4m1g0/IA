@@ -24,6 +24,7 @@ import es.udc.rs.app.client.rest.util.JaxbExceptionConversor;
 import es.udc.rs.app.client.rest.util.LinkUtil;
 import es.udc.rs.app.client.service.ClientService;
 import es.udc.rs.app.client.service.rest.dto.CallDetailsDtoJaxb;
+import es.udc.rs.app.client.service.rest.dto.CallDetailsDtoJaxbList;
 import es.udc.rs.app.client.service.rest.dto.CallDtoJaxbList;
 import es.udc.rs.app.client.service.rest.dto.CallStateExceptionDtoJaxb;
 import es.udc.rs.app.client.service.rest.dto.ClientDetailsDtoJaxb;
@@ -33,6 +34,7 @@ import es.udc.rs.app.client.service.rest.dto.InputValidationExceptionDtoJaxb;
 import es.udc.rs.app.client.service.rest.dto.InstanceNotFoundExceptionDtoJaxb;
 import es.udc.rs.app.client.service.rest.dto.RemoveClientExceptionDtoJaxb;
 import es.udc.rs.app.configuration.ConfigurationParametersManager;
+import es.udc.rs.app.constants.ModelConstants;
 import es.udc.rs.app.constants.ModelConstants.enumState;
 import es.udc.rs.app.constants.ModelConstants.enumType;
 import es.udc.rs.app.exceptions.CallStateException;
@@ -224,14 +226,14 @@ public abstract class RestClientService implements ClientService {
 		}
 	}
 	@Override
-	public Long makeCall(Long clientId, String date, Integer duration, enumType type, String destPhone) throws InstanceNotFoundException, InputValidationException {
+	public Long makeCall(Long clientId, String date, Integer duration, String type, String destPhone) throws InstanceNotFoundException, InputValidationException {
 		WebTarget wt = getEndpointWebTarget().path("calls");
 		
 		CallDetailsDto call = new CallDetailsDto();
 		call.setDateCall(StringToDate.getCalendar(date));
 		call.setClientId(clientId);
 		call.setDuration(duration);
-		call.setType(type);
+		call.setType(ModelConstants.toEnumType(type));
 		call.setDestPhone(destPhone);
 
 		Response response = wt.request().accept(this.getMediaType())
@@ -253,14 +255,16 @@ public abstract class RestClientService implements ClientService {
 		}
 	}
 	@Override
-	public void changeCallState(Long clientId, String date, String state) throws CallStateException, InstanceNotFoundException, MonthExpirationException {
-		WebTarget wt = getEndpointWebTarget().path("calls")
-				.resolveTemplate("id", clientId)
-				.queryParam("date", date)
+	public void changeCallState(Long clientId, String month, String year, String state) throws CallStateException, InstanceNotFoundException, MonthExpirationException {
+		WebTarget wt = getEndpointWebTarget().path("calls/state")
+				.queryParam("id", clientId)
+				.queryParam("month", month)
+				.queryParam("year", year)
 				.queryParam("state", state);
-				Response response = wt.request().accept(this.getMediaType()).put(null);
+				Response response = wt.request().accept(this.getMediaType()).post(null);
 		try {
-			validateResponse(Response.Status.NO_CONTENT.getStatusCode(),
+			System.out.println(response.getStatus());
+			validateResponse(Response.Status.OK.getStatusCode(),
 					response);
 		} catch (InstanceNotFoundException ex) {
 			throw ex;
@@ -273,22 +277,20 @@ public abstract class RestClientService implements ClientService {
 		}
 	}
 	@Override
-	public CallListIntervalDto findCalls(Long clientId, String month, int index,
-			int numRows) throws CallStateException, InstanceNotFoundException {
+	public List<CallDetailsDto> findCallsToBill(Long clientId,  String month, String year,int index,
+			int numRows ) throws CallStateException, InstanceNotFoundException {
 		WebTarget wt = getEndpointWebTarget().path("calls")
 				.queryParam("id", clientId)
-				.queryParam("initDate", month)
+				.queryParam("month", month)
+				.queryParam(("year"), year)
 				.queryParam("index", index)
 				.queryParam("numRows", numRows);
 				
 		Response response = wt.request().accept(this.getMediaType()).get();
 		try {
 			validateResponse(Response.Status.OK.getStatusCode(), response);
-			CallDtoJaxbList calls = response.readEntity(CallDtoJaxbList.class);
-			return new CallListIntervalDto(
-					CallToCallDtoJaxbConversor.toCallDtos(calls),
-					LinkUtil.getHeaderLinkUri(response, "next"),
-					LinkUtil.getHeaderLinkUri(response, "previous"));
+			CallDetailsDtoJaxbList calls = response.readEntity(CallDetailsDtoJaxbList.class);
+			return CallToCallDtoJaxbConversor.toCallDetailsDtos(calls);
 		} catch (InstanceNotFoundException ex) {
 			throw ex;
 		} catch (Exception ex) {
@@ -357,11 +359,6 @@ public abstract class RestClientService implements ClientService {
 				response.close();
 			}
 		}
-	}
-	@Override
-	public String getClientUrl(Long clientId) throws InstanceNotFoundException {
-		// TODO Apéndice de método generado automáticamente
-		return null;
 	}
 	
 	private void validateResponse(int expectedStatusCode, Response response)
