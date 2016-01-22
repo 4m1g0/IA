@@ -1,17 +1,18 @@
 package es.udc.rs.app.model.clientservice;
 
 import java.util.ArrayList;
-
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
 import es.udc.rs.app.constants.ModelConstants.enumState;
 import es.udc.rs.app.constants.ModelConstants.enumType;
 import es.udc.rs.app.exceptions.CallStateException;
 import es.udc.rs.app.exceptions.MonthExpirationException;
 import es.udc.rs.app.exceptions.RemoveClientException;
+import es.udc.rs.app.jaxb.StringToDate;
 import es.udc.rs.app.model.call.Call;
 import es.udc.rs.app.model.client.Client;
 import es.udc.ws.util.exceptions.InputValidationException;
@@ -160,7 +161,7 @@ public class ClientServiceImpl implements ClientService {
 				continue;
 			}
 			
-			if(call.getState().ordinal() == state.ordinal() -1) {
+			if(call.getState().compareTo(state) < 0) {
 				call.setState(state);
 			}
 			else 
@@ -179,9 +180,8 @@ public class ClientServiceImpl implements ClientService {
 				continue;
 			}
 			
-			if(call.getDateCall().get(Calendar.MONTH) == date.get(Calendar.MONTH) && call.getDateCall().get(Calendar.YEAR) == date.get(Calendar.YEAR) && i++ >= index){
-				if (call.getState() != enumState.PENDING)
-					throw new CallStateException(clientId, call.getCallId());
+			if(call.getDateCall().get(Calendar.MONTH) == date.get(Calendar.MONTH) && call.getDateCall().get(Calendar.YEAR) 
+					== date.get(Calendar.YEAR) && i++ >= index){
 				findCalls.add(call);
 				if (findCalls.size() >= numRows)
 					break;

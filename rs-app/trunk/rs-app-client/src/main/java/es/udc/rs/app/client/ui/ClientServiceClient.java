@@ -149,7 +149,7 @@ public class ClientServiceClient {
 			Long clientId = Long.parseLong(args[1]);
 			
 			try {
-				clientService.changeCallState(clientId, args[3],args[2], args[4]);
+				clientService.changeCallState(clientId, args[2],args[3], args[4]);
 				System.out.println("State calls from " + clientId
 						+ " on month " + args[2] + " has been updated successfully.");
 			} catch (NumberFormatException e) {

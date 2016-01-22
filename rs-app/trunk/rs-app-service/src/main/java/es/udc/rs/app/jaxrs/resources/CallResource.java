@@ -89,7 +89,6 @@ public class CallResource {
 			@QueryParam("type") String callType,
 			@Context UriInfo uriInfo, @Context HttpHeaders headers) throws InputValidationException, NumberFormatException, CallStateException, InstanceNotFoundException{
 		
-		Calendar callInitDate = StringToDate.getCalendar(initDate); // throws input validation
 		List<Call> calls;
 		
 		String type = ServiceUtil.getTypeAsStringFromHeaders(headers);
@@ -105,7 +104,7 @@ public class CallResource {
 			
 		}
 		
-
+			Calendar callInitDate = StringToDate.getCalendar(initDate); // throws input validation
 			Calendar callEndDate = StringToDate.getCalendar(endDate); // throws input validation
 			
 			if (callType == null){
