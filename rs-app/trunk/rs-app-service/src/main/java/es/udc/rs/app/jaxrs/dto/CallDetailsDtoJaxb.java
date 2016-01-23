@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlRootElement(name="call-details")
+@XmlRootElement(name="callDetails")
 @XmlType(name="callDetailsType", propOrder = {"id", "clientId", "dateCall", 
 		"duration", "destPhone", "state", "type"})
 

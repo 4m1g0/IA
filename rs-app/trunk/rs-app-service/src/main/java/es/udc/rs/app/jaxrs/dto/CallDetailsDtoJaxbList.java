@@ -7,8 +7,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlRootElement(name="calls")
-@XmlType(name="callDetailsListType")
+@XmlRootElement(name="callsDetails")
+@XmlType(name="callsDetailsListType")
 public class CallDetailsDtoJaxbList {
 	
 	@XmlElement(name = "call")
