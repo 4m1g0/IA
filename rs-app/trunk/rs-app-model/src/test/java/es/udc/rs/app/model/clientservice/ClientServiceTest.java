@@ -4,9 +4,12 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 import java.util.Calendar;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import es.udc.rs.app.constants.EnumState;
+import es.udc.rs.app.constants.EnumType;
 import es.udc.rs.app.exceptions.CallStateException;
 import es.udc.rs.app.exceptions.MonthExpirationException;
 import es.udc.rs.app.exceptions.RemoveClientException;
@@ -14,8 +17,6 @@ import es.udc.rs.app.model.call.Call;
 import es.udc.rs.app.model.client.Client;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
-import es.udc.rs.app.constants.ModelConstants.enumState;
-import es.udc.rs.app.constants.ModelConstants.enumType;;
 
 public class ClientServiceTest {
 	
@@ -39,11 +40,11 @@ public class ClientServiceTest {
 			Calendar cal2 = Calendar.getInstance();
 			cal.set(Calendar.MONTH, 4);
 
-			clientService.makeCall(client1.getClientId(), cal, 234, enumType.LOCAL,"65943902");
-			clientService.makeCall(client1.getClientId(), cal, 244, enumType.LOCAL,"65954912");
-			clientService.makeCall(client1.getClientId(), cal, 244, enumType.LOCAL,"65954912");
+			clientService.makeCall(client1.getClientId(), cal, 234, EnumType.LOCAL,"65943902");
+			clientService.makeCall(client1.getClientId(), cal, 244, EnumType.LOCAL,"65954912");
+			clientService.makeCall(client1.getClientId(), cal, 244, EnumType.LOCAL,"65954912");
 			cal2.set(Calendar.MONTH, 6);
-			clientService.makeCall(client1.getClientId(), cal2, 244, enumType.LOCAL,"65954912");
+			clientService.makeCall(client1.getClientId(), cal2, 244, EnumType.LOCAL,"65954912");
 		} catch (Exception e) {
 			throw new InputValidationException("error");
 			
@@ -153,7 +154,7 @@ public class ClientServiceTest {
 		try {
 			Client c1 = clientService.findClient("77775437A");
 			Calendar date = Calendar.getInstance();
-			clientService.makeCall(c1.getClientId(), date, 234, enumType.LOCAL,"65943902");
+			clientService.makeCall(c1.getClientId(), date, 234, EnumType.LOCAL,"65943902");
 			
 			assertEquals(clientService.findCalls(c1.getClientId(), date).get(0).getDestPhone(), "65943902");
 			
@@ -169,9 +170,9 @@ public class ClientServiceTest {
 		Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.MONTH, 7);
 
-		clientService.makeCall(c.getClientId(), cal, 234, enumType.LOCAL,"65943902");
-		clientService.makeCall(c.getClientId(), cal, 244, enumType.LOCAL,"65954912");
-		clientService.changeCallState(c.getClientId(), cal, enumState.BILLED);
+		clientService.makeCall(c.getClientId(), cal, 234, EnumType.LOCAL,"65943902");
+		clientService.makeCall(c.getClientId(), cal, 244, EnumType.LOCAL,"65954912");
+		clientService.changeCallState(c.getClientId(), cal, EnumState.BILLED);
 		// la busqueda debe lanzar excepcion si el estado se ha cambiado correctamente
 		clientService.findCalls(c.getClientId(), cal);
 	}
@@ -181,7 +182,7 @@ public class ClientServiceTest {
 		Client c = clientService.findClient("66673477R");
 		Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.MONTH, 7);
-		clientService.changeCallState(c.getClientId(), cal, enumState.PENDING);
+		clientService.changeCallState(c.getClientId(), cal, EnumState.PENDING);
 	}
 
 	@Test
@@ -217,7 +218,7 @@ public class ClientServiceTest {
 		Calendar cal2 = Calendar.getInstance();
 		cal1.set(Calendar.MONTH, 3);
 		cal2.set(Calendar.MONTH, 11);
-		List<Call> calls = clientService.findCalls(c1.getClientId(), cal1, cal2, 0, 9999, enumType.LOCAL);
+		List<Call> calls = clientService.findCalls(c1.getClientId(), cal1, cal2, 0, 9999, EnumType.LOCAL);
 		assertEquals(6, calls.size());
 	}
 
@@ -239,7 +240,7 @@ public class ClientServiceTest {
 		Calendar cal2 = Calendar.getInstance();
 		cal1.set(Calendar.MONTH, 3);
 		cal2.set(Calendar.MONTH, 11);
-		List<Call> calls = clientService.findCalls(c1.getClientId(), cal1, cal2, 1, 2, enumType.LOCAL);
+		List<Call> calls = clientService.findCalls(c1.getClientId(), cal1, cal2, 1, 2, EnumType.LOCAL);
 		assertEquals(2, calls.size());
 	}
 	

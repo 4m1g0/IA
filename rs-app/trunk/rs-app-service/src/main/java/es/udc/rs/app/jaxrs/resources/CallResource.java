@@ -20,9 +20,8 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.UriInfo;
 
-import es.udc.rs.app.constants.ModelConstants;
-import es.udc.rs.app.constants.ModelConstants.enumState;
-import es.udc.rs.app.constants.ModelConstants.enumType;
+import es.udc.rs.app.constants.EnumState;
+import es.udc.rs.app.constants.EnumType;
 import es.udc.rs.app.exceptions.CallStateException;
 import es.udc.rs.app.exceptions.MonthExpirationException;
 import es.udc.rs.app.jaxrs.dto.CallDetailsDtoJaxb;
@@ -44,8 +43,7 @@ public class CallResource {
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response makeCall(CallDetailsDtoJaxb callDto, @Context UriInfo ui, @Context HttpHeaders headers) throws InputValidationException, InstanceNotFoundException{
-		Calendar callDate = StringToDate.getCalendar(callDto.getDateCall()); // throws input validation
-		Call call = ClientServiceFactory.getService().makeCall(callDto.getClientId(), callDate, callDto.getDuration(), ModelConstants.toEnumType(callDto.getType()), callDto.getDestPhone());
+		Call call = ClientServiceFactory.getService().makeCall(callDto.getClientId(), callDto.getDateCall(), callDto.getDuration(), EnumType.toEnumType(callDto.getType()), callDto.getDestPhone());
 		CallDtoJaxb resultCallDto = CallToCallDtoJaxbConversor.toCallDtoJaxb(call, ui.getBaseUri(), ServiceUtil.getTypeAsStringFromHeaders(headers));
 		
 		String newId = String.valueOf(call.getClientId());
@@ -64,11 +62,9 @@ public class CallResource {
 							@QueryParam("state") String state) 
 			throws InputValidationException, CallStateException, InstanceNotFoundException, MonthExpirationException{
 		
-		enumState st;
 		Calendar callDate = StringToDate.getCalendar(year + "-" + month + "-01 00:00:00"); // throws input validation
-		st = ModelConstants.toEnumState(state);
 		
-		ClientServiceFactory.getService().changeCallState(id, callDate, st);
+		ClientServiceFactory.getService().changeCallState(id, callDate, EnumState.toEnumState(state));
 
 		return Response.ok().build();
 	}
@@ -109,13 +105,8 @@ public class CallResource {
 			if (callType == null){
 				calls = ClientServiceFactory.getService().findCalls(id, callInitDate, callEndDate, index, numRows);
 			} else {
-				enumType et;
-				try {
-					et = ModelConstants.toEnumType(callType);
-				}catch (Exception e) {
-					throw new InputValidationException("Tipo incorrecto");
-				}
-				calls = ClientServiceFactory.getService().findCalls(id, callInitDate, callEndDate, index, numRows, et);
+
+				calls = ClientServiceFactory.getService().findCalls(id, callInitDate, callEndDate, index, numRows, EnumType.toEnumType(callType));
 		}
 		
 		

@@ -2,8 +2,8 @@ package es.udc.rs.app.model.call;
 
 import java.util.Calendar;
 
-import es.udc.rs.app.constants.ModelConstants.enumState;
-import es.udc.rs.app.constants.ModelConstants.enumType;
+import es.udc.rs.app.constants.EnumState;
+import es.udc.rs.app.constants.EnumType;
 
 public class Call {
 	
@@ -12,33 +12,33 @@ public class Call {
 	private Calendar dateCall;
 	private Integer duration;
 	private String destPhone;
-	private enumType type;
-	private enumState state;
+	private EnumType type;
+	private EnumState state;
 	
 	public Call(Long clientId, Calendar dateCall, Integer duration, 
-			enumType type, String destPhone) {
+			EnumType type, String destPhone) {
 		this.clientId = clientId;
 		this.dateCall = dateCall;
 		this.duration = duration;
 		this.type = type;
 		this.destPhone = destPhone;
-		this.state = enumState.PENDING;
+		this.state = EnumState.PENDING;
 		
 	}
 
-	public enumType getType() {
+	public EnumType getType() {
 		return type;
 	}
 
-	public void setType(enumType type) {
+	public void setType(EnumType type) {
 		this.type = type;
 	}
 
-	public enumState getState() {
+	public EnumState getState() {
 		return state;
 	}
 
-	public void setState(enumState state) {
+	public void setState(EnumState state) {
 		this.state = state;
 	}
 

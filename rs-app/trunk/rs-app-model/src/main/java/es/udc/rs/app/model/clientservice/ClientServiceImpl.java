@@ -7,8 +7,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import es.udc.rs.app.constants.ModelConstants.enumState;
-import es.udc.rs.app.constants.ModelConstants.enumType;
+import es.udc.rs.app.constants.EnumState;
+import es.udc.rs.app.constants.EnumType;
 import es.udc.rs.app.exceptions.CallStateException;
 import es.udc.rs.app.exceptions.MonthExpirationException;
 import es.udc.rs.app.exceptions.RemoveClientException;
@@ -19,8 +19,8 @@ import es.udc.ws.util.exceptions.InstanceNotFoundException;
 
 public class ClientServiceImpl implements ClientService {
 	
-	private long countClient = 0;
-	private long countCall = 0;
+	private long countClient = 1;
+	private long countCall = 1;
 	
 	private LinkedHashMap<Long, Client> clients = new LinkedHashMap<Long, Client>();
 	private LinkedHashMap<Long, Call> calls = new LinkedHashMap<Long, Call>();
@@ -124,7 +124,7 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public Call makeCall(Long clientId, Calendar date, Integer duration, enumType type, String destPhone) 
+	public Call makeCall(Long clientId, Calendar date, Integer duration, EnumType type, String destPhone) 
 			throws InstanceNotFoundException, InputValidationException { 
 		Client c = clients.get(clientId);
 		
@@ -140,7 +140,7 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public void changeCallState(Long clientId, Calendar date, enumState state) throws CallStateException, InstanceNotFoundException, MonthExpirationException {
+	public void changeCallState(Long clientId, Calendar date, EnumState state) throws CallStateException, InstanceNotFoundException, MonthExpirationException {
 		findClient(clientId); // throws exception if client doesn't exist
 		Calendar today = Calendar.getInstance();
 		today.set(Calendar.DAY_OF_MONTH, 0);
@@ -176,7 +176,7 @@ public class ClientServiceImpl implements ClientService {
 				/*Comentamos esto para poder ver el cambio de estado de las llamadas cuando pasamos a billed y a paid
 				 * Para poder respetar el enunciado de la práctica bastaria con descomentar estas lineas y en caso de
 				 * buscar llamadas ya facturadas nos devolveria un error
-				 * if (call.getState() != enumState.PENDING)
+				 * if (call.getState() != EnumState.PENDING)
 					throw new CallStateException(clientId, call.getCallId());*/
 				findCalls.add(call);
 			}
@@ -191,7 +191,7 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public List<Call> findCalls(Long clientId, Calendar initDate, Calendar endDate, int index, int numRows, enumType type) throws InstanceNotFoundException { 
+	public List<Call> findCalls(Long clientId, Calendar initDate, Calendar endDate, int index, int numRows, EnumType type) throws InstanceNotFoundException { 
 		List<Call> findCalls = new ArrayList<Call>();
 		
 		int i = 0;

@@ -2,8 +2,8 @@ package es.udc.rs.app.client.dto;
 
 import java.util.Calendar;
 
-import es.udc.rs.app.constants.ModelConstants.enumState;
-import es.udc.rs.app.constants.ModelConstants.enumType;
+import es.udc.rs.app.constants.EnumState;
+import es.udc.rs.app.constants.EnumType;
 import es.udc.rs.app.jaxb.StringToDate;
 
 public class CallDetailsDto {
@@ -12,15 +12,15 @@ public class CallDetailsDto {
 	private Calendar dateCall;
 	private int duration;
 	private String destPhone;
-	private enumType type;
-	private enumState state;
+	private EnumType type;
+	private EnumState state;
 	
 	public CallDetailsDto() {
 		super();
 	}
 
 	public CallDetailsDto(Long callId, Long clientId, Calendar dateCall,
-			int duration, String destPhone, enumType type, enumState state) {
+			int duration, String destPhone, EnumType type, EnumState state) {
 		super();
 		this.callId = callId;
 		this.clientId = clientId;
@@ -71,19 +71,19 @@ public class CallDetailsDto {
 		this.destPhone = destPhone;
 	}
 
-	public enumType getType() {
+	public EnumType getType() {
 		return type;
 	}
 
-	public void setType(enumType type) {
+	public void setType(EnumType type) {
 		this.type = type;
 	}
 
-	public enumState getState() {
+	public EnumState getState() {
 		return state;
 	}
 
-	public void setState(enumState state) {
+	public void setState(EnumState state) {
 		this.state = state;
 	}
 

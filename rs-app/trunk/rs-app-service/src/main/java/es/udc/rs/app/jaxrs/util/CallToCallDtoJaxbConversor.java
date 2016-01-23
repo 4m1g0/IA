@@ -4,8 +4,9 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import es.udc.rs.app.constants.ModelConstants;
-import es.udc.rs.app.jaxb.StringToDate;
+import javax.xml.datatype.DatatypeConfigurationException;
+
+import es.udc.rs.app.constants.EnumType;
 import es.udc.rs.app.jaxrs.dto.CallDetailsDtoJaxb;
 import es.udc.rs.app.jaxrs.dto.CallDtoJaxb;
 import es.udc.rs.app.model.call.Call;
@@ -41,13 +42,21 @@ public class CallToCallDtoJaxbConversor {
 		
 		
 		
-		return new Call(call.getClientId(), StringToDate.getCalendar(call.getDateCall()), call.getDuration(), 
-				ModelConstants.toEnumType(call.getType()), call.getDestPhone());
+		return new Call(call.getClientId(), call.getDateCall(), call.getDuration(), 
+				EnumType.toEnumType(call.getType()), call.getDestPhone());
 	}
 
 	public static CallDetailsDtoJaxb toCallDetailsDtoJaxb(Call call, URI baseUri, String type) {
-		return new CallDetailsDtoJaxb(call.getCallId(), call.getClientId(), StringToDate.getDateString(call.getDateCall()), call.getDuration(),
-				call.getDestPhone(), ModelConstants.toStringState(call.getState()), ModelConstants.toStringType(call.getType()));
+
+		try {
+			return new CallDetailsDtoJaxb(call.getCallId(), call.getClientId(),call.getDateCall(), call.getDuration(),
+						call.getDestPhone(), call.getState().name(), call.getType().name());
+		} catch (DatatypeConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 }

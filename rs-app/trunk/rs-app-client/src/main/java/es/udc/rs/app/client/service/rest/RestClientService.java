@@ -30,7 +30,7 @@ import es.udc.rs.app.client.service.rest.dto.InputValidationExceptionDtoJaxb;
 import es.udc.rs.app.client.service.rest.dto.InstanceNotFoundExceptionDtoJaxb;
 import es.udc.rs.app.client.service.rest.dto.RemoveClientExceptionDtoJaxb;
 import es.udc.rs.app.configuration.ConfigurationParametersManager;
-import es.udc.rs.app.constants.ModelConstants;
+import es.udc.rs.app.constants.EnumType;
 import es.udc.rs.app.exceptions.CallStateException;
 import es.udc.rs.app.exceptions.MonthExpirationException;
 import es.udc.rs.app.exceptions.RemoveClientException;
@@ -227,7 +227,7 @@ public abstract class RestClientService implements ClientService {
 		call.setDateCall(StringToDate.getCalendar(date));
 		call.setClientId(clientId);
 		call.setDuration(duration);
-		call.setType(ModelConstants.toEnumType(type));
+		call.setType(EnumType.toEnumType(type));
 		call.setDestPhone(destPhone);
 
 		Response response = wt.request().accept(this.getMediaType())

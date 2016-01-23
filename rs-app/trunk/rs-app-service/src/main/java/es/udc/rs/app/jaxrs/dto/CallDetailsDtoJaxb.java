@@ -1,9 +1,12 @@
 package es.udc.rs.app.jaxrs.dto;
 
+
+import java.util.Calendar;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
+import javax.xml.datatype.DatatypeConfigurationException;
 @XmlRootElement(name="callDetails")
 @XmlType(name="callDetailsType", propOrder = {"id", "clientId", "dateCall", 
 		"duration", "destPhone", "state", "type"})
@@ -15,7 +18,7 @@ public class CallDetailsDtoJaxb {
     @XmlElement(required = true)
     private Long clientId;
     @XmlElement(required = true)
-    private String dateCall;
+    private Calendar dateCall;
     @XmlElement(required = true)
     private Integer duration;
     @XmlElement(required = true)
@@ -28,9 +31,9 @@ public class CallDetailsDtoJaxb {
     public CallDetailsDtoJaxb(){
     	
     }
-	public CallDetailsDtoJaxb(Long id, Long clientId, String dateCall,
+	public CallDetailsDtoJaxb(Long id, Long clientId, Calendar dateCall,
 			Integer duration, String destPhone, String state, 
-			String type) {
+			String type) throws DatatypeConfigurationException {
 		this.id = id;
 		this.clientId = clientId;
 		this.dateCall = dateCall;
@@ -57,12 +60,13 @@ public class CallDetailsDtoJaxb {
 		this.clientId = clientId;
 	}
 
-	public String getDateCall() {
+	public Calendar getDateCall() {
 		return dateCall;
 	}
 
-	public void setDateCall(String dateCall) {
+	public void setDateCall(Calendar dateCall) {
 		this.dateCall = dateCall;
+
 	}
 
 	public Integer getDuration() {

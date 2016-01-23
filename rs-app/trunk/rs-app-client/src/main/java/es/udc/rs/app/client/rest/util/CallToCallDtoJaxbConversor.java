@@ -2,9 +2,12 @@ package es.udc.rs.app.client.rest.util;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.xml.bind.JAXBElement;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
 
 import es.udc.rs.app.client.dto.CallDetailsDto;
 import es.udc.rs.app.client.dto.CallDto;
@@ -13,7 +16,8 @@ import es.udc.rs.app.client.service.rest.dto.CallDetailsDtoJaxbList;
 import es.udc.rs.app.client.service.rest.dto.CallDtoJaxb;
 import es.udc.rs.app.client.service.rest.dto.CallDtoJaxbList;
 import es.udc.rs.app.client.service.rest.dto.ObjectFactory;
-import es.udc.rs.app.constants.ModelConstants;
+import es.udc.rs.app.constants.EnumState;
+import es.udc.rs.app.constants.EnumType;
 import es.udc.rs.app.jaxb.StringToDate;
 import es.udc.ws.util.exceptions.InputValidationException;
 
@@ -51,16 +55,9 @@ public static List<CallDetailsDto> toCallDetailsDtos(CallDetailsDtoJaxbList call
 	}
 	
 	public static CallDetailsDto toCallDetailsDto(CallDetailsDtoJaxb call){
-		Calendar cal = null;
-		try {
-			cal = StringToDate.getCalendar(call.getDateCall());
-		} catch (InputValidationException e) {
-			e.printStackTrace();
-		}
 		return new CallDetailsDto(call.getCallId(), call.getClientId(), 
-				cal, call.getDuration(), call.getDestPhone(), 
-				ModelConstants.toEnumType(call.getType()), 
-				ModelConstants.toEnumState(call.getState()));
+				call.getDateCall().toGregorianCalendar(), call.getDuration(), call.getDestPhone(), 
+				EnumType.toEnumType(call.getType()),EnumState.toEnumState(call.getState()));
 	}
 	
 	public static JAXBElement<CallDetailsDtoJaxb> toJaxbCallDetails(CallDetailsDto callDetailsDto){
@@ -68,10 +65,18 @@ public static List<CallDetailsDto> toCallDetailsDtos(CallDetailsDtoJaxbList call
 		callDetails.setCallId(callDetailsDto.getCallId()!= null ? callDetailsDto.getCallId() : -1);
 		callDetails.setClientId(callDetailsDto.getClientId());
 		callDetails.setDuration(callDetailsDto.getDuration());
-		callDetails.setType(ModelConstants.toStringType(callDetailsDto.getType()));
+		callDetails.setType(callDetailsDto.getType().name());
 		callDetails.setState(null);
 		callDetails.setDestPhone(callDetailsDto.getDestPhone());
-		callDetails.setDateCall(StringToDate.getDateString(callDetailsDto.getDateCall()));
+		
+		try {
+			GregorianCalendar greg = new GregorianCalendar();
+			greg.setTime(callDetailsDto.getDateCall().getTime());
+			callDetails.setDateCall( DatatypeFactory.newInstance().newXMLGregorianCalendar(greg));
+		} catch (DatatypeConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		JAXBElement<CallDetailsDtoJaxb> jaxbElement = new ObjectFactory().createCallDetails(callDetails);
 		return jaxbElement;
 	}
