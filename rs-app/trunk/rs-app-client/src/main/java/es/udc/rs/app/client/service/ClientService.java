@@ -6,8 +6,6 @@ import es.udc.rs.app.client.dto.CallDetailsDto;
 import es.udc.rs.app.client.dto.CallListIntervalDto;
 import es.udc.rs.app.client.dto.ClientDetailsDto;
 import es.udc.rs.app.client.dto.ClientListIntervalDto;
-import es.udc.rs.app.constants.ModelConstants.enumState;
-import es.udc.rs.app.constants.ModelConstants.enumType;
 import es.udc.rs.app.exceptions.CallStateException;
 import es.udc.rs.app.exceptions.MonthExpirationException;
 import es.udc.rs.app.exceptions.RemoveClientException;

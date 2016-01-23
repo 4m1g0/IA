@@ -1,6 +1,5 @@
 package es.udc.rs.app.client.service.rest;
 
-import java.util.Calendar;
 import java.util.List;
 
 import javax.ws.rs.client.Client;
@@ -13,10 +12,8 @@ import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBElement;
 
 import es.udc.rs.app.client.dto.CallDetailsDto;
-import es.udc.rs.app.client.dto.CallDto;
 import es.udc.rs.app.client.dto.CallListIntervalDto;
 import es.udc.rs.app.client.dto.ClientDetailsDto;
-import es.udc.rs.app.client.dto.ClientDto;
 import es.udc.rs.app.client.dto.ClientListIntervalDto;
 import es.udc.rs.app.client.rest.util.CallToCallDtoJaxbConversor;
 import es.udc.rs.app.client.rest.util.ClientDtoToClientDtoJaxbConversor;
@@ -28,15 +25,12 @@ import es.udc.rs.app.client.service.rest.dto.CallDetailsDtoJaxbList;
 import es.udc.rs.app.client.service.rest.dto.CallDtoJaxbList;
 import es.udc.rs.app.client.service.rest.dto.CallStateExceptionDtoJaxb;
 import es.udc.rs.app.client.service.rest.dto.ClientDetailsDtoJaxb;
-import es.udc.rs.app.client.service.rest.dto.ClientDtoJaxb;
 import es.udc.rs.app.client.service.rest.dto.ClientDtoJaxbList;
 import es.udc.rs.app.client.service.rest.dto.InputValidationExceptionDtoJaxb;
 import es.udc.rs.app.client.service.rest.dto.InstanceNotFoundExceptionDtoJaxb;
 import es.udc.rs.app.client.service.rest.dto.RemoveClientExceptionDtoJaxb;
 import es.udc.rs.app.configuration.ConfigurationParametersManager;
 import es.udc.rs.app.constants.ModelConstants;
-import es.udc.rs.app.constants.ModelConstants.enumState;
-import es.udc.rs.app.constants.ModelConstants.enumType;
 import es.udc.rs.app.exceptions.CallStateException;
 import es.udc.rs.app.exceptions.MonthExpirationException;
 import es.udc.rs.app.exceptions.RemoveClientException;

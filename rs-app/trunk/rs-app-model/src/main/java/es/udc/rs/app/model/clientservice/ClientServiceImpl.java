@@ -173,6 +173,11 @@ public class ClientServiceImpl implements ClientService {
 			
 			if(call.getDateCall().get(Calendar.MONTH) == date.get(Calendar.MONTH) && call.getDateCall().get(Calendar.YEAR) 
 					== date.get(Calendar.YEAR)){
+				/*Comentamos esto para poder ver el cambio de estado de las llamadas cuando pasamos a billed y a paid
+				 * Para poder respetar el enunciado de la práctica bastaria con descomentar estas lineas y en caso de
+				 * buscar llamadas ya facturadas nos devolveria un error
+				 * if (call.getState() != enumState.PENDING)
+					throw new CallStateException(clientId, call.getCallId());*/
 				findCalls.add(call);
 			}
 		}

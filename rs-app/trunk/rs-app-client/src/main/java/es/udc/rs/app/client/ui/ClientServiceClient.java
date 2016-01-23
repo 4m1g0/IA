@@ -1,23 +1,16 @@
 package es.udc.rs.app.client.ui;
 
-import java.util.Calendar;
 import java.util.List;
 
 import es.udc.rs.app.client.dto.CallDetailsDto;
-import es.udc.rs.app.client.dto.CallDto;
 import es.udc.rs.app.client.dto.CallListIntervalDto;
 import es.udc.rs.app.client.dto.ClientDetailsDto;
-import es.udc.rs.app.client.dto.ClientDto;
 import es.udc.rs.app.client.dto.ClientListIntervalDto;
 import es.udc.rs.app.client.service.ClientService;
 import es.udc.rs.app.client.service.ClientServiceFactory;
-import es.udc.rs.app.constants.ModelConstants;
-import es.udc.rs.app.constants.ModelConstants.enumState;
-import es.udc.rs.app.constants.ModelConstants.enumType;
 import es.udc.rs.app.exceptions.CallStateException;
 import es.udc.rs.app.exceptions.MonthExpirationException;
 import es.udc.rs.app.exceptions.RemoveClientException;
-import es.udc.rs.app.jaxb.StringToDate;
 import es.udc.ws.util.exceptions.InputValidationException;
 import es.udc.ws.util.exceptions.InstanceNotFoundException;
 

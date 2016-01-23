@@ -8,15 +8,10 @@ import javax.xml.bind.JAXBElement;
 
 import es.udc.rs.app.client.dto.CallDetailsDto;
 import es.udc.rs.app.client.dto.CallDto;
-import es.udc.rs.app.client.dto.ClientDto;
 import es.udc.rs.app.client.service.rest.dto.CallDetailsDtoJaxb;
 import es.udc.rs.app.client.service.rest.dto.CallDetailsDtoJaxbList;
 import es.udc.rs.app.client.service.rest.dto.CallDtoJaxb;
 import es.udc.rs.app.client.service.rest.dto.CallDtoJaxbList;
-import es.udc.rs.app.client.service.rest.dto.ClientDtoJaxb;
-import es.udc.rs.app.client.service.rest.dto.ClientDtoJaxbList;
-import es.udc.rs.app.client.service.rest.dto.EnumState;
-import es.udc.rs.app.client.service.rest.dto.EnumType;
 import es.udc.rs.app.client.service.rest.dto.ObjectFactory;
 import es.udc.rs.app.constants.ModelConstants;
 import es.udc.rs.app.jaxb.StringToDate;

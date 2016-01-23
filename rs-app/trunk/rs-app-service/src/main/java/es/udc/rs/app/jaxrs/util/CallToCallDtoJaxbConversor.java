@@ -1,10 +1,7 @@
 package es.udc.rs.app.jaxrs.util;
 
 import java.net.URI;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import es.udc.rs.app.constants.ModelConstants;

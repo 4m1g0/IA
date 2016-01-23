@@ -1,11 +1,8 @@
 package es.udc.rs.app.jaxrs.dto;
 
-import java.util.Calendar;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import es.udc.rs.app.constants.ModelConstants.enumState;
-import es.udc.rs.app.constants.ModelConstants.enumType;
 
 @XmlRootElement(name="call-details")
 @XmlType(name="callDetailsType", propOrder = {"id", "clientId", "dateCall", 
