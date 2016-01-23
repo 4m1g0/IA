@@ -153,7 +153,7 @@ public class ClientServiceImpl implements ClientService {
 				continue;
 			}
 			
-			if(call.getState().compareTo(state) < 0) {
+			if(state.ordinal() - call.getState().ordinal() == 1) {
 				call.setState(state);
 			}
 			else 

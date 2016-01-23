@@ -133,7 +133,7 @@ public class CallResource {
 		if (index == -1 || numrows == -1)
 			return null;
 		
-		if (numrows >= size)
+		if (numrows > size)
 			return null;
 		
 		UriBuilder uriBuilder = self.getRequestUriBuilder()
