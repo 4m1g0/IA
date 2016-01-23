@@ -32,7 +32,7 @@ public interface ClientService {
     
     public void changeCallState(Long clientId, Calendar date , enumState state) throws CallStateException, InstanceNotFoundException, MonthExpirationException;
     
-    public List<Call> findCalls(Long clientId, Calendar month, int index, int numRows) throws CallStateException, InstanceNotFoundException;
+    public List<Call> findCalls(Long clientId, Calendar month) throws CallStateException, InstanceNotFoundException;
     
     public List<Call> findCalls(Long clientId, Calendar initDate, Calendar endDate, int index, int numRows) throws  InstanceNotFoundException;
 

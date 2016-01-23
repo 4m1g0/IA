@@ -277,14 +277,11 @@ public abstract class RestClientService implements ClientService {
 		}
 	}
 	@Override
-	public List<CallDetailsDto> findCallsToBill(Long clientId,  String month, String year,int index,
-			int numRows ) throws CallStateException, InstanceNotFoundException {
+	public List<CallDetailsDto> findCallsToBill(Long clientId,  String month, String year) throws CallStateException, InstanceNotFoundException {
 		WebTarget wt = getEndpointWebTarget().path("calls")
 				.queryParam("id", clientId)
 				.queryParam("month", month)
-				.queryParam(("year"), year)
-				.queryParam("index", index)
-				.queryParam("numRows", numRows);
+				.queryParam(("year"), year);
 				
 		Response response = wt.request().accept(this.getMediaType()).get();
 		try {

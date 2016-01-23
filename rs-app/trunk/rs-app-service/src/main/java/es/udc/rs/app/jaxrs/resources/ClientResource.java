@@ -87,12 +87,12 @@ public class ClientResource {
 	}
 	
 	private static Link getNextLink(UriInfo uriInfo, String keyword,
-			int startIndex, int count, int numRows, String type) {
-		if (numRows < count) {
+			int startIndex, int numRows, int count, String type) {
+		if (numRows >= count) {
 			return null;
 		}
 		return ServiceUtil.getIntervalLink(uriInfo, keyword, startIndex
-				+ count, count, "next", "Next interval of clients", type);
+				+ numRows, numRows, "next", "Next interval of clients", type);
 	}
 
 	private Link getPreviousLink(UriInfo uriInfo, String keyword,

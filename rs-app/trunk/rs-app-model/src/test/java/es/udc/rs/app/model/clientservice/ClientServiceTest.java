@@ -155,7 +155,7 @@ public class ClientServiceTest {
 			Calendar date = Calendar.getInstance();
 			clientService.makeCall(c1.getClientId(), date, 234, enumType.LOCAL,"65943902");
 			
-			assertEquals(clientService.findCalls(c1.getClientId(), date, 0, 99999).get(0).getDestPhone(), "65943902");
+			assertEquals(clientService.findCalls(c1.getClientId(), date).get(0).getDestPhone(), "65943902");
 			
 		} finally {
 			
@@ -173,7 +173,7 @@ public class ClientServiceTest {
 		clientService.makeCall(c.getClientId(), cal, 244, enumType.LOCAL,"65954912");
 		clientService.changeCallState(c.getClientId(), cal, enumState.BILLED);
 		// la busqueda debe lanzar excepcion si el estado se ha cambiado correctamente
-		clientService.findCalls(c.getClientId(), cal, 0, 99999);
+		clientService.findCalls(c.getClientId(), cal);
 	}
 	
 	@Test(expected = MonthExpirationException.class)
@@ -189,10 +189,10 @@ public class ClientServiceTest {
 		Client c1 = clientService.findClient("45777777C");
 		Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.MONTH, 4);
-		List<Call> calls = clientService.findCalls(c1.getClientId(),cal, 0, 9999);
+		List<Call> calls = clientService.findCalls(c1.getClientId(),cal);
 		assertEquals(3, calls.size());
 		cal.set(Calendar.MONTH, 6);
-		calls = clientService.findCalls(c1.getClientId(),cal, 0, 99999);
+		calls = clientService.findCalls(c1.getClientId(),cal);
 		assertEquals(1, calls.size());
 		
 	}

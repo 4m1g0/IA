@@ -105,7 +105,7 @@ public class ClientServiceClient {
 			
 		}
 		if("-fdni".equalsIgnoreCase(args[0])){
-			validateArgs(args, 2, new int[] { 1 });
+			validateArgs(args, 2, new int[] {});
 			try {
 				ClientDetailsDto clientDto = clientService.findClient(args[1]);
 				System.out.println(clientDto.toString());
@@ -198,13 +198,11 @@ public class ClientServiceClient {
 		}
 		
 		if("-fcb".equalsIgnoreCase(args[0])){
-			validateArgs(args, 6, new int[] { 1 });
+			validateArgs(args, 4, new int[] { 1 });
 			
 			Long clientId = Long.parseLong(args[1]);
-			int index = Integer.parseInt(args[4]);
-			int numRows = Integer.parseInt(args[5]);
 			try {
-				List<CallDetailsDto> listCall = clientService.findCallsToBill(clientId, args[2], args[3], index, numRows);
+				List<CallDetailsDto> listCall = clientService.findCallsToBill(clientId, args[2], args[3]);
 				for (CallDetailsDto callDetailsDto : listCall) {
 					System.out.println(callDetailsDto.toString());
 				}
@@ -256,7 +254,7 @@ public class ClientServiceClient {
 						+ "    [makeCall]        ServiceClient -mc <clientId> <date> <duration> <phoneDest> <type>\n"
 						+ "    [changeState]     ServiceClient -cs <clientId> <month> <year> <state>\n"
 						+ "    [findCalls]       ServiceClient -fcll <clientId> <dateInit>  <dateEnd> <index> <numRows> <type>(OP)\n"
-						+ "    [findCallsBill]   ServiceClient -fcb <clientId> <month> <year> <index> <numRows>\n");
+						+ "    [findCallsBill]   ServiceClient -fcb <clientId> <month> <year>\n");
 	}
 
 }

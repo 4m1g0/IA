@@ -31,7 +31,7 @@ public interface ClientService {
     
     public void changeCallState(Long clientId, String month, String year , String state) throws CallStateException, InstanceNotFoundException, MonthExpirationException;
     
-    public List<CallDetailsDto> findCallsToBill(Long clientId, String month, String year ,int index, int numRows ) throws CallStateException, InstanceNotFoundException;
+    public List<CallDetailsDto> findCallsToBill(Long clientId, String month, String year) throws CallStateException, InstanceNotFoundException;
     
     public CallListIntervalDto findCalls(Long clientId, String initDate, String endDate, int index, int numRows) throws  InstanceNotFoundException;
 

@@ -12,7 +12,6 @@ import es.udc.rs.app.constants.ModelConstants.enumType;
 import es.udc.rs.app.exceptions.CallStateException;
 import es.udc.rs.app.exceptions.MonthExpirationException;
 import es.udc.rs.app.exceptions.RemoveClientException;
-import es.udc.rs.app.jaxb.StringToDate;
 import es.udc.rs.app.model.call.Call;
 import es.udc.rs.app.model.client.Client;
 import es.udc.ws.util.exceptions.InputValidationException;
@@ -28,13 +27,6 @@ public class ClientServiceImpl implements ClientService {
 	
 	
 	public ClientServiceImpl() {
-		try{
-			addClient(new Client("pepe", "234345546", "caslle del pozo", "234345546"));
-			makeCall(0L, Calendar.getInstance(), 50, enumType.LOCAL, "696969699");
-			
-		}catch (Exception e){
-			
-		}
 	}
 	
 	public synchronized long incrementClient(){
@@ -122,7 +114,7 @@ public class ClientServiceImpl implements ClientService {
 		List<Client> findClients = new ArrayList<Client>();
 		int i = 0;
 		for (Client client : clients.values()) {
-			if(client.getName().contains(keywords) && i++ >= index){
+			if(client.getName().toLowerCase().contains(keywords.toLowerCase()) && i++ >= index){
 				findClients.add(client);
 				if (findClients.size() >= numRows)
 					break;
@@ -170,21 +162,18 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public List<Call> findCalls(Long clientId, Calendar date, int index, int numRows) throws InstanceNotFoundException, CallStateException {
+	public List<Call> findCalls(Long clientId, Calendar date) throws InstanceNotFoundException, CallStateException {
 		findClient(clientId); // throws exception if client doesn't exist
 		List<Call> findCalls = new ArrayList<Call>();
-		
-		int i = 0;
+
 		for (Call call : calls.values()) {
 			if (!call.getClientId().equals(clientId)) {
 				continue;
 			}
 			
 			if(call.getDateCall().get(Calendar.MONTH) == date.get(Calendar.MONTH) && call.getDateCall().get(Calendar.YEAR) 
-					== date.get(Calendar.YEAR) && i++ >= index){
+					== date.get(Calendar.YEAR)){
 				findCalls.add(call);
-				if (findCalls.size() >= numRows)
-					break;
 			}
 		}
 		

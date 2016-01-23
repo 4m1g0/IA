@@ -94,7 +94,7 @@ public class CallResource {
 		String type = ServiceUtil.getTypeAsStringFromHeaders(headers);
 		
 		if(month != null){
-			calls = ClientServiceFactory.getService().findCalls(id, StringToDate.getCalendar(year + "-" + month + "-01 00:00:00"), index, numRows);
+			calls = ClientServiceFactory.getService().findCalls(id, StringToDate.getCalendar(year + "-" + month + "-01 00:00:00"));
 			List<CallDetailsDtoJaxb> callDetailsDtos = CallToCallDtoJaxbConversor.toCallDetailsDtoJaxb(calls, uriInfo.getBaseUri(), type);
 			
 			Link selfLink = Link.fromUri(uriInfo.getRequestUri()).build();
@@ -143,7 +143,7 @@ public class CallResource {
 		if (index == -1 || numrows == -1)
 			return null;
 		
-		if (index + numrows >= size)
+		if (numrows >= size)
 			return null;
 		
 		UriBuilder uriBuilder = self.getRequestUriBuilder()
