@@ -23,8 +23,7 @@ public class ClientServiceClient {
 			printUsageAndExit();
 		}
 		
-		ClientService clientService = 
-				ClientServiceFactory.getService();
+		ClientService clientService = ClientServiceFactory.getService();
 		
 		if("-a".equalsIgnoreCase(args[0])){
 			validateArgs(args, 5, new int[] {});

@@ -38,7 +38,7 @@ public class ClientServiceImpl implements ClientService {
 	}
 	
 	private Client validateClient(Client client) throws InputValidationException {
-		if(client.getDNI().length() != 9 || (client.getPhone().length() != 9)){
+		if(client.getDNI().length() != 9 || (client.getPhone().length() < 9)){
 			throw new InputValidationException(client.getDNI());
 		}
 		
