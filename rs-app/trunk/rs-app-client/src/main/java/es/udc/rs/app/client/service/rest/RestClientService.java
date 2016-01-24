@@ -67,27 +67,6 @@ public abstract class RestClientService implements ClientService {
 	protected abstract MediaType getMediaType();
 	
 	
-/*	private ClientListIntervalDto findClients(WebTarget wt, MediaType type) {
-		Response response = (type != null) ? wt.request().accept(type).get()
-				: wt.request().get();
-		try {
-			validateResponse(Response.Status.OK.getStatusCode(), response);
-			ClientDtoJaxbList clients = response
-					.readEntity(ClientDtoJaxbList.class);
-
-			return new ClientListIntervalDto(
-					ClientDtoToClientDtoJaxbConversor.toClientDtos(clients),
-					LinkUtil.getHeaderLinkUri(response, "next"),
-					LinkUtil.getHeaderLinkUri(response, "previous"));
-		} catch (Exception ex) {
-			throw new RuntimeException(ex);
-		} finally {
-			if (response != null) {
-				response.close();
-			}
-		}
-	}*/
-	
 	@Override
 	public ClientDetailsDto addClient(ClientDetailsDto client) throws InputValidationException {
 		WebTarget wt = getEndpointWebTarget().path("clients");
