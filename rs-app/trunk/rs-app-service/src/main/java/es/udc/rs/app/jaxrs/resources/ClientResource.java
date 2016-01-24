@@ -96,16 +96,16 @@ public class ClientResource {
 	}
 
 	private Link getPreviousLink(UriInfo uriInfo, String keyword,
-			int startIndex, int count, String type) {
-		if (startIndex <= 0) {
+			int index, int count, String type) {
+		if (index <= 0) {
 			return null;
 		}
-		startIndex = startIndex - count;
-		if (startIndex < 0) {
-			startIndex = 0;
+		index = index - count;
+		if (index < 0) {
+			index = 0;
 		}
 		return ServiceUtil.getIntervalLink(uriInfo, keyword,
-				startIndex, count, "previous", "Previous interval of clients",
+				index, count, "previous", "Previous interval of clients",
 				type);
 	}
 	

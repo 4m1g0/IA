@@ -50,11 +50,11 @@ public class ServiceUtil {
 	}
 	
 	public static Link getIntervalLink(UriInfo uriInfo, String keyword,
-			int startIndex, int count, String rel, String title, String type) {
+			int index, int numRows, String rel, String title, String type) {
 		UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder()
 				.queryParam("keyword", keyword)
-				.queryParam("startIndex", startIndex)
-				.queryParam("count", count);
+				.queryParam("index", index)
+				.queryParam("numRows", numRows);
 		Link.Builder linkBuilder = Link.fromUriBuilder(uriBuilder)
 				.rel(rel)
 				.title(title);
