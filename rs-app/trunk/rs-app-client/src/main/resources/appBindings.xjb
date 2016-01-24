@@ -35,6 +35,9 @@
         </jxb:bindings> 
         <jxb:bindings node="//xs:complexType[@name='removeClientExceptionType']">    
             <jxb:class name="RemoveClientExceptionDtoJaxb"/>
+        </jxb:bindings>
+        <jxb:bindings node="//xs:complexType[@name='monthExpirationExceptionType']">    
+            <jxb:class name="MonthExpirationExceptionDtoJaxb"/>
         </jxb:bindings> 
     </jxb:bindings>
     

@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlRootElement(name = "MonthExpirationException")
-@XmlType(name="MonthExpirationExceptionType")
+@XmlType(name="monthExpirationExceptionType")
 public class MonthExpirationExceptionDtoJaxb {
 	@XmlElement(required = true)
 	private Calendar date;
