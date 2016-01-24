@@ -75,13 +75,15 @@ public class ClientServiceImpl implements ClientService {
 
 	@Override
 	public void removeClient(Long clientId) throws InstanceNotFoundException, RemoveClientException {
+		
 		for (Call call : calls.values()){
 			if (call.getClientId().equals(clientId)){
 				throw new RemoveClientException(clientId);
 			}
 		}
 		
-		clients.remove(clientId);
+		if (clients.remove(clientId) == null)
+			throw new InstanceNotFoundException(clientId, "cliente");
 	}
 
 	@Override
@@ -196,7 +198,7 @@ public class ClientServiceImpl implements ClientService {
 		
 		int i = 0;
 		for (Call call : calls.values()) {
-			if (call.getDateCall().after(initDate) && call.getDateCall().before(endDate) && i++ >= index && (type == null || call.getType() == type)) {
+			if (call.getDateCall().after(initDate) && call.getDateCall().before(endDate) && (type == null || call.getType() == type) && i++ >= index) {
 				findCalls.add(call);
 				if (findCalls.size() >= numRows)
 					break;
